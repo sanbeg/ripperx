@@ -1,6 +1,3 @@
-
-#include "xpms.h"
-
 #include "xpms/config.xpm"
 #include "xpms/scan.xpm"
 #include "xpms/go.xpm"
