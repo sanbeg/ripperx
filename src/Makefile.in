@@ -11,7 +11,7 @@ mandir = @mandir@
 
 CC = @CC@
 CFLAGS = @CFLAGS@
-LDFLAGS = @LDFLAGS@ @LIBS@ -lutil -lid3
+LDFLAGS = @LDFLAGS@ @LIBS@ -lutil -lid3 -lz
 INSTALL = @INSTALL@
 
 CFILES = main.c\
