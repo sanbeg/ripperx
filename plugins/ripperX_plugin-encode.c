@@ -4,6 +4,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <string.h>
 
 #define AENCODER_OUTPUT_BUF_LENGTH  1024
 #define AENCODER_OUTPUT_LINE_LENGTH 19
