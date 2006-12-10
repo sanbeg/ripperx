@@ -16,7 +16,7 @@
 #include <sys/types.h>
 #include "err_dialog_handler.h"
 
-#define VERSION	"2.7.0"
+#define VERSION	"2.7.1-pre0"
 
 #ifndef TRUE
 #define TRUE		1
