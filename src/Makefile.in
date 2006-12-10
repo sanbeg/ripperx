@@ -27,8 +27,6 @@ CFILES = main.c\
 	status_frame_handler.c\
 	cddbp.c\
 	cddb.c\
-	id3.c\
-	id3lib.c\
 	misc_utils.c\
 
 OFILES  = $(patsubst %.c,%.o,$(CFILES))

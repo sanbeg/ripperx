@@ -320,10 +320,11 @@ int read_local_file ( char** result, int tracknum, int duration, long int offset
 		 *  since the file didn't exist in the directory
 		 * 	check the category sub-directories
 		 */
-		for ( i = 0; cddb_categories[ i ].cddb_name != NULL; i++ ) {
+		for ( i = 0; i < ID3_NR_OF_V1_GENRES; i++ ) {
+		 
 			strcpy( file_check, config.cddb_path ); 	/*   start with the base path  */
 			strcat( file_check, "/" ); 					/*   add the seperator  */
-			strcat( file_check, cddb_categories[ i ].cddb_name ); 	/*   add the catagory  */
+			strcat( file_check, ID3_v1_genre_description[i] ); 	/*   add the catagory  */
 			strcat( file_check, "/" ); 					/*   add the seperator  */
 			strcat( file_check, cd_id ); 				/*   add the filename  */
 			if ( ( datafile = fopen( file_check, "r" ) ) != NULL )

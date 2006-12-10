@@ -14,8 +14,12 @@
 #include <netdb.h>
 #include <fcntl.h>
 #include <libgen.h>
+#include <id3.h>
+#include <glib.h>
 
 #include "misc_utils.h"
+
+
 
 int add_argv( char **dest, char *content )
 {
@@ -949,3 +953,97 @@ void mk_strcat(char **ptr, ...)
 		strcpy(cpb, cp);
 	va_end(ap);
 }
+
+
+/*
+ *  
+ * 
+ * 
+ */
+ 
+
+
+void set_TagField(ID3Tag *myTag, char *data,ID3_FrameID id) 
+{	
+	ID3Frame *myFrame;
+	ID3Frame *pFrame;
+	
+	myFrame=ID3Frame_NewID(id);
+
+	pFrame=ID3Tag_FindFrameWithID(myTag,id);
+
+	if (pFrame != NULL) {
+		ID3Tag_RemoveFrame(myTag,pFrame);
+	}
+
+	ID3Field_SetASCII(ID3Frame_GetField(myFrame,ID3FN_TEXT),data);
+	ID3Tag_AttachFrame(myTag,myFrame);
+
+	return;
+}
+
+
+
+/*
+ * map a styleid onto a genre description
+ */
+extern char * id3_findstyle( int styleid )
+{
+	if ( (styleid < ID3_NR_OF_V1_GENRES) && (styleid >= 0) ) {
+		return (char *)ID3_v1_genre_description[ styleid ];
+	}
+	return "Unknown Style";
+}
+
+/*
+ * map a genre description onto a styleid
+ */
+unsigned char id3_find_cddb_category( char *name )
+{
+	int i;
+	for ( i = 0; i < ID3_NR_OF_V1_GENRES ; i++ ) {
+		if ( !strcmp( ID3_v1_genre_description[ i ], name ) ) {
+			return (unsigned char) i;
+		}
+	}
+	return 0xFF;
+}
+
+/*
+ * utility function to write vorbis tags
+ */
+
+void vorbistag(char *ogg_file, 
+		char *artist,
+		char *album,
+		char *title,
+		unsigned char style,
+		unsigned char track)
+{
+	char cmd[MAX_COMMAND_LENGTH];
+	char temp[MAX_TITLE_LENGTH];
+	gchar *tagfile;
+	FILE *f;
+
+	tagfile = g_strdup_printf("%s.tags", ogg_file);
+	
+	f = fopen(tagfile, "w");
+	snprintf(temp, sizeof(temp) - 1, "ARTIST=%s\n", artist);
+	fputs(temp, f);
+	snprintf(temp, sizeof(temp) - 1, "ALBUM=%s\n", album);
+	fputs(temp, f);
+	snprintf(temp, sizeof(temp) - 1, "TITLE=%s\n", title);
+	fputs(temp, f);
+	snprintf(temp, sizeof(temp) - 1, "GENRE=%s\n", id3_findstyle(style));
+	fputs(temp, f);
+	snprintf(temp, sizeof(temp) - 1, "TRACKNUMBER=%d\n", track);
+	fputs(temp, f);
+	fclose(f);
+
+	snprintf(cmd, sizeof(cmd) - 1, "vorbiscomment -a -c '%s' '%s'", tagfile, ogg_file);
+	system(cmd);
+	unlink(tagfile);
+	free(tagfile);
+}
+
+
