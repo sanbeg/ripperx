@@ -4,7 +4,7 @@
   <!ENTITY dhfirstname "<firstname>tony</firstname>">
   <!ENTITY dhsurname   "<surname>mancill</surname>">
   <!-- Please adjust the date whenever revising the manpage. -->
-  <!ENTITY dhdate      "<date>June 01, 2005</date>">
+  <!ENTITY dhdate      "<date>July 04, 2006</date>">
   <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
        allowed: see man(7), man(1). -->
   <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
@@ -26,7 +26,7 @@
       &dhsurname;
     </author>
     <copyright>
-      <year>2005</year>
+      <year>2006</year>
       <holder>&dhusername;</holder>
     </copyright>
     &dhdate;
@@ -80,17 +80,16 @@
     the tabs to learn what options are configurable.
     </para>
     
-    <para>Because Vorbis/Ogg uses variable bit rates, there is not a direct
+    <para>Because Vorbis/Ogg typically uses variable bit rates, there is not a direct
     correlation between the bitrate selected for encoding and the rate used by
-    <command>oggenc</command>.  Instead, the bitrates in
-    <command>&dhpackage</command> are mapped to the quality modes (1-6) supported by
-    <command>oggenc</command>.  Bitrates 56, 64, 96 == mode 1, 112 and 128 ==
-    mode 2, 160 == mode 3 (the default), 192 == mode 4, 256 == mode 6, and 320
-    == mode 6.</para>
+    <command>oggenc</command>.  The bitrates selected in the MP3 tab of the Configuration
+	dialog are passed to <command>oggenc</command> with the <emphasis>-b</emphasis> switch.
+	Enabling or disabling VBR when using Vorbis/Ogg has no effect on the encoding process.
+    </para>
     
-    <para>The FLAC encoding currently does not accept any bitrate arguments to adjust 
-    the compression/speed settings, so whatever bitrate you select in the config dialog
-    will be ignored for this type of encoding.
+    <para>The FLAC encoding currently does not accept any bitrate arguments, 
+    so any bitrate you specify in the config dialog will be ignored for this type of encoding.
+	</para>
 
   </refsect1>
   <refsect1>
@@ -108,7 +107,7 @@
 
     <title>BUGS</title>
 
-    <para>Many, do be sure...  Please report them as you find them!</para>
+    <para>Many, to be sure...  Please report them as you find them!</para>
     
  </refsect1>     
 

@@ -33,18 +33,15 @@ application, select the \fIConfig\fP button and cycle through
 the tabs to learn what options are configurable. 
  
 .PP 
-Because Vorbis/Ogg uses variable bit rates, there is not a direct 
+Because Vorbis/Ogg typically uses variable bit rates, there is not a direct 
 correlation between the bitrate selected for encoding and the rate used by 
-\fBoggenc\fR.  Instead, the bitrates in 
-\fBripperX\fR are mapped to the quality modes (1-6) supported by 
-\fBoggenc\fR.  Bitrates 56, 64, 96 == mode 1, 112 and 128 == 
-mode 2, 160 == mode 3 (the default), 192 == mode 4, 256 == mode 6, and 320 
-== mode 6. 
-.PP 
-The FLAC encoding currently does not accept any bitrate arguments to adjust  
-the compression/speed settings, so whatever bitrate you select in the config dialog 
-will be ignored for this type of encoding. 
+\fBoggenc\fR.  The bitrates selected in the MP3 tab of the Configuration 
+dialog are passed to \fBoggenc\fR with the \fI-b\fP switch. 
+Enabling or disabling VBR when using Vorbis/Ogg has no effect on the encoding process. 
  
+.PP 
+The FLAC encoding currently does not accept any bitrate arguments,  
+so any bitrate you specify in the config dialog will be ignored for this type of encoding. 
  
 .SH "SEE ALSO" 
 .PP 
@@ -59,9 +56,9 @@ toolame (1).
 Documentation in /usr/share/doc/ripperx/ 
 .SH "BUGS" 
 .PP 
-Many, do be sure...  Please report them as you find them! 
+Many, to be sure...  Please report them as you find them! 
 .SH "AUTHOR" 
 .PP 
 This manual page was written by tony mancill tmancill@debian.org for 
 the \fBDebian GNU/Linux\fP system (but may be used by others). 
-.\" created by instant / docbook-to-man, Mon 17 Apr 2006, 22:54 
+.\" created by instant / docbook-to-man, Tue 04 Jul 2006, 17:33 

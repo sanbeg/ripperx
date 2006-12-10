@@ -26,4 +26,10 @@ via ripperX.  To do this:
 * click on the Wav tab in the Config dialog
 * type "-d /dev/scd0" into the Extra Options field
 
- -- tony mancill <tmancill@debian.org>  Tue, 23 Sep 2003 21:12:35 -0700
+If you continue to have problems accessing your CD-ROM device, you can
+try using "cdparanoia -v -Q" to access the device to look for meaningful
+error messages.  Oftentimes the problem is related to permissions - either
+the userid running ripperx is not a member of the "cdrom" group, or the
+device permissions on your CD-ROM device themselves are not correct.
+
+ -- tony mancill <tmancill@debian.org>  Sun, 09 Jul 2006 21:12:35 -0700

@@ -1,3 +1,22 @@
+ripperx (2.7.0-3) unstable; urgency=low
+
+  * updated freedb CDDB url (closes: #395105)
+
+ -- tony mancill <tmancill@debian.org>  Tue, 24 Oct 2006 17:16:15 -0700
+
+ripperx (2.7.0-2) unstable; urgency=low
+
+  * replaced Suggests of "splay" with "sox"
+  * added Build-Depends on libz-dev and -lz to linker flags
+  * fixed cdplay cdtool command-line arguments;
+    updated oggenc bitrate infomation in manpage (closes: #370287)
+  * updated README.Debian with more information about problems
+    finding/accessing the CD-ROM device (closes: #187755)
+  * removed dependency on docbook-to-man
+  * bumped Standards-Version to 3.7.2
+
+ -- tony mancill <tmancill@debian.org>  Thu,  6 Jul 2006 19:52:05 -0700
+
 ripperx (2.7.0-1) unstable; urgency=low
 
   * new upstream release

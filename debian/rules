@@ -3,7 +3,7 @@
 # GNU copyright 1997 to 1999 by Joey Hess.
 
 # Uncomment this to turn on verbose mode.
-export DH_VERBOSE=1
+#export DH_VERBOSE=1
 
 # This is the debhelper compatability version to use.
 export DH_COMPAT=4
@@ -19,11 +19,7 @@ configure-stamp:
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-
-	# Add here commands to compile the package.
 	$(MAKE)
-	/usr/bin/docbook-to-man debian/ripperX.sgml > ripperX.1
-
 	touch build-stamp
 
 clean:
@@ -61,28 +57,18 @@ binary-arch: build install
 #	dh_testversion
 	dh_testdir
 	dh_testroot
-#	dh_installdebconf	
 	dh_installdocs
 	dh_installexamples
 	dh_installmenu
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installinit
 	dh_installcron
 #	dh_installmanpages 
 	dh_installman ripperX.1
-	dh_installinfo
-#	dh_undocumented
 	dh_installchangelogs CHANGES
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
-	# You may want to make some executables suid here.
-#	dh_suidregister
-#	dh_makeshlibs
 	dh_installdeb
-#	dh_perl
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
