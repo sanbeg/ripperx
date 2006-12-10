@@ -1,3 +1,9 @@
+Versiion 2.7.1 pre-release
+
+* remove internal versions of id3.c and id3lib.c and use libid3 directly
+  - migrate internal functions to misc_utils.c
+* remove refererence to xpms.h
+* add <string.h> to source files using str functions
 * updated ./src/Makefile.in to link against libz (used by libid3)
 * updated cdplay arguments
 * replaced splay with play (typically part of the sox package)
