@@ -1,0 +1,100 @@
+ripperX FAQ
+jos.dehaes@bigfoot.com
+Last updated: 2001/11/19
+
+AS YOU MAY HAVE NOTICED THIS FAQ IS *WAY* OUT OF DATE. PLEASE CHECK THE NEW FAQ ON RIPPERX.SOURCEFORGE.NET
+
+Q. I keep getting "Error Code 14"
+
+A. This is usually because cdparanoia is not configured properly. If you are 
+not running ripperX as root, you will need to either give your userid read
+access to your cdrom device, or make cdparanoia setuid root.
+
+A. cdparanoia may have trouble with your cdrom drive. Try running 
+
+cdparanoia -vQ
+
+and you should see a table of contents appear. If you do not see this, check
+the cdparanoia troubleshooting page and FAQ at:
+
+http://www.xiph.org/paranoia/index.html
+
+
+Q. Sometimes I get "Error Code 22: CD not in database"
+
+A. This is because ripperX uses freedb.org, which sometimes is not as up to 
+date as cddb.com, especially for new titles. (And vice versa can be true!) I
+believe freedb.org is the "Right Thing To Do", and that is why freedb is the 
+default CDDB server. If you keep getting Error 22, there are 2 things you can
+do: 1) open gtcd or similar program and with the CDDB server set to freedb.org,
+fill in the information and submit it. 2) Change the CDDB server in ripperX to
+us.cddb.com (port 888) or us.cddb.com/~cddb/cddb.cgi (port 80 for HTTP).
+
+
+Q. How do I change the name of my files to have the track number, album name,
+etc?
+
+A. In the Files tab of the configuration window, you will see a File format
+string text box. You can name your files anything you want and the special 
+% variables will be replaced with CDDB information.
+
+%s = Song Title
+%a = Artist Name
+%# = Track Number
+%v = Album Name
+
+for example, the default string is:
+
+%a - %s
+
+which will produce mp3s like so:
+
+Artist Name - Song Title.mp3
+
+
+Q. How do I make a directory structure like 
+
+Artist Name/Album Name/01 - Song Name.mp3?
+
+A. Make sure the "Create album subdirectory for each CD" option is checked. 
+For the Directory format string, use:
+
+%a/%v
+
+and for the File format string, use:
+
+%# - %s
+
+
+Q. How can I rip the whole CD first, then encode everything later?
+
+A. Select all the tracks, and select the "Rip wav" 
+option. All the tracks will be ripped. You can then quit ripperX and come back
+later. As long as the "Make mp3 from existing wav file" option under the 
+General tab is checked, you will be able to encode the files later without 
+having to rip them again. This works as long as the file names in the text boxes
+are exactly the same as they were when they were ripped.
+
+
+Q. How do I keep the wav files after encoding them?
+
+A. Check the "Keep wav files" option in the General tab.
+
+
+Q. What about SMP support?
+
+A. There are no plans for ripperX to support SMP directly. However, if you use 
+one of the SMP enabled encoders, such as gogo and (I think) lame, SMP support
+will be totally transparent to ripperX. If quality is a major concern, perhaps
+enough people can petition some of the commercial encoder companies to make an
+SMP version of their encoder.
+
+
+Caveats:
+
+1. The stop button may not stop the CD playing. This is because the 
+"cdplay" program that is shipped with RedHat 6.0 is broken and cannot stop 
+playing a CD.
+
+2. Sometimes the freedb.org CDDB server will not have a CD in it. Try changing
+the URL to us.cddb.com/~cddb/cddb.cgi

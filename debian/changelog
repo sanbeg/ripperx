@@ -1,0 +1,242 @@
+ripperx (2.7.0-1) unstable; urgency=low
+
+  * new upstream release
+    - ID3v2 tag support added by Ben Zonneveld
+    - added build dependency on id3lib-dev
+    - OGG tag fields can now (safely) exceed 30 characters
+      (closes: #347331)
+
+ -- tony mancill <tmancill@debian.org>  Tue, 18 Apr 2006 20:27:50 -0700
+
+ripperx (2.6.7-2) unstable; urgency=low
+
+  * update outdated xlibs-dev dependencies (closes: #347038)
+
+ -- tony mancill <tmancill@debian.org>  Sun,  8 Jan 2006 20:07:28 -0800
+
+ripperx (2.6.7-1) unstable; urgency=low
+
+  * new upstream release:
+    - fix null-termination problem with playlist (closes: #329792)
+    - fix erratic cursor movement during track editing (closes: #330654)
+
+ -- tony mancill <tmancill@debian.org>  Sun, 06 Nov 2005 20:40:46 -0800
+
+ripperx (2.6.6-2) unstable; urgency=low
+
+  * added debian/watch file
+
+ -- tony mancill <tmancill@debian.org>  Mon, 18 Jul 2005 08:43:19 -0700
+
+ripperx (2.6.6-1) unstable; urgency=low
+
+  * new upstream release:
+    - better parsing of cdparanoia error condtions
+    - support for Fedora Core 3
+
+ -- tony mancill <tmancill@debian.org>  Fri,  3 Jun 2005 09:18:33 -0700
+
+ripperx (2.6.5-1) unstable; urgency=low
+
+  * new upstream release
+    - added playlist support (closes: #80743)
+    - fixed vorbis tag problem with song titles > 30 characters.
+      Thanks to Tobias Pfeiffer. (closes: #309129)
+  * corrected typo in manpage; thanks to A Costa (closes: #302665)
+
+ -- tony mancill <tmancill@debian.org>  Wed,  1 Jun 2005 22:41:35 -0700
+
+ripperx (2.6.4-2) unstable; urgency=low
+
+  * added icon file (closes: #299347)
+
+ -- tony mancill <tmancill@debian.org>  Mon, 14 Mar 2005 21:21:40 -0800
+
+ripperx (2.6.4-1) unstable; urgency=low
+
+  * new upstream release
+    - now supports toolame as an encoder
+    - fix for free space calculations (SF #869947)
+    - added more encoder bitrates
+
+ -- tony mancill <tmancill@debian.org>  Sun, 21 Nov 2004 21:43:14 -0800
+
+ripperx (2.6.3-1) unstable; urgency=low
+
+  * new upstream release
+    - encoder nice priority can now be set
+    - AMD64 patches - thanks to Stefan Fuchs
+    - buxfix in cddb.c to handle malformed CDDB DTITLE entries
+
+ -- tony mancill <tmancill@debian.org>  Sun, 24 Oct 2004 22:49:00 -0700
+
+ripperx (2.6.2-1) unstable; urgency=low
+
+  * new upstream patch level release
+    - pathname fix for use of local CDDB files
+    - trackname fix for tracks with titles less than 8 characters
+
+ -- tony mancill <tmancill@debian.org>  Sat,  9 Oct 2004 18:51:51 -0700
+
+ripperx (2.6.1-3) unstable; urgency=low
+
+  * fix source version regression in 2.6.1-2 upload
+    (this time, the diff is only for FTBFS bug below)
+    - thanks to Ralf Knize for pointing out the problem
+
+ -- tony mancill <tmancill@debian.org>  Tue,  5 Oct 2004 23:19:56 -0700
+
+ripperx (2.6.1-2) unstable; urgency=low
+
+  * patch for cddbp.c FTBFS with gcc-3.4 (closes: #268398)
+    - thanks to Andreas Jochens for the patch
+
+ -- tony mancill <tmancill@debian.org>  Fri, 27 Aug 2004 11:10:23 -0700
+
+ripperx (2.6.1-1) unstable; urgency=low
+
+  * better handling of NULL CDDB responses (closes: #223653)
+  * applied patches for better internal filename handling 
+    (many thanks to Rick Coupland, who authored the patches)
+
+ -- tony mancill <tmancill@debian.org>  Sun,  4 Jan 2004 12:56:55 -0800
+
+ripperx (2.6.0-1) unstable; urgency=low
+
+  * cleaned up packaging and README.Debian
+  * "new" upstream release to replace bad 2.6.orig.tar.gz 
+     - includes ./debian/ tree
+  * fixed dangling manpage symlink (closes: #213593)
+
+ -- tony mancill <tmancill@debian.org>  Sun, 05 Oct 2003 11:08:46 -0700
+
+ripperx (2.6-1) unstable; urgency=low
+
+  * new upstream version thanks to Dave Cinege <dcinege@psychosis.com>, 
+    who is responsible all of the code updates in this release
+  * generated filenames are now fully unix safe - in particular:
+    - cddb names are converted before entry into the editing window
+   	- ASCII 160-255 now converted to printable lower ascii equivilents
+   	- unprintable/evil chars are removed instead of replaced
+   	- convert title/names only, user supplied path is not altered
+   	- arguments surrounded by single quotes, for shell safeness
+  * rmdir wav work dir, if wav files are not kept && wav_dir != mp3_dir
+  * prettied up 'finished' window
+  * fixed disk space check (wrong position, awk $3 !$4)
+  * time info in progress dialog made 275 wide to fit text
+  * ripping progress dialog made 130 wide to fit text
+  * fixed ripping progress to work with cdparanoia 9.8
+  * now use glibc openpty(); requires libutil.  (closes: #162530)
+  * fixed cddb parsing of Artist / Album
+  * I'm adopting my own package back.  (closes: #202541)
+	
+ -- tony mancill <tmancill@debian.org>  Tue, 23 Sep 2003 20:57:13 -0700
+
+ripperx (2.5-4) unstable; urgency=low
+
+  * orphaned; maintainer set to packages@qa.debian.org
+
+ -- tony mancill <tmancill@debian.org>  Tue, 22 Jul 2003 21:05:05 -0700
+
+ripperx (2.5-3) unstable; urgency=low
+
+  * set LC_NUMERIC to "POSIX" to fix progress bars problem in locales
+    where the decimal separator is not '.' (closes: #173392)
+  * tweaked oggenc plugin to report progress more evenly (closes: #194879)
+
+ -- tony mancill <tmancill@debian.org>  Mon,  9 Jun 2003 21:53:47 -0700
+
+ripperx (2.5-2) unstable; urgency=low
+
+  * new function to differentiate between directories and files when 
+    stripping non-unix characters from pathnames (closes: #188215)
+
+ -- tony mancill <tmancill@debian.org>  Tue,  8 Apr 2003 17:15:34 -0700
+
+ripperx (2.5-1) unstable; urgency=low
+
+  * new upstream release
+  * %# (track number) works correctly in this release (closes: #173394)
+  * better handling of non-Unix filename characters (closes: #185917)
+  * default CDDB configuration now works - uses HTTP - (closes: #185920)
+  * safer suggestion about cdrom/cdparanoia privileges (closes: #183399)
+
+ -- tony mancill <tmancill@debian.org>  Sun, 23 Mar 2003 09:13:50 -0800
+
+ripperx (2.4-1) unstable; urgency=low
+
+  * new upstream release
+
+ -- tony mancill <tmancill@debian.org>  Wed,  9 Oct 2002 18:34:56 -0700
+
+ripperx (2.3-6) unstable; urgency=low
+
+  * updated debian/copyright to include correct URI (closes: #159450)
+
+ -- tony mancill <tmancill@debian.org>  Wed,  4 Sep 2002 21:32:39 -0700
+
+ripperx (2.3-5) unstable; urgency=low
+
+  * no longer replaces all non-alphanums in filenames with '-'
+
+ -- tony mancill <tmancill@debian.org>  Sat,  1 Jun 2002 11:45:24 -0700
+
+ripperx (2.3-4) unstable; urgency=low
+
+  * hacked in FLAC support (closes: #147379)
+
+ -- tony mancill <tmancill@debian.org>  Tue, 21 May 2002 22:40:43 -0700
+
+ripperx (2.3-3) unstable; urgency=low
+
+  * hack to force (0 <= total_progress percentages <= 1) (closes: #138159)
+
+ -- tony mancill <tmancill@debian.org>  Fri, 15 Mar 2002 23:08:39 -0800
+
+ripperx (2.3-2) unstable; urgency=low
+
+  * removed absolute dependencies on splay and cdtool (closes: #100843)
+
+ -- tony mancill <tmancill@debian.org>  Mon, 25 Feb 2002 20:45:58 -0800
+
+ripperx (2.3-1) unstable; urgency=low
+
+  * new upstream release
+  * applied encoding patch from <mgedmin@delfi.lt> (closes: #110933)
+  * album directories now work with ogg (closes: #80742)
+  * cddb no longer exposes user or hostname (in response to #113155)
+
+ -- tony mancill <tmancill@debian.org>  Mon, 10 Dec 2001 22:21:38 -0800
+
+ripperx (2.1-1) unstable; urgency=low
+
+  * new upstream release
+
+ -- tony mancill <tony@debian.org>  Tue,  8 May 2001 10:30:26 -0700
+
+ripperx (2.0-4) unstable; urgency=low
+
+  * patched filename handling when ripping multiple files
+  * patched gogo plugin to handle garbage in output - Closes: #96002
+
+ -- tony mancill <tony@debian.org>  Thu,  3 May 2001 23:24:18 -0700
+
+ripperx (2.0-3) unstable; urgency=low
+
+  * better dependencies (on cdtool and splay)
+  * coding change to support change in oggenc interface
+
+ -- tony mancill <tmancill@debian.org>  Mon, 22 Jan 2001 21:54:10 -0700
+
+ripperx (2.0-2) unstable; urgency=low
+
+  * Vorbis/Ogg support has been added (not upstream (yet))
+
+ -- tony mancill <tmancill@debian.org>  Sun, 17 Dec 2000 18:13:46 -0700
+
+ripperx (2.0-1) unstable; urgency=low
+
+  * Initial Release.
+  * Closes: #78728 (ITP bug against wnpp)
+
+ -- tony mancill <tmancill@debian.org>  Sun,  3 Dec 2000 15:11:41 -0700

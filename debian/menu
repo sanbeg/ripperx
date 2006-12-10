@@ -1,0 +1,6 @@
+?package(ripperx):\
+	needs="X11"\
+	section="Apps/Sound"\
+	title="ripperX"\
+	icon="/usr/share/pixmaps/ripperx.xpm"\
+	command="/usr/bin/ripperX"

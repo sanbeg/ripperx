@@ -1,0 +1,23 @@
+ripperX is a graphical interface to CD rippers and MP3 encoders.
+GNU GPL. For more information please read the COPYING file.
+
+http://ripperx.sf.net
+=====================================================================
+
+If you have any suggestions or bug reports, please mail us at:
+
+Tony Mancill <tony@mancill.com>
+  and/or
+Dave Cinege <dcinege@psychosis.com>
+
+Note that we're anticipating bugs, and hence more frequent releases.
+Therefore, release numbering will be 2.6.x to indicate bugfix/patch
+releases between functionality releases (i.e. 2.6 -> 2.7).
+
+Also of note is that primary development is being done on Debian now,
+not RedHat, so we welcome input from other distro users on how to make 
+life easier for them in order to accomodate them as much as possible.
+
+Have fun.
+
+Note: jos.dehaes@bigfoot.com no longer maintains ripperX

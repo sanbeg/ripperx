@@ -1,0 +1,29 @@
+ripperX for Debian
+------------------
+
+ripperX got a much-needed shot in the arm from Dave Cinege, who 
+picked up the Debian source and fixed a great number of bugs.  Check 
+the debian/changelog for details, but in brief:
+
+* generated filenames should be safe now
+* no more empty tmp directories left around
+* the progress bar works with cdparanoia 9.8
+* using openpty() now, which should be devfs safe
+
+There is an outstanding bug that occurs when the CDDB artist name 
+contains the string ' / '.
+
+############################
+# FINDING YOUR CDROM DRIVE
+############################
+
+All access to the CD-ROM in ripperx is done via cdparanoia.  By
+default, cdparanoia will look at /dev/cdrom (which you could symlink to
+/dev/scd0, for example), or you can specify the correct device directly
+via ripperX.  To do this:
+
+* click on Config
+* click on the Wav tab in the Config dialog
+* type "-d /dev/scd0" into the Extra Options field
+
+ -- tony mancill <tmancill@debian.org>  Tue, 23 Sep 2003 21:12:35 -0700

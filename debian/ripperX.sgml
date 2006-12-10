@@ -1,0 +1,147 @@
+<!doctype refentry PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+
+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
+  <!ENTITY dhfirstname "<firstname>tony</firstname>">
+  <!ENTITY dhsurname   "<surname>mancill</surname>">
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY dhdate      "<date>June 01, 2005</date>">
+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
+  <!ENTITY dhemail     "<email>tmancill@debian.org</email>">
+  <!ENTITY dhusername  "tony mancill">
+  <!ENTITY dhucpackage "<refentrytitle>RIPPERX</refentrytitle>">
+  <!ENTITY dhpackage   "ripperX">
+  <!ENTITY debian      "<productname>Debian GNU/Linux</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+]>
+
+<refentry>
+  <docinfo>
+    <address>
+      &dhemail;
+    </address>
+    <author>
+      &dhfirstname;
+      &dhsurname;
+    </author>
+    <copyright>
+      <year>2005</year>
+      <holder>&dhusername;</holder>
+    </copyright>
+    &dhdate;
+  </docinfo>
+  <refmeta>
+    &dhucpackage;
+
+    &dhsection;
+  </refmeta>
+  <refnamediv>
+    <refname>&dhpackage;</refname>
+
+    <refpurpose>graphical (GTK) frontend for ripping and OGG/FLAC/MP3 encoding CD tracks</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>This manual page documents briefly the
+      <command>&dhpackage;</command> command.</para>
+
+    <para>This manual page was written for the &debian; distribution
+      because the original program does not have a manual page.
+    </para>
+
+    <para><command>&dhpackage;</command> is an X-based program that uses  
+    <command>cdparanoia</command> to convert (i.e. "rip") CD audio tracks to
+    WAV files, and then calls the Vorbis/Ogg encoder
+    <command>oggenc</command> to convert the WAV to an OGG file. 
+    It can also call <command>flac</command> to perform loss-less compression 
+    on the WAV file, resulting in a FLAC file.
+
+    Alternately, if you have an MP3 encoder installed such as <command>toolame</command>
+    <command>lame</command> or <command>bladeenc</command>, it can then 
+    convert the WAV into a MP3 file.</para>
+
+    <para>Besides a nice GUI interface, <command>&dhpackage</command> also
+    supports CDDB queries to retrieve song and album information, progress
+    meters, and pausing while ripping.</para>
+
+  </refsect1>
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <para>This program takes no command line arguments.  After starting the
+    application, select the <emphasis>Config</emphasis> button and cycle through
+    the tabs to learn what options are configurable.
+    </para>
+    
+    <para>Because Vorbis/Ogg uses variable bit rates, there is not a direct
+    correlation between the bitrate selected for encoding and the rate used by
+    <command>oggenc</command>.  Instead, the bitrates in
+    <command>&dhpackage</command> are mapped to the quality modes (1-6) supported by
+    <command>oggenc</command>.  Bitrates 56, 64, 96 == mode 1, 112 and 128 ==
+    mode 2, 160 == mode 3 (the default), 192 == mode 4, 256 == mode 6, and 320
+    == mode 6.</para>
+    
+    <para>The FLAC encoding currently does not accept any bitrate arguments to adjust 
+    the compression/speed settings, so whatever bitrate you select in the config dialog
+    will be ignored for this type of encoding.
+
+  </refsect1>
+  <refsect1>
+    <title>SEE ALSO</title>
+
+    <para>cdparanoia (1).</para>
+    <para>oggenc (1).</para>
+    <para>flac (1).</para>
+    <para>toolame (1).</para>
+    <para>Documentation in /usr/share/doc/ripperx/</para>
+    
+  </refsect1>
+  
+  <refsect1>
+
+    <title>BUGS</title>
+
+    <para>Many, do be sure...  Please report them as you find them!</para>
+    
+ </refsect1>     
+
+  <refsect1>
+    <title>AUTHOR</title>
+
+    <para>This manual page was written by &dhusername; &dhemail; for
+      the &debian; system (but may be used by others).</para>
+
+    <!-- <para>Permission is granted to copy, distribute and/or modify
+      this document under the terms of the <acronym>GNU</acronym> Free
+      Documentation License, Version 1.1 or any later version
+      published by the Free Software Foundation; with no Invariant
+      Sections, no Front-Cover Texts and no Back-Cover Texts.  A copy
+      of the license can be found under
+      <filename>/usr/share/common-licenses/FDL</filename>.</para> -->
+
+  </refsect1>
+</refentry>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-default-dtd-file:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

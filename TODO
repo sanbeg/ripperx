@@ -1,0 +1,5 @@
+These things are on the wishlist for 2.x releases of ripperX; they are
+listed in some semblance of priority.
+
+* Add the ability to submit CD data to the CDDB if the CD is not found.
+* Eject cd when complete (option to spec cdrom?)

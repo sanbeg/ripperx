@@ -1,0 +1,19 @@
+Source: ripperx
+Section: sound
+Priority: optional
+Maintainer: tony mancill <tmancill@debian.org>
+Build-Depends: debhelper (>= 4.0), docbook-to-man, libgtk1.2-dev, libglib1.2-dev, libid3-dev
+Standards-Version: 3.5.9
+
+Package: ripperx
+Architecture: any
+Depends: cdparanoia, vorbis-tools (>= 1.0beta3), ${shlibs:Depends}
+Suggests: splay, cdtool, mpg321, flac, toolame
+Description: a GTK-based audio CD ripper/encoder
+ ripperX is a graphical interface for ripping CD audio tracks (using 
+ cdparanoia) and then encoding them into the OGG, FLAC, or MP2/3
+ formats using the vorbis tools, FLAC, toolame or other available
+ MP3 encoders.
+ .
+ It includes support for CDDB lookups and ID3v2 tags.
+
