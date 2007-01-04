@@ -424,6 +424,7 @@ void job_finisher( _main_data *main_data )
 	int tracksdone = 0;
 	char s_track_num[2];
 	char *artist;
+	ID3Tag *myTag;
 
 	FILE *fp_playlist = NULL;
 	char playlist_filespec[ MAX_FILE_PATH_LENGTH + MAX_FILE_NAME_LENGTH ];
@@ -469,7 +470,6 @@ void job_finisher( _main_data *main_data )
 					/* assume MP3 tag is desired */
 					sprintf(s_track_num,"%d",(i+1));
 				
-					ID3Tag *myTag;
 					myTag=ID3Tag_New();
 					ID3Tag_Link(myTag,enc_file);
 				
