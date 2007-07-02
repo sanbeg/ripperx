@@ -387,7 +387,7 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 		char *high_qual_op;
 		char *crc_op;
 	} plugins[] = {
- 		{ NULL, MP3, "toolame", "ripperX_plugin-toolame", "toolame layer 2 encoder", "-b", "", "-v", "", "-e"},
+ 		{ NULL, MP2, "toolame", "ripperX_plugin-toolame", "Toolame layer 2 encoder", "-b", "", "-v", "", "-e"},
  		{ NULL, MP3, "encode ", "ripperX_plugin-encode", "ISO Encoder v2", "-b", "", "", "", "-e"},
  		{ NULL, MP3, "8hz-mp3 ", "ripperX_plugin-8hz-mp3", "8hz-mp3 Encoder", "-b", "", "", "", ""},
  		{ NULL, MP3, "lame", "ripperX_plugin-lame", "Lame MP3 Encoder", "-b", "--nohist -v", "-V", "-h", "-p"},
@@ -836,7 +836,7 @@ int cw_files_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_box_pack_start( GTK_BOX( hbox ), dir_format_string_entry, TRUE, TRUE, 0 );
 
 			/* format string help */
-			table = gtk_table_new( 2, 2, FALSE );
+			table = gtk_table_new( 3, 2, FALSE );
 			gtk_table_set_row_spacings( GTK_TABLE( table ), 5 );
 			gtk_container_border_width( GTK_CONTAINER( table ), 3 );
 			gtk_box_pack_start( GTK_BOX( vbox ), table, TRUE, TRUE, 0 );
@@ -852,6 +852,9 @@ int cw_files_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 			label = gtk_label_new( "%s = Song title" );
 			gtk_table_attach( GTK_TABLE( table ), label, 1, 2, 1, 2,
+			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
+			label = gtk_label_new( "%y = Year" );
+			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 2, 3,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
 			gtk_container_add( GTK_CONTAINER( main_frame ), vbox );

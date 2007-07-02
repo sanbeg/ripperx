@@ -35,7 +35,7 @@ void free_argv( char **argv );
 int parse_rx_format_string( char **target,
                             char *format,
                             int track_no, char *w_fname, char *m_fname,
-                            char *artist, char *album, char *song );
+                            char *artist, char *album, char *year, char *song );
 // track_no starts from 0
 // %% %
 // %w Wav file name

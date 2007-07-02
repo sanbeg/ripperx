@@ -110,7 +110,7 @@ void free_argv( char **argv )
 
 int parse_rx_format_string( char **target, char *format,
                             int track_no, char *w_fname, char *m_fname,
-                            char *artist, char *album, char *song )
+                            char *artist, char *album, char *year, char *song )
 {
 	int s, d, n, pass, totlen = 0;
 	char ch;
@@ -130,7 +130,7 @@ int parse_rx_format_string( char **target, char *format,
 					return - 1;
 				}
 				if ( ch == '%' || ch == '#' || ch == 'w' || ch == 'm' ||
-							ch == 'a' || ch == 'v' || ch == 's' )
+							ch == 'a' || ch == 'v' || ch == 'y' || ch == 's' )
 					s += 1;
 				else {
 					ch = format[ s + 2 ];
@@ -138,7 +138,7 @@ int parse_rx_format_string( char **target, char *format,
 						return -1;
 					}
 					if ( ch == '%' || ch == '#' || ch == 'w' || ch == 'm' ||
-								ch == 'a' || ch == 'v' || ch == 's' ) {
+								ch == 'a' || ch == 'v' || ch == 'y' || ch == 's' ) {
 						s += 2;
 					}
 				}
@@ -163,6 +163,9 @@ int parse_rx_format_string( char **target, char *format,
 					break;
 				case 'v' :
 					tmp = album;
+					break;
+				case 'y' :
+					tmp = year;
 					break;
 				case 's' :
 					tmp = song;
@@ -293,6 +296,18 @@ void auto_append_extension( char *src, int type )
   			offset += 5;
   			strcpy( src + offset, ".flac" );
   			return;
+  		}
+	} else if ( type == MP2) {
+		if ( strcmp( ".mp2", src + offset ) != 0 ) {
+			offset += 4;
+			strcpy( src + offset, ".mp2" );
+			return;
+  		}
+	} else if ( type == MUSE) {
+		if ( strcmp( ".mpc", src + offset ) != 0 ) {
+			offset += 4;
+			strcpy( src + offset, ".mpc" );
+			return;
   		}
 	} else {
 		if ( strcmp( ".mp3", src + offset ) != 0 ) {
@@ -779,19 +794,29 @@ void create_filenames_from_format(_main_data *main_data)
 	i = strlen(config.mp3_path) - 1;
 	if (i >= 0 && config.mp3_path[i] == '/')
 		config.mp3_path[i] = 0;
-	if (config.cddb_config.make_directories && main_data->disc_title[0])
+	if (config.cddb_config.make_directories && config.cddb_config.dir_format_string[0])
 	{
 		parse_rx_format_string( &df,
 				config.cddb_config.dir_format_string, -1, NULL, NULL, 
-				main_data->disc_artist, main_data->disc_title, NULL );
+				main_data->disc_artist, main_data->disc_title, main_data->disc_year, NULL );
 
 		remove_non_unix_chars( df );
+		if ( config.cddb_config.convert_spaces == TRUE ) {
+			convert_spaces( df, '_' );
+		}
 
-		mk_strcat(&wd, config.wav_path, "/", df, "/", NULL);
-		mk_strcat(&ed, config.mp3_path, "/", df, "/", NULL);
+		if (strlen(df) > 1)
+		{
+			mk_strcat(&wd, config.wav_path, "/", df, "/", NULL);
+			mk_strcat(&ed, config.mp3_path, "/", df, "/", NULL);
 
-		create_dir(wd);
-		create_dir(ed);
+			create_dir(wd);
+			create_dir(ed);
+		} else {
+			mk_strcat(&wd, config.wav_path, "/", NULL);
+			mk_strcat(&ed, config.mp3_path, "/", NULL);
+		}
+
 	} else {
 		mk_strcat(&wd, config.wav_path, "/", NULL);
 		mk_strcat(&ed, config.mp3_path, "/", NULL);
@@ -799,10 +824,14 @@ void create_filenames_from_format(_main_data *main_data)
 
 	if ( config.auto_append_extension == TRUE ) {
 		wfext = ".wav";
-		if ( strcmp( config.encoder.encoder, "oggenc" ) == 0)
+		if ( main_data->encoding_type == OGG)
 			ecfext = ".ogg";
-		else if (strcmp( config.encoder.encoder, "flac" ) == 0)
+		else if ( main_data->encoding_type == FLAC)
 			ecfext = ".flac";
+		else if ( main_data->encoding_type == MP2)
+			ecfext = ".mp2";
+		else if ( main_data->encoding_type == MUSE)
+			ecfext = ".mpc";
 		else
 			ecfext = ".mp3";
 	}
@@ -818,12 +847,15 @@ void create_file_names_for_track(_main_data *main_data, int track, char **wfp, c
 
 	rc = parse_rx_format_string(&buffer,
 		config.cddb_config.format_string, track, NULL, NULL, 
-		main_data->disc_artist, main_data->disc_title, 
+		main_data->disc_artist, main_data->disc_title, main_data->disc_year,
 		main_data->track[ track ].title );
 	if ( rc < 0 ) {
 		err_handler( RX_PARSING_ERR, "Check if the format string contains\n"
-					 "format characters other than %a %# %v or %s" );
+					 "format characters other than %a %# %v %y or %s" );
 	}
+
+	if (buffer[0] == 0)
+		strcpy( buffer, main_data->track[ track ].title );
 
 	remove_non_unix_chars( buffer );
 	convert_slashes(buffer, '-');	 
@@ -964,22 +996,22 @@ void mk_strcat(char **ptr, ...)
 
 
 void set_TagField(ID3Tag *myTag, char *data,ID3_FrameID id) 
-{	
-	ID3Frame *myFrame;
-	ID3Frame *pFrame;
-	
-	myFrame=ID3Frame_NewID(id);
+{       
+        ID3Frame *myFrame;
+        ID3Frame *pFrame;
+        
+        myFrame=ID3Frame_NewID(id);
 
-	pFrame=ID3Tag_FindFrameWithID(myTag,id);
+        pFrame=ID3Tag_FindFrameWithID(myTag,id);
 
-	if (pFrame != NULL) {
-		ID3Tag_RemoveFrame(myTag,pFrame);
-	}
+        if (pFrame != NULL) {
+                ID3Tag_RemoveFrame(myTag,pFrame);
+        }
 
-	ID3Field_SetASCII(ID3Frame_GetField(myFrame,ID3FN_TEXT),data);
-	ID3Tag_AttachFrame(myTag,myFrame);
+        ID3Field_SetASCII(ID3Frame_GetField(myFrame,ID3FN_TEXT),data);
+        ID3Tag_AttachFrame(myTag,myFrame);
 
-	return;
+        return;
 }
 
 
@@ -989,10 +1021,10 @@ void set_TagField(ID3Tag *myTag, char *data,ID3_FrameID id)
  */
 extern char * id3_findstyle( int styleid )
 {
-	if ( (styleid < ID3_NR_OF_V1_GENRES) && (styleid >= 0) ) {
-		return (char *)ID3_v1_genre_description[ styleid ];
-	}
-	return "Unknown Style";
+        if ( (styleid < ID3_NR_OF_V1_GENRES) && (styleid >= 0) ) {
+                return (char *)ID3_v1_genre_description[ styleid ];
+        }
+        return "Unknown Style";
 }
 
 /*
@@ -1000,13 +1032,13 @@ extern char * id3_findstyle( int styleid )
  */
 unsigned char id3_find_cddb_category( char *name )
 {
-	int i;
-	for ( i = 0; i < ID3_NR_OF_V1_GENRES ; i++ ) {
-		if ( !strcmp( ID3_v1_genre_description[ i ], name ) ) {
-			return (unsigned char) i;
-		}
-	}
-	return 0xFF;
+        int i;
+        for ( i = 0; i < ID3_NR_OF_V1_GENRES ; i++ ) {
+                if ( !strcmp( ID3_v1_genre_description[ i ], name ) ) {
+                        return (unsigned char) i;
+                }
+        }
+        return 0xFF;
 }
 
 /*
@@ -1014,36 +1046,35 @@ unsigned char id3_find_cddb_category( char *name )
  */
 
 void vorbistag(char *ogg_file, 
-		char *artist,
-		char *album,
-		char *title,
-		unsigned char style,
-		unsigned char track)
+                char *artist,
+                char *album,
+                char *title,
+                unsigned char style,
+                unsigned char track)
 {
-	char cmd[MAX_COMMAND_LENGTH];
-	char temp[MAX_TITLE_LENGTH];
-	gchar *tagfile;
-	FILE *f;
+        char cmd[MAX_COMMAND_LENGTH];
+        char temp[MAX_TITLE_LENGTH];
+        gchar *tagfile;
+        FILE *f;
 
-	tagfile = g_strdup_printf("%s.tags", ogg_file);
-	
-	f = fopen(tagfile, "w");
-	snprintf(temp, sizeof(temp) - 1, "ARTIST=%s\n", artist);
-	fputs(temp, f);
-	snprintf(temp, sizeof(temp) - 1, "ALBUM=%s\n", album);
-	fputs(temp, f);
-	snprintf(temp, sizeof(temp) - 1, "TITLE=%s\n", title);
-	fputs(temp, f);
-	snprintf(temp, sizeof(temp) - 1, "GENRE=%s\n", id3_findstyle(style));
-	fputs(temp, f);
-	snprintf(temp, sizeof(temp) - 1, "TRACKNUMBER=%d\n", track);
-	fputs(temp, f);
-	fclose(f);
+        tagfile = g_strdup_printf("%s.tags", ogg_file);
+        
+        f = fopen(tagfile, "w");
+        snprintf(temp, sizeof(temp) - 1, "ARTIST=%s\n", artist);
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "ALBUM=%s\n", album);
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "TITLE=%s\n", title);
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "GENRE=%s\n", id3_findstyle(style));
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "TRACKNUMBER=%d\n", track);
+        fputs(temp, f);
+        fclose(f);
 
-	snprintf(cmd, sizeof(cmd) - 1, "vorbiscomment -a -c '%s' '%s'", tagfile, ogg_file);
-	system(cmd);
-	unlink(tagfile);
-	free(tagfile);
+        snprintf(cmd, sizeof(cmd) - 1, "vorbiscomment -a -c '%s' '%s'", tagfile, ogg_file);
+        system(cmd);
+        unlink(tagfile);
+        free(tagfile);
 }
-
 
