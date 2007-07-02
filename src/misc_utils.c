@@ -824,13 +824,13 @@ void create_filenames_from_format(_main_data *main_data)
 
 	if ( config.auto_append_extension == TRUE ) {
 		wfext = ".wav";
-		if ( main_data->encoding_type == OGG)
+		if ( config.encoder.type == OGG)
 			ecfext = ".ogg";
-		else if ( main_data->encoding_type == FLAC)
+		else if ( config.encoder.type == FLAC)
 			ecfext = ".flac";
-		else if ( main_data->encoding_type == MP2)
+		else if ( config.encoder.type == MP2)
 			ecfext = ".mp2";
-		else if ( main_data->encoding_type == MUSE)
+		else if ( config.encoder.type == MUSE)
 			ecfext = ".mpc";
 		else
 			ecfext = ".mp3";

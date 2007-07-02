@@ -65,6 +65,8 @@ static struct {
 		STRING, 0, "ripperX_plugin-cdparanoia" },
 	{ "Encoder::Encoder", config.encoder.encoder,
 		STRING, 0, "lame" },
+	{ "Encoder::Type", &config.encoder.type,
+		INT, 0, "2" },
 	{ "Encoder::Bitrate", &config.encoder.bitrate,
 		INT, 0, "128" },
 	{ "Encoder::VarBitrate", &config.encoder.use_varbitrate,

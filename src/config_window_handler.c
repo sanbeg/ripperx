@@ -579,7 +579,7 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			}
 			strcpy( config.encoder.encoder, plugins[ cur_plugin ].encoder );
 			strcpy( config.encoder.plugin, plugins[ cur_plugin ].plugin );
-			main_data->encoding_type = plugins[ cur_plugin ].encoding_type;
+			config.encoder.type = plugins[ cur_plugin ].encoding_type;
 
 			if ( GTK_TOGGLE_BUTTON( use_varbitrate_ckbx ) ->active )
 				config.encoder.use_varbitrate = 1;

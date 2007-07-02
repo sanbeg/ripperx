@@ -32,8 +32,11 @@
 /* Global constants */
 #define MAX_OPTIONS_LENGTH	300
 #define MAX_SINGLE_OPTION_LENGTH	50
+
 #define MAX_COMMAND_LENGTH	2048
+
 #define MAX_ARGS		50
+
 #define MAX_FILE_PER_DIR	1024
 #define MAX_FILE_NAME_LENGTH	512
 #define MAX_FILE_PATH_LENGTH	512
@@ -52,7 +55,7 @@
 #define MP3     2
 #define OGG     3
 #define FLAC    4
-#define MP2     5
+#define MP2			5
 #define MUSE    6
 
 #define MIN_NICE_LEVEL    19
@@ -86,6 +89,7 @@ typedef struct {
 	struct _encoder {
 		char encoder[ MAX_COMMAND_LENGTH ];
 		char plugin[ MAX_COMMAND_LENGTH ];
+		int type;
 		int bitrate;
 		int use_varbitrate;
 		int priority;
@@ -124,7 +128,6 @@ typedef struct {
 /* Main data structure             */
 /* All length is in cd sector unit */
 typedef struct {
-	int encoding_type;
 	int num_tracks;
 	int total_length;
 	char disc_artist[ MAX_ARTIST_LENGTH ];
