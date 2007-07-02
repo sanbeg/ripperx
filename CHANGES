@@ -1,4 +1,4 @@
-Versiion 2.7.1 pre-release
+Version 2.7.1 pre-release
 
 * remove internal versions of id3.c and id3lib.c and use libid3 directly
   - migrate internal functions to misc_utils.c
