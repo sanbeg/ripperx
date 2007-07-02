@@ -16,7 +16,7 @@
 #include <sys/types.h>
 #include "err_dialog_handler.h"
 
-#define VERSION	"2.7.1-pre0"
+#define VERSION	"2.7.1"
 
 #ifndef TRUE
 #define TRUE		1
@@ -32,11 +32,8 @@
 /* Global constants */
 #define MAX_OPTIONS_LENGTH	300
 #define MAX_SINGLE_OPTION_LENGTH	50
-
 #define MAX_COMMAND_LENGTH	2048
-
 #define MAX_ARGS		50
-
 #define MAX_FILE_PER_DIR	1024
 #define MAX_FILE_NAME_LENGTH	512
 #define MAX_FILE_PATH_LENGTH	512
@@ -50,14 +47,16 @@
 #define CD_SECTORS_PER_SEC	(float)75.018
 #define CD_SECTORS_PER_FRAME 	(float)1.959
 
-#define CD			0
-#define WAV			1
-#define MP3			2
-#define OGG			3
-#define FLAC		4
+#define CD      0
+#define WAV     1
+#define MP3     2
+#define OGG     3
+#define FLAC    4
+#define MP2     5
+#define MUSE    6
 
-#define MIN_NICE_LEVEL		19
-#define MAX_NICE_LEVEL		0
+#define MIN_NICE_LEVEL    19
+#define MAX_NICE_LEVEL    0
 
 
 /* =====================================================
