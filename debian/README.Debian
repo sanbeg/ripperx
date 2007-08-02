@@ -33,3 +33,4 @@ the userid running ripperx is not a member of the "cdrom" group, or the
 device permissions on your CD-ROM device themselves are not correct.
 
  -- tony mancill <tmancill@debian.org>  Sun, 09 Jul 2006 21:12:35 -0700
+
