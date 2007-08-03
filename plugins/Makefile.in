@@ -27,6 +27,7 @@ BASENAMES = cdparanoia\
 	mp3enc\
 	oggenc\
 	flac\
+	musepack\
 	toolame
 
 PLUGINS = $(addprefix ripperX_plugin-, $(BASENAMES))

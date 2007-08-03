@@ -397,7 +397,8 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
  		{ NULL, MP3, "l3enc", "ripperX_plugin-l3enc", "FHG MP3 Encoder (l3enc v2.72)", "-br", "", "", "-hq", "-crc"},
  		{ NULL, MP3, "mp3enc", "ripperX_plugin-mp3enc", "FHG MP3 Encoder (mp3enc 3.1)", "-br", "", "", "-qual 9", "-crc"},
  		{ NULL, OGG, "oggenc", "ripperX_plugin-oggenc", "OggVorbis encoder", "-b", "", "", "", "" },
- 		{ NULL, FLAC, "flac", "ripperX_plugin-flac", "FLAC encoder", "", "", "", "", "" }
+ 		{ NULL, FLAC, "flac", "ripperX_plugin-flac", "FLAC encoder", "", "", "", "", "" },
+		{ NULL, MUSE, "mppenc", "ripperX_plugin-musepack", "Musepack Encoder", "", "", "--quality 5", "--quality 8", "" }
 	};
 
 	static struct {
@@ -662,7 +663,20 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 
  			if ( !strcmp( config.encoder.encoder, "flac" ) ) {
  			   snprintf( config.encoder.full_command, MAX_COMMAND_LENGTH, "%s", config.encoder.encoder);
- 			} else {
+ 			} else if ( !strcmp( config.encoder.encoder, "mppenc" ) ) {
+				if (config.encoder.use_high_qual)
+					snprintf( config.encoder.full_command, MAX_COMMAND_LENGTH,
+					"%s --overwrite %s %s",
+					config.encoder.encoder,
+					plugins[ cur_plugin ].high_qual_op,
+					config.encoder.extra_options );
+				else
+					snprintf( config.encoder.full_command, MAX_COMMAND_LENGTH,
+					"%s --overwrite %s %s",
+					config.encoder.encoder,
+					plugins[ cur_plugin ].vbr_qual_op,
+					config.encoder.extra_options );
+			} else {
 			   snprintf( config.encoder.full_command, MAX_COMMAND_LENGTH,
 			          "%s %s %s %s %s %s %s",
 			          config.encoder.encoder,

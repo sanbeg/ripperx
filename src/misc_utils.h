@@ -34,14 +34,13 @@ void free_argv( char **argv );
 
 int parse_rx_format_string( char **target,
                             char *format,
-                            int track_no, char *w_fname, char *m_fname,
-                            char *artist, char *album, char *year, char *song );
+                            int track_no, char *artist, char *album,
+                            char *year, char *song );
 // track_no starts from 0
 // %% %
-// %w Wav file name
-// %m Mp3 file name
 // %a Artist
 // %v album (Volume)
+// %y Year
 // %s Song
 
 char *length_to_readable( unsigned length );
@@ -61,8 +60,8 @@ long check_free_space(char* dir);
 int check_dir(char *dir);
 int create_dir(char *path); 
 int is_found(char *plugin);
-void create_filenames_from_format(_main_data *main_data);
-void create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp);
+int create_filenames_from_format(_main_data *main_data);
+int create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp);
 void get_track_title(char *dest, _main_data *main_data, int tno);
 void put_track_title(char *src, _main_data *main_data, int tno);
 char *dup_str(char *inp);

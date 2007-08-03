@@ -372,7 +372,9 @@ void job_starter( _main_data *main_data )
 
 	/* Sync main_data structure with the data user has entered */
 	select_frame_handler( SF_SYNC_MAIN_DATA, 0, main_data );
-    create_filenames_from_format(main_data);
+	/* Setup directory and filename extension */
+	if(!create_filenames_from_format(main_data))
+		return;
 	/* Reset exist flags */
 	for ( i = 0; i < main_data->num_tracks; i++ ) {
 		if ( main_data->track[ i ].make_wav )
@@ -385,7 +387,8 @@ void job_starter( _main_data *main_data )
 	type = WAV;
 	while ( find_next_job( main_data, track, WAV, &track, &type ) >= 0 ) {
 		is_temp = FALSE;
-		create_file_names_for_track(main_data, track, &wav_file_path, NULL);
+		if (!create_file_names_for_track(main_data, track, &wav_file_path, NULL))
+			return;
 		code = lock_file( wav_file_path, is_temp );
 		if ( code < 0 )
 			return;
@@ -399,7 +402,8 @@ void job_starter( _main_data *main_data )
 		track = -1;
 		type = MP3;
 		while ( find_next_job( main_data, track, MP3, &track, &type ) >= 0 ) {
-			create_file_names_for_track(main_data, track, NULL, &enc_file_path);
+			if (!create_file_names_for_track(main_data, track, NULL, &enc_file_path))
+				return;
 			if ( lock_file( enc_file_path, FALSE ) < 0 )
 				return;
 		}
@@ -438,8 +442,7 @@ void job_finisher( _main_data *main_data )
 			unlink( wav_file );
 		else if ( main_data->track[ i ].make_wav == TRUE ) {
 			madewavs = TRUE;
-			strcat( status_message, wav_file );
-			strcat( status_message, "\n" );
+			sprintf(&buffer[strlen(buffer)], "%d: %s\n", ++tracksdone, file_name_without_path(wav_file));
 		}
 		main_data->track[ i ].make_wav = FALSE;
 
@@ -466,6 +469,9 @@ void job_finisher( _main_data *main_data )
 							i + 1 );
 				} else if ( !strcmp( config.encoder.encoder, "flac" ) ) {
 					/* nothing to do for FLAC right now */
+				} else if ( !strcmp( config.encoder.encoder, "mppenc" ) ) {
+					/* do nothing for for musepack right now -
+				        originally supported id3 now wants apev2 tags */
 				} else {
 					/* assume MP3 tag is desired */
 					sprintf(s_track_num,"%d",(i+1));

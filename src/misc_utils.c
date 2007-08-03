@@ -108,8 +108,7 @@ void free_argv( char **argv )
 	free( argv );
 }
 
-int parse_rx_format_string( char **target, char *format,
-                            int track_no, char *w_fname, char *m_fname,
+int parse_rx_format_string( char **target, char *format, int track_no,
                             char *artist, char *album, char *year, char *song )
 {
 	int s, d, n, pass, totlen = 0;
@@ -127,20 +126,22 @@ int parse_rx_format_string( char **target, char *format,
 			if ( format[ s ] == '%' ) {
 				ch = format[ s + 1 ];
 				if ( ch == '\0' ) {
-					return - 1;
+					return -1;
 				}
-				if ( ch == '%' || ch == '#' || ch == 'w' || ch == 'm' ||
-							ch == 'a' || ch == 'v' || ch == 'y' || ch == 's' )
+				else if ( ch == '%' || ch == '#' || ch == 'a' || ch == 'v' || ch == 'y' || ch == 's' ){
 					s += 1;
-				else {
+				}
+				else if (ch == ' ') {
 					ch = format[ s + 2 ];
 					if ( ch == '\0' ) {
 						return -1;
 					}
-					if ( ch == '%' || ch == '#' || ch == 'w' || ch == 'm' ||
-								ch == 'a' || ch == 'v' || ch == 'y' || ch == 's' ) {
+					if ( ch == '%' || ch == '#' || ch == 'a' || ch == 'v' || ch == 'y' || ch == 's' ) {
 						s += 2;
 					}
+				}
+				else {
+					return -1;
 				}
 
 				// determine what to copy
@@ -151,12 +152,6 @@ int parse_rx_format_string( char **target, char *format,
 					break;
 				case '#' :
 					tmp = track_no_str;
-					break;
-				case 'w' :
-					tmp = w_fname;
-					break;
-				case 'm' :
-					tmp = m_fname;
 					break;
 				case 'a' :
 					tmp = artist;
@@ -170,9 +165,6 @@ int parse_rx_format_string( char **target, char *format,
 				case 's' :
 					tmp = song;
 					break;
-				}
-				if ( tmp == NULL ) {
-					return -1;
 				}
 				// expand
 				n = strlen(tmp);
@@ -783,9 +775,10 @@ int is_found(char *plugin) {
 static char *wd, *ed;
 static char *wfext, *ecfext;
 
-void create_filenames_from_format(_main_data *main_data)
+int create_filenames_from_format(_main_data *main_data)
 {
 	int i;
+	int rc2;
 	static char *df;
 
 	i = strlen(config.wav_path) - 1;
@@ -796,16 +789,20 @@ void create_filenames_from_format(_main_data *main_data)
 		config.mp3_path[i] = 0;
 	if (config.cddb_config.make_directories && config.cddb_config.dir_format_string[0])
 	{
-		parse_rx_format_string( &df,
-				config.cddb_config.dir_format_string, -1, NULL, NULL, 
-				main_data->disc_artist, main_data->disc_title, main_data->disc_year, NULL );
+		rc2 = parse_rx_format_string( &df,
+				config.cddb_config.dir_format_string, -1, 
+				main_data->disc_artist, main_data->disc_title, main_data->disc_year, "" );
+		if ( rc2 < 0 ) {
+			err_handler( RX_PARSING_ERR, "Check if the directory format string contains format characters other than %a %# %v %y or %s.");
+			return 0;
+		}
 
 		remove_non_unix_chars( df );
 		if ( config.cddb_config.convert_spaces == TRUE ) {
 			convert_spaces( df, '_' );
 		}
 
-		if (strlen(df) > 1)
+		if (strlen(df) > 0)
 		{
 			mk_strcat(&wd, config.wav_path, "/", df, "/", NULL);
 			mk_strcat(&ed, config.mp3_path, "/", df, "/", NULL);
@@ -837,21 +834,22 @@ void create_filenames_from_format(_main_data *main_data)
 	}
 	else
 		wfext = ecfext = "";
+	return 1;
 }
 
-void create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp)
+int create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp)
 {
 	static char *buffer;
 	int rc;
 	
 
 	rc = parse_rx_format_string(&buffer,
-		config.cddb_config.format_string, track, NULL, NULL, 
+		config.cddb_config.format_string, track, 
 		main_data->disc_artist, main_data->disc_title, main_data->disc_year,
 		main_data->track[ track ].title );
 	if ( rc < 0 ) {
-		err_handler( RX_PARSING_ERR, "Check if the format string contains\n"
-					 "format characters other than %a %# %v %y or %s" );
+		err_handler( RX_PARSING_ERR, "Check if the filename format string contains format characters other than %a %# %v %y or %s.");
+		return 0;
 	}
 
 	if (buffer[0] == 0)
@@ -867,6 +865,7 @@ void create_file_names_for_track(_main_data *main_data, int track, char **wfp, c
 		mk_strcat(wfp, wd, buffer, wfext, NULL);
 	if (efp)
 		mk_strcat(efp, ed, buffer, ecfext, NULL);
+	return 1;
 }
 
 /*
