@@ -743,7 +743,7 @@ void job_controller( int ops, _main_data *main_data )
 
 							/* kill the plugin */
 							if ( waitpid( wav_pi_pid, NULL, WNOHANG ) != wav_pi_pid ) {
-								kill( wav_pi_pid, SIGTERM );
+								kill( -wav_pi_pid, SIGTERM );
 								waitpid( wav_pi_pid, NULL, 0 );
 							}
 
@@ -849,7 +849,7 @@ void job_controller( int ops, _main_data *main_data )
 
 							/* kill the plugin */
 							if ( waitpid( mp3_pi_pid, NULL, WNOHANG ) != mp3_pi_pid ) {
-								kill( mp3_pi_pid, SIGTERM );
+								kill( -mp3_pi_pid, SIGTERM );
 								waitpid( mp3_pi_pid, NULL, 0 );
 							}
 
@@ -977,23 +977,23 @@ void job_controller( int ops, _main_data *main_data )
 			if ( wav_pg_pid >= 0 )
 				if ( waitpid( wav_pg_pid, NULL, WNOHANG ) != wav_pg_pid ) {
 					job_controller( JC_CONT, NULL );
-					kill( wav_pg_pid, SIGINT );
+					kill( -wav_pg_pid, SIGTERM );
 					waitpid( wav_pg_pid, NULL, 0 );
 				}
 			if ( wav_pi_pid >= 0 )
 				if ( waitpid( wav_pi_pid, NULL, WNOHANG ) != wav_pi_pid ) {
-					kill( wav_pi_pid, SIGINT );
+					kill( -wav_pi_pid, SIGTERM );
 					waitpid( wav_pi_pid, NULL, 0 );
 				}
 			if ( mp3_pg_pid >= 0 )
 				if ( waitpid( mp3_pg_pid, NULL, WNOHANG ) != mp3_pg_pid ) {
 					job_controller( JC_CONT, NULL );
-					kill( mp3_pg_pid, SIGINT );
+					kill( -mp3_pg_pid, SIGTERM );
 					waitpid( mp3_pg_pid, NULL, 0 );
 				}
 			if ( mp3_pi_pid >= 0 )
 				if ( waitpid( mp3_pi_pid, NULL, WNOHANG ) != mp3_pi_pid ) {
-					kill( mp3_pi_pid, SIGINT );
+					kill( -mp3_pi_pid, SIGTERM );
 					waitpid( mp3_pi_pid, NULL, 0 );
 				}
 

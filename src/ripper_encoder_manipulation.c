@@ -330,6 +330,7 @@ int execute_ripper_encoder_with_plugin( char *pg_com,
 		dup2( pty_fd0, 0 );
 		dup2( tty_fd1, 1 );
 
+		setpgrp();
 		execvp( plugin_argv[ 0 ], plugin_argv );
 
 		dup2( stderr_fd, 2 );
@@ -362,6 +363,7 @@ int execute_ripper_encoder_with_plugin( char *pg_com,
 		dup2( tty_fd0, 1 );
 		dup2( tty_fd0, 2 );
 
+		setpgrp();
 		execvp( program_argv[ 0 ], program_argv );
 
 		dup2( stderr_fd, 2 );

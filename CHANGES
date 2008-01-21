@@ -1,5 +1,7 @@
 Version 2.7.1 pre-release
 
+* 2008-01-20/tm - apply child reaper fix from Paul Fox to correctly clean
+  up plugin processes when running under dash.
 * remove internal versions of id3.c and id3lib.c and use libid3 directly
   - migrate internal functions to misc_utils.c
 * remove refererence to xpms.h
