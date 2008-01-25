@@ -11,6 +11,7 @@
 
 #include "misc_utils.h"
 #include "interface_common.h"
+#include "version.h"
 
 #include "config_rw.h"
 

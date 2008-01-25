@@ -1,4 +1,6 @@
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -191,7 +193,7 @@ int cddbp_read( FILE* socket, const char* category, const char* disk_id,
 	do {
 		buffer = get_string_piece( socket, '\n' );
 		if ( strncmp( buffer, "TTITLE", 6 ) == 0 ) {
-			sprintf( status_buf, "Reading Information about track %2d", count );
+			sprintf( status_buf, _("Reading Information about track %2d"), count );
 			main_window_handler( MW_UPDATE_STATUSBAR, status_buf, NULL );
 			while ( gtk_events_pending() ) gtk_main_iteration();
 			count++;
@@ -203,7 +205,7 @@ int cddbp_read( FILE* socket, const char* category, const char* disk_id,
 		free( buffer );
 	} while ( strstr( *result_buffer, "\r\n.\r\n" ) == NULL );
 
-	main_window_handler( MW_UPDATE_STATUSBAR, "Done...", NULL );
+	main_window_handler( MW_UPDATE_STATUSBAR, _("Done..."), NULL );
 	while ( gtk_events_pending() ) gtk_main_iteration();
 	return code;
 }

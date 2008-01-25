@@ -11,6 +11,8 @@
 
 #include <stdio.h>		/* for bezo debug */
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <errno.h>            /* for errno */
 #include <sys/stat.h>         /* defines read and write flags */
 #include <time.h>
@@ -514,7 +516,7 @@ void job_finisher( _main_data *main_data )
 		fclose( fp_playlist );
 
 	/* Generate status message */
-	sprintf(status_message, "Tracks Completed: %2d\n\nArtist: %s\nAlbum: %s\n\n%s",
+	sprintf(status_message, _("Tracks Completed: %2d\n\nArtist: %s\nAlbum: %s\n\n%s"),
 		tracksdone, main_data->disc_artist, main_data->disc_title, buffer);
 
 	/* show status pop up */
@@ -730,7 +732,7 @@ void job_controller( int ops, _main_data *main_data )
 						if ( wav_pi_pid >= 0 )
 							if ( waitpid( wav_pi_pid, NULL, WNOHANG ) == wav_pi_pid ) {
 								err_handler( PLUGIN_NOT_PRESENT_ERR,
-										"Maybe ripperX has failed to execute the plugin" );
+									    _("Maybe ripperX has failed to execute the plugin") );
 								wav_pi_pid = -1;
 								job_controller_timeout_stop();
 								job_controller( JC_ABORT_ALL_DELETE, main_data );
@@ -836,7 +838,7 @@ void job_controller( int ops, _main_data *main_data )
 						if ( mp3_pi_pid >= 0 )
 							if ( waitpid( mp3_pi_pid, NULL, WNOHANG ) == mp3_pi_pid ) {
 								err_handler( PLUGIN_NOT_PRESENT_ERR,
-										"Maybe ripperX has failed to execute the plugin" );
+									    _("Maybe ripperX has failed to execute the plugin") );
 								mp3_pi_pid = -1;
 								job_controller_timeout_stop();
 								job_controller( JC_ABORT_ALL_DELETE, main_data );

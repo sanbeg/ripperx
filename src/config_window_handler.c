@@ -1,4 +1,6 @@
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
@@ -57,22 +59,22 @@ int cw_general_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 	case WIDGET_CREATE : {
 			GtkWidget * frame, *vbox, *table, *hbox, *label, *label2, *button;
 
-			main_frame = gtk_frame_new( "General Configuration" );
-			gtk_container_border_width( GTK_CONTAINER( main_frame ), 10 );
+			main_frame = gtk_frame_new(_("General Configuration"));
+			gtk_container_set_border_width( GTK_CONTAINER( main_frame ), 10 );
 
 			vbox = gtk_vbox_new( FALSE, 0 );
 			gtk_container_add( GTK_CONTAINER( main_frame ), vbox );
 
 			/* Frame for wav */
-			frame = gtk_frame_new( "Wav file" );
-			gtk_container_border_width( GTK_CONTAINER( frame ), 2 );
-			gtk_box_pack_start( GTK_BOX( vbox ), frame, TRUE, TRUE, 0 );
+			frame = gtk_frame_new(_("Wav file"));
+			gtk_container_set_border_width( GTK_CONTAINER( frame ), 2 );
+			gtk_box_pack_start( GTK_BOX( vbox ), frame, FALSE, FALSE, 0 );
 
 			table = gtk_table_new( 2, 2, FALSE );
-			gtk_container_border_width( GTK_CONTAINER( table ), 3 );
+			gtk_container_set_border_width( GTK_CONTAINER( table ), 3 );
 			gtk_container_add( GTK_CONTAINER( frame ), table );
 
-			label = gtk_label_new( "File name format: " );
+			label = gtk_label_new(_("File name format: "));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 0, 1,
 			                  0, GTK_EXPAND | GTK_FILL, 0, 0 );
 
@@ -87,9 +89,9 @@ int cw_general_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			/* Create entry first to give its address as callback data */
 			wav_path_entry
 			= gtk_entry_new_with_max_length( MAX_FILE_PATH_LENGTH - 3 );
-			button = gtk_button_new_with_label( "Target Directory: " );
-			gtk_signal_connect( GTK_OBJECT( button ), "clicked",
-			                    GTK_SIGNAL_FUNC( cw_g_path_clicked ),
+			button = gtk_button_new_with_label(_("Target Directory: "));
+			g_signal_connect( G_OBJECT( button ), "clicked",
+			                    G_CALLBACK( cw_g_path_clicked ),
 			                    wav_path_entry );
 			gtk_table_attach( GTK_TABLE( table ), button, 0, 1, 1, 2,
 			                  0, GTK_EXPAND | GTK_FILL, 2, 2 );
@@ -102,15 +104,15 @@ int cw_general_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			                  GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0 );
 
 			/* Frame for mp3 */
-			frame = gtk_frame_new( "MP3 file" );
-			gtk_container_border_width( GTK_CONTAINER( frame ), 2 );
-			gtk_box_pack_start( GTK_BOX( vbox ), frame, TRUE, TRUE, 0 );
+			frame = gtk_frame_new(_("MP3 file"));
+			gtk_container_set_border_width( GTK_CONTAINER( frame ), 2 );
+			gtk_box_pack_start( GTK_BOX( vbox ), frame, FALSE, FALSE, 0 );
 
 			table = gtk_table_new( 2, 2, FALSE );
-			gtk_container_border_width( GTK_CONTAINER( table ), 3 );
+			gtk_container_set_border_width( GTK_CONTAINER( table ), 3 );
 			gtk_container_add( GTK_CONTAINER( frame ), table );
 
-			label = gtk_label_new( "File name format: " );
+			label = gtk_label_new(_("File name format: "));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 0, 1,
 			                  0, GTK_EXPAND | GTK_FILL, 0, 0 );
 
@@ -126,9 +128,9 @@ int cw_general_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			mp3_path_entry
 			= gtk_entry_new_with_max_length( MAX_FILE_PATH_LENGTH - 3 );
 
-			button = gtk_button_new_with_label( "Target Directory: " );
-			gtk_signal_connect( GTK_OBJECT( button ), "clicked",
-			                    GTK_SIGNAL_FUNC( cw_g_path_clicked ),
+			button = gtk_button_new_with_label(_("Target Directory: "));
+			g_signal_connect( G_OBJECT( button ), "clicked",
+			                    G_CALLBACK( cw_g_path_clicked ),
 			                    mp3_path_entry );
 			gtk_table_attach( GTK_TABLE( table ), button, 0, 1, 1, 2,
 			                  0, GTK_EXPAND | GTK_FILL, 2, 2 );
@@ -142,49 +144,49 @@ int cw_general_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 
 			/* Misc options */
 			hbox = gtk_hbox_new( FALSE, 3 );
-			gtk_container_border_width( GTK_CONTAINER( hbox ), 5 );
-			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, TRUE, 0 );
+			gtk_container_set_border_width( GTK_CONTAINER( hbox ), 5 );
+			gtk_box_pack_start( GTK_BOX( vbox ), hbox, FALSE, FALSE, 0 );
 
-			label = gtk_label_new( "Prepend character : " );
+			label = gtk_label_new(_("Prepend character : "));
 			gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, FALSE, 0 );
 
 			buf[ 0 ] = config.prepend_char;
 			buf[ 1 ] = '\0';
 			prepend_char_entry = gtk_entry_new_with_max_length( 1 );
-			gtk_widget_set_usize( prepend_char_entry, 16, 0 );
+			gtk_widget_set_size_request( prepend_char_entry, 16, 0 );
 			gtk_entry_set_text( GTK_ENTRY( prepend_char_entry ),
 			                    buf );
 			gtk_box_pack_start( GTK_BOX( hbox ), prepend_char_entry, FALSE, FALSE, 0 );
 
 			make_mp3_from_existing_wav_check_button
-			= gtk_check_button_new_with_label( "Make Mp3 from existing Wav file" );
-			gtk_toggle_button_set_state(
+			= gtk_check_button_new_with_label(_("Make Mp3 from existing Wav file"));
+			gtk_toggle_button_set_active(
 			    GTK_TOGGLE_BUTTON( make_mp3_from_existing_wav_check_button ),
 			    config.make_mp3_from_existing_wav );
 			gtk_box_pack_start( GTK_BOX( vbox ),
 			                    make_mp3_from_existing_wav_check_button,
-			                    TRUE, FALSE, 0 );
+			                    FALSE, FALSE, 0 );
 
 			ask_when_file_exists_check_button
-			= gtk_check_button_new_with_label( "Ask user when specified file exists" );
-			gtk_toggle_button_set_state(
+			= gtk_check_button_new_with_label(_("Ask user when specified file exists"));
+			gtk_toggle_button_set_active(
 			    GTK_TOGGLE_BUTTON( ask_when_file_exists_check_button ),
 			    config.ask_when_file_exists );
 			gtk_box_pack_start( GTK_BOX( vbox ),
 			                    ask_when_file_exists_check_button,
-			                    TRUE, FALSE, 0 );
+			                    FALSE, FALSE, 0 );
 
 			keep_wav_check_button
-			= gtk_check_button_new_with_label( "Keep wav files" );
-			gtk_toggle_button_set_state(
+			= gtk_check_button_new_with_label(_("Keep wav files"));
+			gtk_toggle_button_set_active(
 			    GTK_TOGGLE_BUTTON( keep_wav_check_button ),
 			    config.keep_wav );
 			gtk_box_pack_start( GTK_BOX( vbox ),
 			                    keep_wav_check_button,
-			                    TRUE, FALSE, 0 );
+			                    FALSE, FALSE, 0 );
 
-			label = gtk_label_new( "General" );
-			label2 = gtk_label_new( "General" );
+			label = gtk_label_new(_("General"));
+			label2 = gtk_label_new(_("General"));
 			gtk_notebook_append_page_menu( GTK_NOTEBOOK( notebook ),
 			                               main_frame, label, label2 );
 			gtk_widget_show_all( main_frame );
@@ -203,7 +205,7 @@ int cw_general_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			                       GTK_ENTRY( mp3_path_entry ) ) ) == 0
 			        || strlen( gtk_entry_get_text(
 			                       GTK_ENTRY( prepend_char_entry ) ) ) == 0 ) {
-			err_handler( EMPTY_ENTRY_ERR, "You need to fill every entry in general page" );
+			err_handler( EMPTY_ENTRY_ERR, _("You need to fill every entry in general page") );
 			return - 1;
 		}
 		strcpy( config.wav_file_name_format,
@@ -247,11 +249,11 @@ int cw_wav_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 		char *arg;
 		char *text;
 	} button[] = {
-	    { NULL, "-s ", "Force search for drive (ignore /dev/cdrom)" },
-	    { NULL, "-Z ", "Disable paranoia (will act like cdda)" },
-	    { NULL, "-Y ", "Disable extra paranoia" },
-	    { NULL, "-X ", "Disable scratch detection" },
-	    { NULL, "-W ", "Disable scratch repair" },
+	    { NULL, "-s ", N_("Force search for drive (ignore /dev/cdrom)") },
+	    { NULL, "-Z ", N_("Disable paranoia (will act like cdda)") },
+	    { NULL, "-Y ", N_("Disable extra paranoia") },
+	    { NULL, "-X ", N_("Disable scratch detection") },
+	    { NULL, "-W ", N_("Disable scratch repair") },
 	};
 	static struct {
 		GtkWidget *menu_item;
@@ -267,11 +269,11 @@ int cw_wav_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			GtkWidget * vbox, *hbox, *label, *label2;
 			int i, temp;
 
-			main_frame = gtk_frame_new( "Wav Configuration" );
-			gtk_container_border_width( GTK_CONTAINER( main_frame ), 10 );
+			main_frame = gtk_frame_new(_("Wav Configuration"));
+			gtk_container_set_border_width( GTK_CONTAINER( main_frame ), 10 );
 
 			vbox = gtk_vbox_new( FALSE, 0 );
-			gtk_container_border_width( GTK_CONTAINER( vbox ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( vbox ), 5 );
 			gtk_container_add( GTK_CONTAINER( main_frame ), vbox );
 
 			num_buttons = sizeof( button ) / sizeof( button[ 0 ] );
@@ -281,8 +283,8 @@ int cw_wav_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			extra_options_offset = options_offset + option_length * num_buttons;
 
 			/* Plugin selector menu */
-			label = gtk_label_new( "Ripper plugin" );
-			gtk_box_pack_start( GTK_BOX( vbox ), label, TRUE, TRUE, 0 );
+			label = gtk_label_new(_("Ripper plugin"));
+			gtk_box_pack_start( GTK_BOX( vbox ), label, FALSE, FALSE, 0 );
 			menu = gtk_option_menu_new();
 			ripper_menu = gtk_menu_new();
 			for ( i = 0; i < num_plugins; i++ ) {
@@ -296,22 +298,22 @@ int cw_wav_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 					gtk_menu_set_active( GTK_MENU( ripper_menu ), i );
 
 			gtk_option_menu_set_menu( GTK_OPTION_MENU( menu ), ripper_menu );
-			gtk_box_pack_start( GTK_BOX( vbox ), menu, TRUE, TRUE, 0 );
+			gtk_box_pack_start( GTK_BOX( vbox ), menu, FALSE, FALSE, 0 );
 
 			/* options */
 			for ( i = 0; i < num_buttons; i++ ) {
 				temp = config.ripper.ripper[ options_offset + option_length * i + 1 ]
 				       == button[ i ].arg[ 1 ] ? TRUE : FALSE;
 				button[ i ].button = gtk_check_button_new_with_label( button[ i ].text );
-				gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( button[ i ].button ),
+				gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( button[ i ].button ),
 				                             temp );
-				gtk_box_pack_start( GTK_BOX( vbox ), button[ i ].button, TRUE, TRUE, 0 );
+				gtk_box_pack_start( GTK_BOX( vbox ), button[ i ].button, FALSE, FALSE, 0 );
 			}
 
 			hbox = gtk_hbox_new( FALSE, 0 );
-			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, TRUE, 0 );
+			gtk_box_pack_start( GTK_BOX( vbox ), hbox, FALSE, FALSE, 0 );
 
-			label = gtk_label_new( "Extra Options: " );
+			label = gtk_label_new(_("Extra Options: "));
 			gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, FALSE, 0 );
 
 			extra_options_entry = gtk_entry_new_with_max_length( MAX_OPTIONS_LENGTH
@@ -319,7 +321,7 @@ int cw_wav_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_entry_set_text( GTK_ENTRY( extra_options_entry ),
 			                    config.ripper.ripper
 			                    + extra_options_offset );
-			gtk_box_pack_start( GTK_BOX( hbox ), extra_options_entry, TRUE, TRUE, 0 );
+			gtk_box_pack_start( GTK_BOX( hbox ), extra_options_entry, FALSE, FALSE, 0 );
 
 			label = gtk_label_new( " Wav " );
 			label2 = gtk_label_new( " Wav " );
@@ -427,18 +429,18 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			int i, match;
 			char buf[ 5 ];
 
-			main_frame = gtk_frame_new( "Mp3 Configuration" );
-			gtk_container_border_width( GTK_CONTAINER( main_frame ), 10 );
+			main_frame = gtk_frame_new(_("Mp3 Configuration"));
+			gtk_container_set_border_width( GTK_CONTAINER( main_frame ), 10 );
 
 			num_bitrates = sizeof( bitrate ) / sizeof( bitrate[ 0 ] );
 			num_plugins = sizeof( plugins ) / sizeof( plugins[ 0 ] );
 
 			vbox = gtk_vbox_new( FALSE, 3 );
-			gtk_container_border_width( GTK_CONTAINER( vbox ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( vbox ), 5 );
 			gtk_container_add( GTK_CONTAINER( main_frame ), vbox );
 
 			/* Plugin selector menu */
-			label = gtk_label_new( "Encoder plugin" );
+			label = gtk_label_new(_("Encoder plugin"));
 			gtk_box_pack_start( GTK_BOX( vbox ), label, TRUE, TRUE, 0 );
 			menu = gtk_option_menu_new();
 			encoder_menu = gtk_menu_new();
@@ -459,20 +461,20 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_box_pack_start( GTK_BOX( vbox ), menu, TRUE, TRUE, 0 );
 
 			/* Frame for bitrate */
-			frame = gtk_frame_new( "BitRate, Default 128kbits" );
-			gtk_container_border_width( GTK_CONTAINER( frame ), 2 );
+			frame = gtk_frame_new(_("BitRate, Default 128kbits"));
+			gtk_container_set_border_width( GTK_CONTAINER( frame ), 2 );
 			gtk_box_pack_start( GTK_BOX( vbox ), frame, TRUE, TRUE, 0 );
 
 			table = gtk_table_new( 3, ( gint ) ceil( ( float ) num_bitrates / 3 ), FALSE );
 			gtk_table_set_row_spacings( GTK_TABLE( table ), 0 );
-			gtk_container_border_width( GTK_CONTAINER( table ), 3 );
+			gtk_container_set_border_width( GTK_CONTAINER( table ), 3 );
 			gtk_container_add( GTK_CONTAINER( frame ), table );
 
 			/* First radio button */
 			snprintf( buf, sizeof( buf ), "%3dk", bitrate[ 0 ].bitrate );
 			bitrate[ 0 ].button = gtk_radio_button_new_with_label ( NULL,
 			                      buf );
-			gtk_widget_set_usize( bitrate[ 0 ].button, 0, 16 );
+			gtk_widget_set_size_request( bitrate[ 0 ].button, 0, 16 );
 			gtk_table_attach_defaults( GTK_TABLE( table ), bitrate[ 0 ].button, 0, 1, 0, 1 );
 
 			/* And the rest */
@@ -480,9 +482,9 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 				snprintf( buf, sizeof( buf ), "%3dk", bitrate[ i ].bitrate );
 				bitrate[ i ].button =
 				    gtk_radio_button_new_with_label(
-				        gtk_radio_button_group( GTK_RADIO_BUTTON( bitrate[ 0 ].button ) ),
+				        gtk_radio_button_get_group( GTK_RADIO_BUTTON( bitrate[ 0 ].button ) ),
 				        buf );
-				gtk_widget_set_usize( bitrate[ i ].button, 0, 16 );
+				gtk_widget_set_size_request( bitrate[ i ].button, 0, 16 );
 				gtk_table_attach_defaults( GTK_TABLE( table ),
 				                           bitrate[ i ].button, i % 3, i % 3 + 1, i / 3, i / 3 + 1 );
 			}
@@ -494,52 +496,52 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			}
 			if ( match == -1 )
 				match = DEFAULT_BIT_RATE;
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( bitrate[ match ].button ),
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( bitrate[ match ].button ),
 			                             TRUE );
 
 			/* Var Bitrate */
-			use_varbitrate_ckbx = gtk_check_button_new_with_label( "Use variable bitrate (VBR)" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( use_varbitrate_ckbx ),
+			use_varbitrate_ckbx = gtk_check_button_new_with_label(_("Use variable bitrate (VBR)"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( use_varbitrate_ckbx ),
 			                             config.encoder.use_varbitrate );
 			gtk_container_add( GTK_CONTAINER( vbox ), use_varbitrate_ckbx );
 
 			/* VBR quality */
-			frame = gtk_frame_new ("VBR quality (if available)");
+			frame = gtk_frame_new (_("VBR quality (if available)"));
 			gtk_container_add (GTK_CONTAINER (vbox), frame);
 			vbox2 = gtk_vbox_new (FALSE, 3);
-			gtk_container_border_width (GTK_CONTAINER(vbox2), 5);
+			gtk_container_set_border_width (GTK_CONTAINER(vbox2), 5);
 			gtk_container_add (GTK_CONTAINER (frame), vbox2);
 
 			vbr_qual_adj = gtk_adjustment_new ((gfloat) CLAMP (config.encoder.vbr_qual, 0, 9), 0.0, 9.0, 1.0, 1.0, 0.0);
 			vbr_qual_scale = gtk_hscale_new (GTK_ADJUSTMENT (vbr_qual_adj));
 			gtk_scale_set_digits (GTK_SCALE (vbr_qual_scale), 0);
 			gtk_container_add (GTK_CONTAINER (vbox2), vbr_qual_scale);
-			label = gtk_label_new ("0=high quality and bigger files, 9=smaller files");
+			label = gtk_label_new (_("0=high quality and bigger files, 9=smaller files"));
 			gtk_container_add (GTK_CONTAINER (vbox2), label);
 
 			/* encoder priority */
-			frame = gtk_frame_new ("Encoder Priority");
+			frame = gtk_frame_new (_("Encoder Priority"));
 			gtk_container_add (GTK_CONTAINER (vbox), frame);
 			vbox3 = gtk_vbox_new (FALSE, 3);
-			gtk_container_border_width (GTK_CONTAINER(vbox3), 5);
+			gtk_container_set_border_width (GTK_CONTAINER(vbox3), 5);
 			gtk_container_add (GTK_CONTAINER (frame), vbox3);
 
 			pri_adj = gtk_adjustment_new ((gfloat) CLAMP (config.encoder.priority, MAX_NICE_LEVEL, MIN_NICE_LEVEL), 0.0, 19.0, 1.0, 1.0, 0.0);
 			pri_scale = gtk_hscale_new (GTK_ADJUSTMENT (pri_adj));
 			gtk_scale_set_digits (GTK_SCALE (pri_scale), 0);
 			gtk_container_add (GTK_CONTAINER (vbox3), pri_scale);
-			label = gtk_label_new ("0=high priority, 19=system is responsive while encoding");
+			label = gtk_label_new (_("0=high priority, 19=system is responsive while encoding"));
 			gtk_container_add (GTK_CONTAINER (vbox3), label);
 
 			/* High Quality */
-			use_high_qual_ckbx = gtk_check_button_new_with_label( "High quality mode" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( use_high_qual_ckbx ),
+			use_high_qual_ckbx = gtk_check_button_new_with_label(_("High quality mode"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( use_high_qual_ckbx ),
 			                             config.encoder.use_high_qual );
 			gtk_container_add( GTK_CONTAINER( vbox ), use_high_qual_ckbx );
 
 			/* CRC */
-			use_crc_ckbx = gtk_check_button_new_with_label( "Include CRC error protection" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( use_crc_ckbx ),
+			use_crc_ckbx = gtk_check_button_new_with_label(_("Include CRC error protection"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( use_crc_ckbx ),
 			                             config.encoder.use_crc );
 			gtk_container_add( GTK_CONTAINER( vbox ), use_crc_ckbx );
 
@@ -547,7 +549,7 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, TRUE, 8 );
 
 			/* Extra options entry */
-			label = gtk_label_new( "Extra Options: " );
+			label = gtk_label_new(_("Extra Options: "));
 			gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, FALSE, 0 );
 
 			extra_options_entry = gtk_entry_new_with_max_length( MAX_OPTIONS_LENGTH - 20 );
@@ -704,15 +706,15 @@ int cw_players_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 	case WIDGET_CREATE : {
 			GtkWidget * table, *label, *label2;
 
-			main_frame = gtk_frame_new( "Players" );
-			gtk_container_border_width( GTK_CONTAINER( main_frame ), 10 );
+			main_frame = gtk_frame_new(_("Players"));
+			gtk_container_set_border_width( GTK_CONTAINER( main_frame ), 10 );
 
 			table = gtk_table_new( 4, 2, FALSE );
 			gtk_table_set_row_spacings( GTK_TABLE( table ), 5 );
-			gtk_container_border_width( GTK_CONTAINER( table ), 3 );
+			gtk_container_set_border_width( GTK_CONTAINER( table ), 3 );
 			gtk_container_add( GTK_CONTAINER( main_frame ), table );
 
-			label = gtk_label_new( "CD play command: " );
+			label = gtk_label_new(_("CD play command: "));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 0, 1,
 			                  0, 0, 0, 0 );
 			cd_play_entry = gtk_entry_new_with_max_length( MAX_COMMAND_LENGTH - 2 );
@@ -721,7 +723,7 @@ int cw_players_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_table_attach( GTK_TABLE( table ), cd_play_entry, 1, 2, 0, 1,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
-			label = gtk_label_new( "CD stop command: " );
+			label = gtk_label_new(_("CD stop command: "));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 1, 2,
 			                  0, 0, 0, 0 );
 			cd_stop_entry = gtk_entry_new_with_max_length( MAX_COMMAND_LENGTH - 2 );
@@ -730,7 +732,7 @@ int cw_players_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_table_attach( GTK_TABLE( table ), cd_stop_entry, 1, 2, 1, 2,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
-			label = gtk_label_new( "Wav play command: " );
+			label = gtk_label_new(_("Wav play command: "));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 2, 3,
 			                  0, 0, 0, 0 );
 			wav_entry = gtk_entry_new_with_max_length( MAX_COMMAND_LENGTH - 2 );
@@ -739,7 +741,7 @@ int cw_players_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_table_attach( GTK_TABLE( table ), wav_entry, 1, 2, 2, 3,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
-			label = gtk_label_new( "Mp3 play command: " );
+			label = gtk_label_new(_("Mp3 play command: "));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 3, 4,
 			                  0, 0, 0, 0 );
 			mp3_entry = gtk_entry_new_with_max_length( MAX_COMMAND_LENGTH - 2 );
@@ -748,8 +750,8 @@ int cw_players_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_table_attach( GTK_TABLE( table ), mp3_entry, 1, 2, 3, 4,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
-			label = gtk_label_new( "Players" );
-			label2 = gtk_label_new( "Players" );
+			label = gtk_label_new(_("Players"));
+			label2 = gtk_label_new(_("Players"));
 			gtk_notebook_append_page_menu( GTK_NOTEBOOK( notebook ),
 			                               main_frame, label, label2 );
 			gtk_widget_show_all( main_frame );
@@ -765,7 +767,7 @@ int cw_players_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 				                       GTK_ENTRY( wav_entry ) ) ) == 0
 				        || strlen( gtk_entry_get_text(
 				                       GTK_ENTRY( mp3_entry ) ) ) == 0 ) {
-				err_handler( EMPTY_ENTRY_ERR, "You need to fill every entry in players page" );
+				err_handler( EMPTY_ENTRY_ERR, _("You need to fill every entry in players page") );
 				return - 1;
 			}
 			strcpy( config.cd_player.play_command,
@@ -794,87 +796,86 @@ int cw_files_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 	case WIDGET_CREATE : {
 			GtkWidget * label, *label2;
 
-			main_frame = gtk_frame_new( "File Configuration" );
-			gtk_container_border_width( GTK_CONTAINER( main_frame ), 10 );
+			main_frame = gtk_frame_new(_("File Configuration"));
+			gtk_container_set_border_width( GTK_CONTAINER( main_frame ), 10 );
 
 			vbox = gtk_vbox_new( FALSE, 0 );
-			gtk_container_border_width( GTK_CONTAINER( vbox ), 5 );
-
-
+			gtk_container_set_border_width( GTK_CONTAINER( vbox ), 5 );
+ 
 			/* convert spaces */
-			convert_spaces_ckbx = gtk_check_button_new_with_label( "Convert spaces to underscores" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( convert_spaces_ckbx ),
+			convert_spaces_ckbx = gtk_check_button_new_with_label(_("Convert spaces to underscores"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( convert_spaces_ckbx ),
 			                             config.cddb_config.convert_spaces );
 			gtk_container_add( GTK_CONTAINER( vbox ), convert_spaces_ckbx );
 
 			/* make directories */
-			make_directories_ckbx = gtk_check_button_new_with_label( "Create album subdirectory for each CD" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( make_directories_ckbx ),
+			make_directories_ckbx = gtk_check_button_new_with_label(_("Create album subdirectory for each CD"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( make_directories_ckbx ),
 			                             config.cddb_config.make_directories );
 			gtk_container_add( GTK_CONTAINER( vbox ), make_directories_ckbx );
 
 			/* Create ID3 tag*/
-			create_id3_ckbx = gtk_check_button_new_with_label( "Create ID3 tag" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( create_id3_ckbx ),
+			create_id3_ckbx = gtk_check_button_new_with_label(_("Create ID3 tag"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( create_id3_ckbx ),
 			                             config.cddb_config.create_id3 );
 			gtk_container_add( GTK_CONTAINER( vbox ), create_id3_ckbx );
 			
 			/* Create m3u playlist file */
-			create_playlist_ckbx = gtk_check_button_new_with_label( "Create m3u playlist" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( create_playlist_ckbx ),
+			create_playlist_ckbx = gtk_check_button_new_with_label(_("Create m3u playlist"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( create_playlist_ckbx ),
 			                             config.cddb_config.create_playlist );
 			gtk_container_add( GTK_CONTAINER( vbox ), create_playlist_ckbx );
 
 			/* format string entry */
-			hbox = gtk_hbox_new( FALSE, 0 );
-			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, TRUE, 8 );
+			hbox = gtk_hbox_new( FALSE, 3 );
+			gtk_box_pack_start( GTK_BOX( vbox ), hbox, FALSE, FALSE, 0 );
 
-			label = gtk_label_new( "Filename format string: " );
+			label = gtk_label_new(_("Filename format string: "));
 			gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, FALSE, 0 );
 
 			format_string_entry = gtk_entry_new_with_max_length( 50 );
 			gtk_entry_set_text( GTK_ENTRY( format_string_entry ),
 			                    config.cddb_config.format_string );
-			gtk_box_pack_start( GTK_BOX( hbox ), format_string_entry, TRUE, TRUE, 0 );
+			gtk_box_pack_start( GTK_BOX( hbox ), format_string_entry, FALSE, FALSE, 0 );
 
 			/* directory format string entry */
 			hbox = gtk_hbox_new( FALSE, 0 );
-			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, TRUE, 8 );
+			gtk_box_pack_start( GTK_BOX( vbox ), hbox, FALSE, FALSE, 8 );
 
-			label = gtk_label_new( "Directory format string: " );
+			label = gtk_label_new(_("Directory format string: "));
 			gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, FALSE, 0 );
 
 			dir_format_string_entry = gtk_entry_new_with_max_length( 50 );
 			gtk_entry_set_text( GTK_ENTRY( dir_format_string_entry ),
 			                    config.cddb_config.dir_format_string );
-			gtk_box_pack_start( GTK_BOX( hbox ), dir_format_string_entry, TRUE, TRUE, 0 );
+			gtk_box_pack_start( GTK_BOX( hbox ), dir_format_string_entry, FALSE, FALSE, 0 );
 
 			/* format string help */
 			table = gtk_table_new( 3, 2, FALSE );
 			gtk_table_set_row_spacings( GTK_TABLE( table ), 5 );
-			gtk_container_border_width( GTK_CONTAINER( table ), 3 );
-			gtk_box_pack_start( GTK_BOX( vbox ), table, TRUE, TRUE, 0 );
+			gtk_container_set_border_width( GTK_CONTAINER( table ), 3 );
+			gtk_box_pack_start( GTK_BOX( vbox ), table, FALSE, FALSE, 0 );
 
-			label = gtk_label_new( "%a = Artist" );
+			label = gtk_label_new(_("%a = Artist"));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 0, 1,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
-			label = gtk_label_new( "%v = Album" );
+			label = gtk_label_new(_("%v = Album"));
 			gtk_table_attach( GTK_TABLE( table ), label, 1, 2, 0, 1,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
-			label = gtk_label_new( "%# = Track no." );
+			label = gtk_label_new(_("%# = Track no."));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 1, 2,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
-			label = gtk_label_new( "%s = Song title" );
+			label = gtk_label_new(_("%s = Song title"));
 			gtk_table_attach( GTK_TABLE( table ), label, 1, 2, 1, 2,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
-			label = gtk_label_new( "%y = Year" );
+			label = gtk_label_new(_("%y = Year"));
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 2, 3,
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
 			gtk_container_add( GTK_CONTAINER( main_frame ), vbox );
 
-			label = gtk_label_new( "Files" );
-			label2 = gtk_label_new( "Files" );
+			label = gtk_label_new(_("Files"));
+			label2 = gtk_label_new(_("Files"));
 			gtk_notebook_append_page_menu( GTK_NOTEBOOK( notebook ),
 			                               main_frame, label, label2 );
 			gtk_widget_show_all( main_frame );
@@ -927,20 +928,20 @@ int cw_cddb_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 	case WIDGET_CREATE : {
 			GtkWidget * label, *label2;
 
-			main_frame = gtk_frame_new( "CDDB Configuration" );
-			gtk_container_border_width( GTK_CONTAINER( main_frame ), 10 );
+			main_frame = gtk_frame_new(_("CDDB Configuration"));
+			gtk_container_set_border_width( GTK_CONTAINER( main_frame ), 10 );
 
 			vbox = gtk_vbox_new( FALSE, 0 );
-			gtk_container_border_width( GTK_CONTAINER( vbox ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( vbox ), 5 );
 
 			/* cddb server config table */
 			table = gtk_table_new( 6, 2, FALSE );
 			gtk_table_set_row_spacings( GTK_TABLE( table ), 5 );
-			gtk_container_border_width( GTK_CONTAINER( table ), 3 );
-			gtk_box_pack_start( GTK_BOX( vbox ), table, TRUE, TRUE, 0 );
+			gtk_container_set_border_width( GTK_CONTAINER( table ), 3 );
+			gtk_box_pack_start( GTK_BOX( vbox ), table, FALSE, FALSE, 0 );
 
 			/* URL box */
-			label = gtk_label_new( "URL: " );
+			label = gtk_label_new(_("URL: "));
 			cddb_server_entry = gtk_entry_new_with_max_length( MAX_COMMAND_LENGTH - 2 );
 			gtk_entry_set_text( GTK_ENTRY( cddb_server_entry ),
 			                    config.cddb_config.server );
@@ -950,7 +951,7 @@ int cw_cddb_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
 			/* port box */
-			label = gtk_label_new( "Port: " );
+			label = gtk_label_new(_("Port: "));
 			cddb_port_entry = gtk_entry_new_with_max_length( 5 );
 			cddb_port_num = int2str( config.cddb_config.port );
 			gtk_entry_set_text( GTK_ENTRY( cddb_port_entry ), cddb_port_num );
@@ -962,14 +963,14 @@ int cw_cddb_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
 			/* use http */
-			use_http_ckbx = gtk_check_button_new_with_label( "Use HTTP" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( use_http_ckbx ),
+			use_http_ckbx = gtk_check_button_new_with_label(_("Use HTTP"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( use_http_ckbx ),
 			                             config.cddb_config.use_http );
 			gtk_table_attach( GTK_TABLE( table ), use_http_ckbx, 0, 2, 2, 3,
 			                  0, 0, 0, 0 );
 
 			/* Proxy URL box */
-			label = gtk_label_new( "Proxy Server: " );
+			label = gtk_label_new(_("Proxy Server: "));
 			cddb_proxy_server_entry = gtk_entry_new_with_max_length( MAX_COMMAND_LENGTH - 2 );
 			gtk_entry_set_text( GTK_ENTRY( cddb_proxy_server_entry ),
 			                    config.cddb_config.proxy_server );
@@ -979,7 +980,7 @@ int cw_cddb_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
 			/* proxy port box */
-			label = gtk_label_new( "Proxy Port: " );
+			label = gtk_label_new(_("Proxy Port: "));
 			cddb_proxy_port_entry = gtk_entry_new_with_max_length( 5 );
 			cddb_proxy_port_num = int2str( config.cddb_config.proxy_port );
 			gtk_entry_set_text( GTK_ENTRY( cddb_proxy_port_entry ), cddb_proxy_port_num );
@@ -995,7 +996,7 @@ int cw_cddb_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 
 			/* CDDB Path*/
 			hbox = gtk_hbox_new( FALSE, 3 );
-			label = gtk_label_new( "CDDB Cache path: " );
+			label = gtk_label_new(_("CDDB Cache path: "));
 			gtk_widget_show( label );
 			gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, FALSE, 0 );
 
@@ -1005,13 +1006,16 @@ int cw_cddb_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			gtk_widget_show( cddb_path_entry );
 
 			gtk_box_pack_start( GTK_BOX( hbox ), cddb_path_entry, FALSE, FALSE, 0 );
-			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, TRUE, 0 );
+			gtk_box_pack_start( GTK_BOX( vbox ), hbox, FALSE, FALSE, 0 );
 
 			/* CDDB Autolookup */
-			auto_lookup_ckbx = gtk_check_button_new_with_label( "Automatic lookup on startup" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( auto_lookup_ckbx ),
+			hbox = gtk_hbox_new( FALSE, 3 );
+			auto_lookup_ckbx = gtk_check_button_new_with_label(_("Automatic lookup on startup"));
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( auto_lookup_ckbx ),
 			                             config.cddb_config.auto_lookup );
-			gtk_container_add( GTK_CONTAINER( vbox ), auto_lookup_ckbx );
+			gtk_widget_show( auto_lookup_ckbx );
+			gtk_box_pack_start( GTK_BOX( hbox ), auto_lookup_ckbx, FALSE, FALSE, 0 );
+			gtk_box_pack_start( GTK_BOX( vbox ), hbox, FALSE, FALSE, 0 );
 			gtk_container_add( GTK_CONTAINER( main_frame ), vbox );
 
 			label = gtk_label_new( "CDDB" );
@@ -1025,7 +1029,7 @@ int cw_cddb_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 	case CW_OK :
 		if ( strlen( gtk_entry_get_text( GTK_ENTRY( cddb_server_entry ) ) ) == 0
 			        || strlen( gtk_entry_get_text( GTK_ENTRY( cddb_port_entry ) ) ) == 0 ) {
-			err_handler( EMPTY_ENTRY_ERR, "You need to specify a server and a port" );
+			err_handler( EMPTY_ENTRY_ERR, _("You need to specify a server and a port") );
 			return - 1;
 		}
 		strcpy( config.cddb_config.server,
@@ -1077,14 +1081,14 @@ void config_window_handler( int ops, _main_data *main_data )
 			GtkWidget * vbox, *bbox, *notebook, *separator, *button;
 
 			saved_main_data = main_data;
-			window = gtk_window_new( GTK_WINDOW_DIALOG );
+			window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 
-			gtk_signal_connect( GTK_OBJECT( window ), "destroy",
-			                    GTK_SIGNAL_FUNC( cw_cancel_button_clicked ),
+			g_signal_connect( G_OBJECT( window ), "destroy",
+			                    G_CALLBACK( cw_cancel_button_clicked ),
 			                    NULL );
 
-			gtk_window_set_title( GTK_WINDOW( window ), "Configuration" );
-			gtk_container_border_width( GTK_CONTAINER( window ), 0 );
+			gtk_window_set_title( GTK_WINDOW( window ), _("Configuration") );
+			gtk_container_set_border_width( GTK_CONTAINER( window ), 0 );
 
 			vbox = gtk_vbox_new( FALSE, 0 );
 			gtk_container_add( GTK_CONTAINER( window ), vbox );
@@ -1092,7 +1096,7 @@ void config_window_handler( int ops, _main_data *main_data )
 			notebook = gtk_notebook_new();
 			gtk_notebook_set_tab_pos( GTK_NOTEBOOK( notebook ), GTK_POS_TOP );
 			gtk_box_pack_start( GTK_BOX( vbox ), notebook, TRUE, TRUE, 0 );
-			gtk_container_border_width( GTK_CONTAINER( notebook ), 10 );
+			gtk_container_set_border_width( GTK_CONTAINER( notebook ), 10 );
 
 			gtk_widget_realize( window );
 
@@ -1107,19 +1111,20 @@ void config_window_handler( int ops, _main_data *main_data )
 			gtk_box_pack_start( GTK_BOX( vbox ), separator, FALSE, TRUE, 10 );
 
 			bbox = gtk_hbox_new( TRUE, 5 );
-			gtk_container_border_width( GTK_CONTAINER( bbox ), 10 );
+			gtk_container_set_border_width( GTK_CONTAINER( bbox ), 10 );
 			gtk_box_pack_start( GTK_BOX( vbox ), bbox, FALSE, TRUE, 0 );
 
-			button = gtk_button_new_with_label( "Cancel" );
-			gtk_signal_connect( GTK_OBJECT( button ), "clicked",
-			                    GTK_SIGNAL_FUNC( cw_cancel_button_clicked ),
+			button = gtk_button_new_from_stock( GTK_STOCK_OK );
+			g_signal_connect( G_OBJECT( button ), "clicked",
+			                    G_CALLBACK( cw_ok_button_clicked ),
 			                    NULL );
+
 			gtk_box_pack_end( GTK_BOX( bbox ), button, TRUE, TRUE, 0 );
 			GTK_WIDGET_SET_FLAGS( button, GTK_CAN_DEFAULT );
 
-			button = gtk_button_new_with_label( "OK" );
-			gtk_signal_connect( GTK_OBJECT( button ), "clicked",
-			                    GTK_SIGNAL_FUNC( cw_ok_button_clicked ),
+			button = gtk_button_new_from_stock( GTK_STOCK_CANCEL );
+			g_signal_connect( G_OBJECT( button ), "clicked",
+			                    G_CALLBACK( cw_cancel_button_clicked ),
 			                    NULL );
 
 			gtk_box_pack_end( GTK_BOX( bbox ), button, TRUE, TRUE, 0 );

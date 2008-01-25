@@ -1,4 +1,6 @@
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -90,7 +92,7 @@ int play_cd_wav_mp3( int ops, int cd_wav_mp3, char *playit )
 			execvp( argv[ 0 ], argv );
 
 			dup2( stderr_fd, 2 );
-			perror( "Failed to exec player :" );
+			perror( _("Failed to exec player :") );
 			_exit( 127 );
 		}
 

@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+
+pkglibdir=${libdir}/@PACKAGE@
+pkgincludedir=${includedir}/@PACKAGE@
+
+Name: ripperX
+Description: ripperX
+Version: @MAJOR_VERSION@.@MINOR_VERSION@.@MICRO_VERSION@.@EXTRA_VERSION@
+ 

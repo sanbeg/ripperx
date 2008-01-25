@@ -1,4 +1,9 @@
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,6 +13,7 @@
 #include "misc_utils.h"
 #include "select_frame_handler.h"
 #include "main_window_handler.h"
+#include "version.h"
 
 #define NAME "CATraxx"
 #define MAX_CDDB_FILE_SIZE 15360
@@ -454,7 +460,7 @@ int cddb_main( _main_data *main_data )
 	int duration = main_data->total_length;
 	long int offset[ MAX_NUM_TRACK ];
 
-	main_window_handler( MW_UPDATE_STATUSBAR, "Contacting CDDB server...", NULL );
+	main_window_handler( MW_UPDATE_STATUSBAR, _("Contacting CDDB server..."), NULL );
 	while ( gtk_events_pending() ) gtk_main_iteration();
 
 	/* grab the track offsets from the main_data structure */
@@ -468,7 +474,7 @@ int cddb_main( _main_data *main_data )
 	if ( err != REMOTE_OK )
 		err = do_cddb( &result, &category, tracknum, duration, offset, config.cddb_config.server, config.cddb_config.port, config.cddb_config.use_http );
 
-	main_window_handler( MW_UPDATE_STATUSBAR, "Grabbing Completed...", NULL );
+	main_window_handler( MW_UPDATE_STATUSBAR, _("Grabbing Completed..."), NULL );
 	while ( gtk_events_pending() ) gtk_main_iteration();
 
 	switch ( err ) {

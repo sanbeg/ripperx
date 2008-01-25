@@ -1,4 +1,6 @@
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
@@ -50,19 +52,19 @@ char *dir_window_handler( int ops, char *cur_dir )
 				}
 			}
 
-			filew = gtk_file_selection_new( "Select a directory" );
+			filew = gtk_file_selection_new(_("Select a directory"));
 			gtk_window_set_position ( GTK_WINDOW ( filew ), GTK_WIN_POS_MOUSE );
 			gtk_file_selection_show_fileop_buttons ( GTK_FILE_SELECTION ( filew ) );
 
-			id = gtk_signal_connect( GTK_OBJECT( filew ), "destroy",
-			                         GTK_SIGNAL_FUNC( dw_cancel_clicked ),
+			id = g_signal_connect( G_OBJECT( filew ), "destroy",
+			                         G_CALLBACK( dw_cancel_clicked ),
 			                         NULL );
-			gtk_signal_connect( GTK_OBJECT( GTK_FILE_SELECTION( filew ) ->ok_button ),
+			g_signal_connect( G_OBJECT( GTK_FILE_SELECTION( filew ) ->ok_button ),
 			                    "clicked",
-			                    GTK_SIGNAL_FUNC( dw_ok_clicked ), NULL );
-			gtk_signal_connect( GTK_OBJECT( GTK_FILE_SELECTION( filew ) ->cancel_button ),
+			                    G_CALLBACK( dw_ok_clicked ), NULL );
+			g_signal_connect( G_OBJECT( GTK_FILE_SELECTION( filew ) ->cancel_button ),
 			                    "clicked",
-			                    GTK_SIGNAL_FUNC( dw_cancel_clicked ),
+			                    G_CALLBACK( dw_cancel_clicked ),
 			                    NULL );
 			gtk_file_selection_set_filename( GTK_FILE_SELECTION( filew ), checked_dir );
 			gtk_widget_hide( GTK_WIDGET( GTK_FILE_SELECTION( filew ) ->fileop_del_file ));
@@ -71,7 +73,7 @@ char *dir_window_handler( int ops, char *cur_dir )
 			                    FALSE );
 			gtk_widget_show( filew );
 			gtk_main();
-			gtk_signal_disconnect( GTK_OBJECT( filew ), id );
+			g_signal_handler_disconnect( G_OBJECT( filew ), id );
 			strncpy( buf,
 			         gtk_file_selection_get_filename( GTK_FILE_SELECTION( filew ) ),
 			         sizeof( buf ) );

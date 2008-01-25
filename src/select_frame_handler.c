@@ -1,4 +1,6 @@
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -172,7 +174,7 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 
 			select_all_button = gtk_toggle_button_new();
 			hbox2 = gtk_hbox_new( FALSE, 0 );
-			gtk_container_border_width( GTK_CONTAINER( hbox2 ), 0 );
+			gtk_container_set_border_width( GTK_CONTAINER( hbox2 ), 0 );
 			gtk_container_add( GTK_CONTAINER( select_all_button ), hbox2 );
 
 			pixmap = gtk_pixmap_new( button_checked_pixmap,
@@ -180,62 +182,62 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 			gtk_widget_set_usize( pixmap, 15, 0 );
 			gtk_box_pack_start( GTK_BOX( hbox2 ), pixmap, FALSE, FALSE, 0 );
 
-			label = gtk_label_new( "Select All Tracks" );
+			label = gtk_label_new(_("Select All Tracks"));
 			gtk_widget_set_usize( label, 120, 0 );
 			gtk_box_pack_end( GTK_BOX( hbox2 ), label, FALSE, FALSE, 0 );
 
-			gtk_signal_connect( GTK_OBJECT( select_all_button ), "clicked",
-			                    GTK_SIGNAL_FUNC( sf_select_all_button_clicked ),
+			g_signal_connect( G_OBJECT( select_all_button ), "clicked",
+			                    G_CALLBACK( sf_select_all_button_clicked ),
 			                    NULL );
 			gtk_box_pack_start( GTK_BOX( hbox ), select_all_button, FALSE, FALSE, 0 );
 
 			/* action buttons */
 			hbox1 = gtk_hbox_new ( FALSE, 0 );
-			gtk_container_border_width( GTK_CONTAINER( hbox1 ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( hbox1 ), 5 );
 			gtk_box_pack_start( GTK_BOX( hbox ), hbox1 , FALSE, FALSE, 0 );
 
-			rip_action_button = gtk_radio_button_new_with_label( NULL, "Rip to WAV" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( rip_action_button ), 0 );
+			rip_action_button = gtk_radio_button_new_with_label( NULL, _("Rip to WAV") );
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( rip_action_button ), 0 );
 			gtk_box_pack_start( GTK_BOX( hbox1 ), rip_action_button, FALSE, FALSE, 0 );
 
 			encode_action_button = gtk_radio_button_new_with_label(
-			                           gtk_radio_button_group( GTK_RADIO_BUTTON( rip_action_button ) ), "Encode" );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( encode_action_button ), 1 );
+			                           gtk_radio_button_group( GTK_RADIO_BUTTON( rip_action_button ) ), _("Encode") );
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( encode_action_button ), 1 );
 			gtk_box_pack_start( GTK_BOX( hbox1 ), encode_action_button, FALSE, FALSE, 0 );
 
 			/* Create a scrolled window */
 			scr_window = gtk_scrolled_window_new( NULL, NULL );
-			gtk_container_border_width( GTK_CONTAINER( scr_window ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( scr_window ), 5 );
 			gtk_scrolled_window_set_policy( GTK_SCROLLED_WINDOW( scr_window ),
 			                                GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS );
 			gtk_box_pack_start( GTK_BOX( vbox ), scr_window, TRUE, TRUE, 0 );
 
 			/* Create table and vbox which will contain the table */
 			vbox2 = gtk_vbox_new( FALSE, 0 );
-			gtk_container_border_width( GTK_CONTAINER( vbox2 ), 0 );
+			gtk_container_set_border_width( GTK_CONTAINER( vbox2 ), 0 );
 			gtk_scrolled_window_add_with_viewport( GTK_SCROLLED_WINDOW( scr_window ), vbox2 );
 
 			/* artist entry fields */
 			hbox3 = gtk_hbox_new (FALSE, 0);
 
-			artist_label = gtk_label_new("Artist ");
+			artist_label = gtk_label_new(_("Artist "));
 			gtk_box_pack_start(GTK_BOX(hbox3), artist_label, FALSE, FALSE, 5);
 			artist_entry = gtk_entry_new_with_max_length(MAX_ARTIST_LENGTH);
 			gtk_entry_set_text(GTK_ENTRY(artist_entry), main_data->disc_artist);
-			gtk_signal_connect( GTK_OBJECT( artist_entry ), "changed",
-			                    GTK_SIGNAL_FUNC( sf_artist_entry_changed ),
+			g_signal_connect( G_OBJECT( artist_entry ), "changed",
+			                    G_CALLBACK( sf_artist_entry_changed ),
 			                    NULL );
 			gtk_box_pack_start(GTK_BOX(hbox3), artist_entry, TRUE, TRUE, 5);
 			gtk_box_pack_start(GTK_BOX(vbox2), hbox3, FALSE, FALSE, 5);
 
 			/* album entry fields */
 			hbox4 = gtk_hbox_new (FALSE, 0);
-			album_label = gtk_label_new("Album");
+			album_label = gtk_label_new(_("Album"));
 			gtk_box_pack_start(GTK_BOX(hbox4), album_label, FALSE, FALSE, 5);
 			album_entry = gtk_entry_new_with_max_length(MAX_ARTIST_LENGTH);
 			gtk_entry_set_text(GTK_ENTRY(album_entry), main_data->disc_title);
-			gtk_signal_connect( GTK_OBJECT( album_entry ), "changed",
-			                    GTK_SIGNAL_FUNC( sf_album_entry_changed ),
+			g_signal_connect( G_OBJECT( album_entry ), "changed",
+			                    G_CALLBACK( sf_album_entry_changed ),
 			                    NULL );
 			gtk_box_pack_start(GTK_BOX(hbox4), album_entry, TRUE, TRUE, 5);
 			gtk_box_pack_start(GTK_BOX(vbox2), hbox4, FALSE, FALSE, 5);
@@ -243,25 +245,41 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 			/* year and genre entry fields */
 			hbox5 = gtk_hbox_new (FALSE, 0);
 
-			year_label = gtk_label_new("Year");
+			year_label = gtk_label_new(_("Year"));
 			gtk_box_pack_start(GTK_BOX(hbox5), year_label, FALSE, FALSE, 5);
 			year_entry = gtk_entry_new_with_max_length(MAX_YEAR_LENGTH);
 			gtk_widget_set_usize(year_entry, 60, -2);
 			if ( strlen(main_data->disc_year) < 2 )
-				sprintf(main_data->disc_year, "2005");
+				sprintf(main_data->disc_year, "2007");
 			gtk_entry_set_text(GTK_ENTRY(year_entry), main_data->disc_year);
-			gtk_signal_connect( GTK_OBJECT( year_entry ), "changed",
-			                    GTK_SIGNAL_FUNC( sf_year_entry_changed ),
-			                    NULL );
+			g_signal_connect( G_OBJECT( year_entry ), "changed",
+			                  G_CALLBACK( sf_year_entry_changed ),
+			                  NULL );
+			gtk_box_pack_start(GTK_BOX(hbox4), album_entry, TRUE, TRUE, 5);
+			gtk_box_pack_start(GTK_BOX(vbox2), hbox4, FALSE, FALSE, 5);
+
+			/* year and genre entry fields */
+			hbox5 = gtk_hbox_new (FALSE, 0);
+
+			year_label = gtk_label_new(_("Year"));
+			gtk_box_pack_start(GTK_BOX(hbox5), year_label, FALSE, FALSE, 5);
+			year_entry = gtk_entry_new_with_max_length(MAX_YEAR_LENGTH);
+			gtk_widget_set_usize(year_entry, 60, -2);
+			if ( strlen(main_data->disc_year) < 2 )
+				sprintf(main_data->disc_year, "2007");
+			gtk_entry_set_text(GTK_ENTRY(year_entry), main_data->disc_year);
+			g_signal_connect( G_OBJECT( year_entry ), "changed",
+			                  G_CALLBACK( sf_year_entry_changed ),
+			                  NULL );
 			gtk_box_pack_start(GTK_BOX(hbox5), year_entry, TRUE, TRUE, 5);
 
-			genre_label = gtk_label_new("Genre");
+			genre_label = gtk_label_new(_("Genre"));
 			gtk_box_pack_start(GTK_BOX(hbox5), genre_label, FALSE, FALSE, 5);
 			genre_entry = gtk_entry_new_with_max_length(MAX_GENRE_LENGTH);
 			gtk_entry_set_text(GTK_ENTRY(genre_entry), main_data->disc_category);
-			gtk_signal_connect( GTK_OBJECT( genre_entry ), "changed",
-					    GTK_SIGNAL_FUNC( sf_genre_entry_changed ),
-					    NULL );
+			g_signal_connect( G_OBJECT( genre_entry ), "changed",
+					  G_CALLBACK( sf_genre_entry_changed ),
+					  NULL );
 			gtk_box_pack_start(GTK_BOX(hbox5), genre_entry, TRUE, TRUE, 5);
 			gtk_box_pack_start(GTK_BOX(vbox2), hbox5, FALSE, FALSE, 5);
 
@@ -302,7 +320,7 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 			gtk_box_pack_start( GTK_BOX( vbox2 ), table, FALSE, FALSE, 0 );
 			gtk_table_set_row_spacings( GTK_TABLE( table ), 1 );
 			gtk_table_set_col_spacings( GTK_TABLE( table ), 0 );
-			gtk_container_border_width( GTK_CONTAINER( table ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( table ), 5 );
 
 			/* Separators */
 			if ( num_tracks > 0 ) {
@@ -325,8 +343,8 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 				gtk_widget_set_usize( button, 18, 18 );
 				gtk_container_add( GTK_CONTAINER( button ), pixmap );
 
-				gtk_signal_connect( GTK_OBJECT( button ), "clicked",
-				                    GTK_SIGNAL_FUNC( sf_cd_play_button_clicked ),
+				g_signal_connect( G_OBJECT( button ), "clicked",
+				                    G_CALLBACK( sf_cd_play_button_clicked ),
 				                    &track_numbers[ i ] );
 				gtk_table_attach( GTK_TABLE( table ), button, 0, 1, i, i + 1,
 				                  0, GTK_EXPAND | GTK_FILL, 0, 0 );
@@ -359,11 +377,11 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 				gtk_table_attach( GTK_TABLE( table ), filename_entry[ i ], 5, 6, i, i + 1,
 				                  GTK_EXPAND | GTK_FILL, 0, 0, 0 );
 
-				gtk_signal_connect( GTK_OBJECT( track_selected_button[ i ] ), "clicked",
-				                    GTK_SIGNAL_FUNC( sf_track_selected_button_toggled ),
+				g_signal_connect( G_OBJECT( track_selected_button[ i ] ), "clicked",
+				                    G_CALLBACK( sf_track_selected_button_toggled ),
 				                    &track_numbers[ i ] );
-				gtk_signal_connect( GTK_OBJECT( filename_entry[ i ] ), "changed",
-				                    GTK_SIGNAL_FUNC( sf_filename_entry_changed ),
+				g_signal_connect( G_OBJECT( filename_entry[ i ] ), "changed",
+				                    G_CALLBACK( sf_filename_entry_changed ),
 				                    &track_numbers[ i ] );
 			}
 			gtk_widget_show_all( vbox );
@@ -437,7 +455,7 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 				/* The user has deleted the file name. Untoggle the button and
 				 * delete saved_filename_entry too */
 				saved_filename_entry[ track ][ 0 ] = '\0';
-				gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
+				gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
 				                             FALSE );
 			}
 		}
@@ -451,16 +469,16 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 			 * 
 			 
 			if ( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ) ->active == FALSE )
-				gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
+				gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
 				                             TRUE );
 			*/
 		}
 		return;
 
 	case SF_SELECT_BUTTON_ACT_ALL :
-		gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( select_all_button ), GTK_TOGGLE_BUTTON( select_all_button ) ->active );
+		gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( select_all_button ), GTK_TOGGLE_BUTTON( select_all_button ) ->active );
 		for ( track = 0; track < num_tracks; track++ ) {
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
 			                             GTK_TOGGLE_BUTTON( select_all_button ) ->active );
 		}
 		return;
@@ -507,7 +525,7 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 			get_track_title(saved_filename_entry[track], main_data, track);
 			gtk_entry_set_text( GTK_ENTRY( filename_entry[ track ] ),
 			                    saved_filename_entry[ track ] );
-			gtk_toggle_button_set_state( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
 			                             button_state );
 		}
 		return;

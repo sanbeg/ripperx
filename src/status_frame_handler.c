@@ -1,4 +1,6 @@
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include "misc_utils.h"
 #include "job_control.h"
 #include "interface_common.h"
@@ -39,10 +41,10 @@ void time_status_frame_handler( int ops, GtkWidget *time_frame, _stat *stat )
 
 			table = gtk_table_new( 4, 2, TRUE );
 
-			gtk_container_border_width( GTK_CONTAINER( table ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( table ), 5 );
 			gtk_container_add( GTK_CONTAINER( time_frame ), table );
 
-			label = gtk_label_new( "Total time elapsed: " );
+			label = gtk_label_new(_("Total time elapsed: "));
 			gtk_label_set_justify( GTK_LABEL( label ), GTK_JUSTIFY_LEFT );
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 0, 1,
 			                  GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0 );
@@ -51,7 +53,7 @@ void time_status_frame_handler( int ops, GtkWidget *time_frame, _stat *stat )
 			gtk_table_attach( GTK_TABLE( table ), total_time_elapsed_label, 1, 2, 0, 1,
 			                  GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0 );
 
-			label = gtk_label_new( "Total time remaining: " );
+			label = gtk_label_new(_("Total time remaining: "));
 			gtk_label_set_justify( GTK_LABEL( label ), GTK_JUSTIFY_LEFT );
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 1, 2,
 			                  GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0 );
@@ -60,7 +62,7 @@ void time_status_frame_handler( int ops, GtkWidget *time_frame, _stat *stat )
 			gtk_table_attach( GTK_TABLE( table ), total_time_remain_label, 1, 2, 1, 2,
 			                  GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0 );
 
-			label = gtk_label_new( "Tracks completed: " );
+			label = gtk_label_new(_("Tracks completed: "));
 			gtk_label_set_justify( GTK_LABEL( label ), GTK_JUSTIFY_LEFT );
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 2, 3,
 			                  GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0 );
@@ -69,7 +71,7 @@ void time_status_frame_handler( int ops, GtkWidget *time_frame, _stat *stat )
 			gtk_table_attach( GTK_TABLE( table ), tracks_done_label, 1, 2, 2, 3,
 			                  GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0 );
 
-			label = gtk_label_new( "Tracks remaining: " );
+			label = gtk_label_new(_("Tracks remaining: "));
 			gtk_label_set_justify( GTK_LABEL( label ), GTK_JUSTIFY_LEFT );
 			gtk_table_attach( GTK_TABLE( table ), label, 0, 1, 3, 4,
 			                  GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0 );
@@ -145,7 +147,7 @@ void wm_status_frame_handler( int ops, int type,
 			main_frame = main_window_handler( MW_REQUEST_MF, 0, NULL );
 
 			vbox = gtk_vbox_new( FALSE, 5 );
-			gtk_container_border_width( GTK_CONTAINER( vbox ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( vbox ), 5 );
 			gtk_container_add( GTK_CONTAINER( main_frame ), vbox );
 			gtk_widget_realize( vbox );
 
@@ -159,45 +161,45 @@ void wm_status_frame_handler( int ops, int type,
 			}
 
 			/* ripping progress */
-			hbox = gtk_hbox_new( FALSE, 20 );
+			hbox = gtk_hbox_new( FALSE, 0 );
 			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, FALSE, 0 );
-			sprintf( buf, "Ripping track %d", stat->wav_track + 1 );
+			sprintf( buf, _("Ripping track %d"), stat->wav_track + 1 );
 			wav_tlabel = gtk_label_new( buf );
 			gtk_label_set_justify( GTK_LABEL( wav_tlabel ), GTK_JUSTIFY_LEFT );
-			gtk_widget_set_usize( wav_tlabel, 130, -1 );
+			gtk_widget_set_size_request( wav_tlabel, 130, -1 );
 			gtk_box_pack_start( GTK_BOX( hbox ), wav_tlabel, FALSE, FALSE, 0 );
 
 			wav_pbar = gtk_progress_bar_new();
-			gtk_widget_set_usize( wav_pbar, 250, 22 );
+			gtk_widget_set_size_request( wav_pbar, 250, 22 );
 			gtk_box_pack_start( GTK_BOX( hbox ), wav_pbar, FALSE, FALSE, 0 );
 			wav_plabel = gtk_label_new( " 0%" );
 			gtk_box_pack_start( GTK_BOX( hbox ), wav_plabel, FALSE, FALSE, 0 );
 
 			/* encoding progress */
-			hbox = gtk_hbox_new( FALSE, 20 );
+			hbox = gtk_hbox_new( FALSE, 0 );
 			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, FALSE, 0 );
-			sprintf( buf, "Encoding track %d", stat->wav_track + 1 );
+			sprintf( buf, _("Encoding track %d"), stat->wav_track + 1 );
 			mp3_tlabel = gtk_label_new( buf );
 			gtk_label_set_justify( GTK_LABEL( mp3_tlabel ), GTK_JUSTIFY_LEFT );
-			gtk_widget_set_usize( mp3_tlabel, 130, -1 );
+			gtk_widget_set_size_request( mp3_tlabel, 130, -1 );
 			gtk_box_pack_start( GTK_BOX( hbox ), mp3_tlabel, FALSE, FALSE, 0 );
 
 			mp3_pbar = gtk_progress_bar_new();
-			gtk_widget_set_usize( mp3_pbar, 250, 22 );
+			gtk_widget_set_size_request( mp3_pbar, 250, 22 );
 			gtk_box_pack_start( GTK_BOX( hbox ), mp3_pbar, FALSE, FALSE, 0 );
 			mp3_plabel = gtk_label_new( " 0%" );
 			gtk_box_pack_start( GTK_BOX( hbox ), mp3_plabel, FALSE, FALSE, 0 );
 
 			/* total progress */
-			hbox = gtk_hbox_new( FALSE, 20 );
+			hbox = gtk_hbox_new( FALSE, 0 );
 			gtk_box_pack_start( GTK_BOX( vbox ), hbox, TRUE, FALSE, 0 );
-			label = gtk_label_new( "Total progress" );
+			label = gtk_label_new(_("Total progress"));
 			gtk_label_set_justify( GTK_LABEL( label ), GTK_JUSTIFY_LEFT );
-			gtk_widget_set_usize( label, 130, -1 );
+			gtk_widget_set_size_request( label, 130, -1 );
 			gtk_box_pack_start( GTK_BOX( hbox ), label, FALSE, FALSE, 0 );
 
 			total_pbar = gtk_progress_bar_new();
-			gtk_widget_set_usize( total_pbar, 250, 22 );
+			gtk_widget_set_size_request( total_pbar, 250, 22 );
 			gtk_box_pack_start( GTK_BOX( hbox ), total_pbar, FALSE, FALSE, 0 );
 			total_plabel = gtk_label_new( " 0%" );
 			gtk_box_pack_start( GTK_BOX( hbox ), total_plabel, FALSE, FALSE, 0 );
@@ -207,8 +209,8 @@ void wm_status_frame_handler( int ops, int type,
 			temp_hbox = gtk_hbox_new( FALSE, 10 );
 			gtk_box_pack_start( GTK_BOX( vbox ), temp_hbox, TRUE, TRUE, 0 );
 
-			time_frame = gtk_frame_new( "Time info" );
-			gtk_widget_set_usize( time_frame, 275, 0 );
+			time_frame = gtk_frame_new(_("Time info"));
+			gtk_widget_set_size_request( time_frame, 275, 0 );
 			gtk_box_pack_start( GTK_BOX( temp_hbox ), time_frame, FALSE, FALSE, 0 );
 
 			time_status_frame_handler( WIDGET_CREATE, time_frame, stat );
@@ -219,7 +221,7 @@ void wm_status_frame_handler( int ops, int type,
 
 			/* Separator */
 			separator = gtk_hseparator_new();
-			gtk_widget_set_usize( separator, 0, 10 );
+			gtk_widget_set_size_request( separator, 0, 10 );
 			gtk_box_pack_start( GTK_BOX( vbox ), separator, FALSE, FALSE, 0 );
 
 			/* Buttons row */
@@ -227,22 +229,22 @@ void wm_status_frame_handler( int ops, int type,
 			gtk_box_pack_start( GTK_BOX( vbox ), temp_hbox, TRUE, TRUE, 0 );
 
 			/* Abort button */
-			button = gtk_button_new_with_label( "Abort" );
+			button = gtk_button_new_with_label(_("Abort"));
 			GTK_WIDGET_SET_FLAGS( button, GTK_CAN_DEFAULT );
-			gtk_widget_set_usize( button, 80, 0 );
-			gtk_signal_connect ( GTK_OBJECT ( button ), "clicked",
-			                     GTK_SIGNAL_FUNC ( wms_abort_button_clicked ),
+			gtk_widget_set_size_request( button, 80, -1 );
+			g_signal_connect ( G_OBJECT ( button ), "clicked",
+			                     G_CALLBACK ( wms_abort_button_clicked ),
 			                     &type );
 			gtk_box_pack_end( GTK_BOX( temp_hbox ), button, FALSE, FALSE, 0 );
 
 			/* Pause continue button */
 			p_c_button = gtk_button_new();
 			GTK_WIDGET_SET_FLAGS( p_c_button, GTK_CAN_DEFAULT );
-			gtk_widget_set_usize( p_c_button, 80, 0 );
-			pause_label = gtk_label_new( "Pause" );
+			gtk_widget_set_size_request( p_c_button, 80, 0 );
+			pause_label = gtk_label_new(_("Pause"));
 			gtk_container_add( GTK_CONTAINER( p_c_button ), pause_label );
-			gtk_signal_connect ( GTK_OBJECT ( p_c_button ), "clicked",
-			                     GTK_SIGNAL_FUNC ( wms_p_c_button_clicked ),
+			g_signal_connect ( G_OBJECT ( p_c_button ), "clicked",
+			                     G_CALLBACK ( wms_p_c_button_clicked ),
 			                     &type );
 			gtk_box_pack_end( GTK_BOX( temp_hbox ), p_c_button, FALSE, FALSE, 0 );
 			gtk_widget_grab_default( p_c_button );
@@ -262,7 +264,7 @@ void wm_status_frame_handler( int ops, int type,
 			gtk_widget_set_sensitive( wav_tlabel, TRUE );
 			gtk_widget_set_sensitive( wav_pbar, TRUE );
 			gtk_widget_set_sensitive( wav_plabel, TRUE );
-			sprintf( buf, "Ripping track %d", stat->wav_track + 1 );
+			sprintf( buf, _("Ripping track %d"), stat->wav_track + 1 );
 			gtk_label_set_text( GTK_LABEL( wav_tlabel ), buf );
 			gtk_progress_bar_update( GTK_PROGRESS_BAR( wav_pbar ), stat->wav_progress );
 
@@ -273,7 +275,7 @@ void wm_status_frame_handler( int ops, int type,
 			gtk_widget_set_sensitive( wav_tlabel, FALSE );
 			gtk_widget_set_sensitive( wav_pbar, FALSE );
 			gtk_widget_set_sensitive( wav_plabel, FALSE );
-			gtk_label_set_text( GTK_LABEL( wav_tlabel ), "Not ripping" );
+			gtk_label_set_text( GTK_LABEL( wav_tlabel ), _("Not ripping") );
 			gtk_progress_bar_update( GTK_PROGRESS_BAR( wav_pbar ), 0 );
 			gtk_label_set_text( GTK_LABEL( wav_plabel ), "-" );
 		}
@@ -282,7 +284,7 @@ void wm_status_frame_handler( int ops, int type,
 			gtk_widget_set_sensitive( mp3_tlabel, TRUE );
 			gtk_widget_set_sensitive( mp3_pbar, TRUE );
 			gtk_widget_set_sensitive( mp3_plabel, TRUE );
-			sprintf( buf, "Encoding track %d", stat->mp3_track + 1 );
+			sprintf( buf, _("Encoding track %d"), stat->mp3_track + 1 );
 			gtk_label_set_text( GTK_LABEL( mp3_tlabel ), buf );
 			gtk_progress_bar_update( GTK_PROGRESS_BAR( mp3_pbar ), stat->mp3_progress );
 
@@ -293,7 +295,7 @@ void wm_status_frame_handler( int ops, int type,
 			gtk_widget_set_sensitive( mp3_tlabel, FALSE );
 			gtk_widget_set_sensitive( mp3_pbar, FALSE );
 			gtk_widget_set_sensitive( mp3_plabel, FALSE );
-			gtk_label_set_text( GTK_LABEL( mp3_tlabel ), "Not encoding" );
+			gtk_label_set_text( GTK_LABEL( mp3_tlabel ), _("Not encoding") );
 			gtk_progress_bar_update( GTK_PROGRESS_BAR( mp3_pbar ), 0 );
 			gtk_label_set_text( GTK_LABEL( mp3_plabel ), "-" );
 		}
@@ -334,7 +336,7 @@ void wm_status_frame_handler( int ops, int type,
 
 			gtk_widget_destroy( pause_label );
 			pause_label = NULL;
-			cont_label = gtk_label_new( "Continue" );
+			cont_label = gtk_label_new(_("Continue"));
 			gtk_container_add( GTK_CONTAINER( p_c_button ), cont_label );
 			gtk_widget_show( cont_label );
 		} else {
@@ -342,7 +344,7 @@ void wm_status_frame_handler( int ops, int type,
 
 			gtk_widget_destroy( cont_label );
 			cont_label = NULL;
-			pause_label = gtk_label_new( "Pause" );
+			pause_label = gtk_label_new(_("Pause"));
 			gtk_container_add( GTK_CONTAINER( p_c_button ), pause_label );
 			gtk_widget_show( pause_label );
 		}

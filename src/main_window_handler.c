@@ -1,6 +1,8 @@
 
 #include <stdio.h>
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include "interface_common.h"
 #include "main.h"
 #include "config_window_handler.h"
@@ -11,6 +13,7 @@
 #include "status_frame_handler.h"
 #include "cddb.h"
 #include "misc_utils.h"
+#include "version.h"
 
 #include "main_window_handler.h"
 
@@ -121,17 +124,17 @@ GtkWidget *main_window_handler( int ops, char *statusbar_msg,
 	} buttons[] =
 	    {
 	        { NULL, config_xpm, mw_config_button_clicked, NULL,
-	          TRUE, "Configuration" },
+	          TRUE, N_("Configuration") },
 	        { NULL, scan_xpm, mw_scan_button_clicked, NULL,
-	          TRUE, "Scan CD" },
+	          TRUE, N_("Scan CD") },
 	        { NULL, stop_xpm, mw_stop_button_clicked, NULL,
-	          TRUE, "Stop playing" },
+	          TRUE, N_("Stop playing") },
 	        { NULL, cddb_xpm, mw_cddb_button_clicked, NULL,
-	          TRUE, "Get track titles from CDDB server" },
+	          TRUE, N_("Get track titles from CDDB server") },
 	        { NULL, go_xpm, mw_go_button_clicked, NULL,
-	          TRUE, "Start ripping&encoding" },
+	          TRUE, N_("Start ripping&encoding") },
 	        { NULL, exit_xpm, mw_exit_button_clicked, NULL,
-	          FALSE, "Exit the program"},
+	          FALSE, N_("Exit the program") },
 	    };
 
 	buttons[ 0 ].callback_data = ( gpointer ) main_data;
@@ -159,7 +162,7 @@ GtkWidget *main_window_handler( int ops, char *statusbar_msg,
 
 			main_window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 			gtk_widget_set_name( main_window, "main window" );
-			gtk_widget_set_usize( main_window, 480, 406 );
+			gtk_widget_set_size_request( main_window, 480, 406 );
 			gtk_widget_realize( main_window );
 
 			tooltips = gtk_tooltips_new();
@@ -170,29 +173,29 @@ GtkWidget *main_window_handler( int ops, char *statusbar_msg,
 			tooltips_bg.blue = 35979;
 			gdk_color_alloc( colormap, &tooltips_bg );
 
-			gtk_tooltips_set_colors ( tooltips,
+/*			gtk_tooltips_set_colors ( tooltips,
 			                          &tooltips_bg,
-			                          &main_window->style->fg[ GTK_STATE_NORMAL ] );
-			gtk_object_set_data( GTK_OBJECT( main_window ), "tooltips", tooltips );
+			                          &main_window->style->fg[ GTK_STATE_NORMAL ] );*/
+			g_object_set_data( G_OBJECT( main_window ), "tooltips", tooltips );
 
-			gtk_signal_connect( GTK_OBJECT( main_window ), "destroy",
-			                    GTK_SIGNAL_FUNC( ripperX_exit ),
+			g_signal_connect( G_OBJECT( main_window ), "destroy",
+			                    G_CALLBACK( ripperX_exit ),
 			                    NULL );
-			gtk_signal_connect( GTK_OBJECT( main_window ), "delete_event",
-			                    GTK_SIGNAL_FUNC( ripperX_exit ),
+			g_signal_connect( G_OBJECT( main_window ), "delete_event",
+			                    G_CALLBACK( ripperX_exit ),
 			                    NULL );
 
 			/* Create a vbox to contain things */
 			vbox = gtk_vbox_new( FALSE, 0 );
 			gtk_container_add( GTK_CONTAINER( main_window ), vbox );
-			gtk_container_border_width( GTK_CONTAINER( vbox ), 5 );
+			gtk_container_set_border_width( GTK_CONTAINER( vbox ), 5 );
 			gtk_widget_realize( vbox );
 			gtk_widget_show( vbox );
 
 			/* Create button box & buttons */
 			bbox = gtk_hbox_new( FALSE, 0 );
 			gtk_box_pack_start( GTK_BOX( vbox ), bbox, FALSE, FALSE, 0 );
-			gtk_container_border_width( GTK_CONTAINER( bbox ), 0 );
+			gtk_container_set_border_width( GTK_CONTAINER( bbox ), 0 );
 
 			gtk_widget_realize( bbox );
 			gtk_widget_show( bbox );
@@ -219,8 +222,8 @@ GtkWidget *main_window_handler( int ops, char *statusbar_msg,
 				buttons[ i ].button = gtk_button_new();
 				gtk_container_add( GTK_CONTAINER( buttons[ i ].button ), pixmap );
 
-				gtk_signal_connect( GTK_OBJECT( buttons[ i ].button ), "clicked",
-				                    GTK_SIGNAL_FUNC( buttons[ i ].func ),
+				g_signal_connect( G_OBJECT( buttons[ i ].button ), "clicked",
+				                    G_CALLBACK( buttons[ i ].func ),
 				                    ( gpointer ) buttons[ i ].callback_data );
 				if ( buttons[ i ].arrangement == TRUE )
 					gtk_box_pack_start( GTK_BOX( bbox ), buttons[ i ].button, FALSE, FALSE, 0 );

@@ -1,4 +1,6 @@
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -848,7 +850,7 @@ int create_file_names_for_track(_main_data *main_data, int track, char **wfp, ch
 		main_data->disc_artist, main_data->disc_title, main_data->disc_year,
 		main_data->track[ track ].title );
 	if ( rc < 0 ) {
-		err_handler( RX_PARSING_ERR, "Check if the filename format string contains format characters other than %a %# %v %y or %s.");
+		err_handler( RX_PARSING_ERR, _("Check if the filename format string contains format characters other than %a %# %v %y or %s."));
 		return 0;
 	}
 
@@ -1023,7 +1025,7 @@ extern char * id3_findstyle( int styleid )
         if ( (styleid < ID3_NR_OF_V1_GENRES) && (styleid >= 0) ) {
                 return (char *)ID3_v1_genre_description[ styleid ];
         }
-        return "Unknown Style";
+        return _("Unknown Style");
 }
 
 /*

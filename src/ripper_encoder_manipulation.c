@@ -1,4 +1,6 @@
 
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,7 +50,7 @@ int process_cd_contents_output( _main_data *main_data, int fd )
 
 	/* Reopen the pipe as stream */
 	if ( ( stream = fdopen( fd, "r" ) ) == NULL ) {
-		err_handler( FDOPEN_ERR, "Cannot reopen pty as stream" );
+		err_handler( FDOPEN_ERR, _("Cannot reopen pty as stream") );
 		return - 1;
 	}
 
@@ -202,7 +204,7 @@ int scan_cd( _main_data *main_data )
 		execvp( argv[ 0 ], argv );
 
 		dup2( stderr_fd, 2 );
-		perror( "Failed to exec cdparanoia :" );
+		perror( _("Failed to exec cdparanoia :") );
 		_exit( 127 );
 	}
 
@@ -334,7 +336,7 @@ int execute_ripper_encoder_with_plugin( char *pg_com,
 		execvp( plugin_argv[ 0 ], plugin_argv );
 
 		dup2( stderr_fd, 2 );
-		perror( "Failed to exec plugin" );
+		perror( _("Failed to exec plugin") );
 		_exit( 127 );
 	}
 
@@ -367,7 +369,7 @@ int execute_ripper_encoder_with_plugin( char *pg_com,
 		execvp( program_argv[ 0 ], program_argv );
 
 		dup2( stderr_fd, 2 );
-		perror( "Failed to exec the specified program" );
+		perror( _("Failed to exec the specified program") );
 		_exit( 127 );
 	}
 	close( tty_fd0 );
