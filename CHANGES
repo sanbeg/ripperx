@@ -1,7 +1,29 @@
-Version 2.7.1 pre-release
+Version 2.7.1 2008-01-27
 
-* 2008-01-20/tm - apply child reaper fix from Paul Fox to correctly clean
+* significant contributions from twb (at) users (dot) sourceforge (dot) net!
+
+  - Revamp build system to use autoconf, automake, and libtool.
+    autoconf >= 2.60 is needed, as well as recent automake and autoconf
+
+  - Internationalization support has been added.
+    gettext >= 0.15.x is required
+
+  - GTK2 interface
+    GTK2 >= 2.6.x is required
+    Glib >= 2.6.x is required
+
+    Not all deprecated GTK functions have been replaced yet. I've add the
+    ./configure flag --disable-deprecated, as a dev helper. Currently, as
+    there are still deprecated functions, a build will fail if this flag is
+    used.
+
+* fix gtk_start_pack_box assertion error messages.
+* add ripperX.xpm icon file
+
+2008-01-20/tm 
+* apply child reaper fix from Paul Fox to correctly clean
   up plugin processes when running under dash.
+
 * remove internal versions of id3.c and id3lib.c and use libid3 directly
   - migrate internal functions to misc_utils.c
 * remove refererence to xpms.h
