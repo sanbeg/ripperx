@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ripperX\n"
 "Report-Msgid-Bugs-To: tmancill@users.sourceforge.net\n"
-"POT-Creation-Date: 2007-04-03 10:53+0100\n"
+"POT-Creation-Date: 2008-01-27 16:34-0800\n"
 "PO-Revision-Date: 2007-04-01 08:32+0100\n"
 "Last-Translator: Paul <paul@thewildbeast.co.uk>\n"
 "Language-Team: Paul <paul@thewildbeast.co.uk>\n"
@@ -104,166 +104,170 @@ msgstr ""
 msgid "Ripper plugin"
 msgstr ""
 
-#: src/config_window_handler.c:316 src/config_window_handler.c:551
+#: src/config_window_handler.c:316 src/config_window_handler.c:552
 msgid "Extra Options: "
 msgstr ""
 
-#: src/config_window_handler.c:431
+#: src/config_window_handler.c:432
 msgid "Mp3 Configuration"
 msgstr ""
 
-#: src/config_window_handler.c:442
+#: src/config_window_handler.c:443
 msgid "Encoder plugin"
 msgstr ""
 
-#: src/config_window_handler.c:463
+#: src/config_window_handler.c:464
 msgid "BitRate, Default 128kbits"
 msgstr ""
 
-#: src/config_window_handler.c:502
+#: src/config_window_handler.c:503
 msgid "Use variable bitrate (VBR)"
 msgstr ""
 
-#: src/config_window_handler.c:508
+#: src/config_window_handler.c:509
 msgid "VBR quality (if available)"
 msgstr ""
 
-#: src/config_window_handler.c:518
+#: src/config_window_handler.c:519
 msgid "0=high quality and bigger files, 9=smaller files"
 msgstr ""
 
-#: src/config_window_handler.c:522
+#: src/config_window_handler.c:523
 msgid "Encoder Priority"
 msgstr ""
 
-#: src/config_window_handler.c:532
+#: src/config_window_handler.c:533
 msgid "0=high priority, 19=system is responsive while encoding"
 msgstr ""
 
-#: src/config_window_handler.c:536
+#: src/config_window_handler.c:537
 msgid "High quality mode"
 msgstr ""
 
-#: src/config_window_handler.c:542
+#: src/config_window_handler.c:543
 msgid "Include CRC error protection"
 msgstr ""
 
-#: src/config_window_handler.c:695 src/config_window_handler.c:739
-#: src/config_window_handler.c:740
+#: src/config_window_handler.c:709 src/config_window_handler.c:753
+#: src/config_window_handler.c:754
 msgid "Players"
 msgstr ""
 
-#: src/config_window_handler.c:703
+#: src/config_window_handler.c:717
 msgid "CD play command: "
 msgstr ""
 
-#: src/config_window_handler.c:712
+#: src/config_window_handler.c:726
 msgid "CD stop command: "
 msgstr ""
 
-#: src/config_window_handler.c:721
+#: src/config_window_handler.c:735
 msgid "Wav play command: "
 msgstr ""
 
-#: src/config_window_handler.c:730
+#: src/config_window_handler.c:744
 msgid "Mp3 play command: "
 msgstr ""
 
-#: src/config_window_handler.c:756
+#: src/config_window_handler.c:770
 msgid "You need to fill every entry in players page"
 msgstr ""
 
-#: src/config_window_handler.c:785
+#: src/config_window_handler.c:799
 msgid "File Configuration"
 msgstr ""
 
-#: src/config_window_handler.c:793
+#: src/config_window_handler.c:806
 msgid "Convert spaces to underscores"
 msgstr ""
 
-#: src/config_window_handler.c:799
+#: src/config_window_handler.c:812
 msgid "Create album subdirectory for each CD"
 msgstr ""
 
-#: src/config_window_handler.c:805
+#: src/config_window_handler.c:818
 msgid "Create ID3 tag"
 msgstr ""
 
-#: src/config_window_handler.c:811
+#: src/config_window_handler.c:824
 msgid "Create m3u playlist"
 msgstr ""
 
-#: src/config_window_handler.c:820
+#: src/config_window_handler.c:833
 msgid "Filename format string: "
 msgstr ""
 
-#: src/config_window_handler.c:832
+#: src/config_window_handler.c:845
 msgid "Directory format string: "
 msgstr ""
 
-#: src/config_window_handler.c:846
+#: src/config_window_handler.c:859
 #, c-format
 msgid "%a = Artist"
 msgstr ""
 
-#: src/config_window_handler.c:849
+#: src/config_window_handler.c:862
 msgid "%v = Album"
 msgstr ""
 
-#: src/config_window_handler.c:852
+#: src/config_window_handler.c:865
 msgid "%# = Track no."
 msgstr ""
 
-#: src/config_window_handler.c:855
+#: src/config_window_handler.c:868
 #, c-format
 msgid "%s = Song title"
 msgstr ""
 
-#: src/config_window_handler.c:861 src/config_window_handler.c:862
+#: src/config_window_handler.c:871
+msgid "%y = Year"
+msgstr ""
+
+#: src/config_window_handler.c:877 src/config_window_handler.c:878
 msgid "Files"
 msgstr ""
 
-#: src/config_window_handler.c:915
+#: src/config_window_handler.c:931
 msgid "CDDB Configuration"
 msgstr ""
 
-#: src/config_window_handler.c:928
+#: src/config_window_handler.c:944
 msgid "URL: "
 msgstr ""
 
-#: src/config_window_handler.c:938
+#: src/config_window_handler.c:954
 msgid "Port: "
 msgstr ""
 
-#: src/config_window_handler.c:950
+#: src/config_window_handler.c:966
 msgid "Use HTTP"
 msgstr ""
 
-#: src/config_window_handler.c:957
+#: src/config_window_handler.c:973
 msgid "Proxy Server: "
 msgstr ""
 
-#: src/config_window_handler.c:967
+#: src/config_window_handler.c:983
 msgid "Proxy Port: "
 msgstr ""
 
-#: src/config_window_handler.c:983
+#: src/config_window_handler.c:999
 msgid "CDDB Cache path: "
 msgstr ""
 
-#: src/config_window_handler.c:996
+#: src/config_window_handler.c:1013
 msgid "Automatic lookup on startup"
 msgstr ""
 
-#: src/config_window_handler.c:1013
+#: src/config_window_handler.c:1032
 msgid "You need to specify a server and a port"
 msgstr ""
 
-#: src/config_window_handler.c:1071 src/main_window_handler.c:127
+#: src/config_window_handler.c:1090 src/main_window_handler.c:127
 msgid "Configuration"
 msgstr ""
 
-#: src/dir_window_handler.c:39
+#: src/dir_window_handler.c:55
 msgid "Select a directory"
 msgstr ""
 
@@ -502,7 +506,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: src/job_control.c:513
+#: src/job_control.c:519
 #, c-format
 msgid ""
 "Tracks Completed: %2d\n"
@@ -513,7 +517,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/job_control.c:729 src/job_control.c:835
+#: src/job_control.c:735 src/job_control.c:841
 msgid "Maybe ripperX has failed to execute the plugin"
 msgstr ""
 
@@ -537,13 +541,13 @@ msgstr "Start ripping & encoding"
 msgid "Exit the program"
 msgstr ""
 
-#: src/misc_utils.c:826
+#: src/misc_utils.c:853
 msgid ""
-"Check if the format string contains\n"
-"format characters other than %a %# %v or %s"
+"Check if the filename format string contains format characters other than %a "
+"%# %v %y or %s."
 msgstr ""
 
-#: src/misc_utils.c:997
+#: src/misc_utils.c:1028
 msgid "Unknown Style"
 msgstr ""
 
@@ -559,11 +563,11 @@ msgstr ""
 msgid "Failed to exec cdparanoia :"
 msgstr ""
 
-#: src/ripper_encoder_manipulation.c:338
+#: src/ripper_encoder_manipulation.c:339
 msgid "Failed to exec plugin"
 msgstr ""
 
-#: src/ripper_encoder_manipulation.c:370
+#: src/ripper_encoder_manipulation.c:372
 msgid "Failed to exec the specified program"
 msgstr ""
 
