@@ -255,22 +255,6 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 			g_signal_connect( G_OBJECT( year_entry ), "changed",
 			                  G_CALLBACK( sf_year_entry_changed ),
 			                  NULL );
-			gtk_box_pack_start(GTK_BOX(hbox4), album_entry, TRUE, TRUE, 5);
-			gtk_box_pack_start(GTK_BOX(vbox2), hbox4, FALSE, FALSE, 5);
-
-			/* year and genre entry fields */
-			hbox5 = gtk_hbox_new (FALSE, 0);
-
-			year_label = gtk_label_new(_("Year"));
-			gtk_box_pack_start(GTK_BOX(hbox5), year_label, FALSE, FALSE, 5);
-			year_entry = gtk_entry_new_with_max_length(MAX_YEAR_LENGTH);
-			gtk_widget_set_usize(year_entry, 60, -2);
-			if ( strlen(main_data->disc_year) < 2 )
-				sprintf(main_data->disc_year, "2007");
-			gtk_entry_set_text(GTK_ENTRY(year_entry), main_data->disc_year);
-			g_signal_connect( G_OBJECT( year_entry ), "changed",
-			                  G_CALLBACK( sf_year_entry_changed ),
-			                  NULL );
 			gtk_box_pack_start(GTK_BOX(hbox5), year_entry, TRUE, TRUE, 5);
 
 			genre_label = gtk_label_new(_("Genre"));
