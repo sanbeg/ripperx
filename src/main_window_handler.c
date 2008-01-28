@@ -162,7 +162,7 @@ GtkWidget *main_window_handler( int ops, char *statusbar_msg,
 
 			main_window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 			gtk_widget_set_name( main_window, "main window" );
-			gtk_widget_set_size_request( main_window, 480, 406 );
+			gtk_widget_set_size_request( main_window, 493, 406 );
 			gtk_widget_realize( main_window );
 
 			tooltips = gtk_tooltips_new();
