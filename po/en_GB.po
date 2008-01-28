@@ -356,7 +356,7 @@ msgid "An error has occurred while parsing ~/.ripperXrc"
 msgstr ""
 
 #: src/err_dialog_handler.c:44
-msgid "Some field(s) are empty. Subsituting default value"
+msgid "Some field(s) are empty. Substituting default value"
 msgstr ""
 
 #: src/err_dialog_handler.c:45

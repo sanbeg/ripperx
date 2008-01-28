@@ -41,7 +41,7 @@ const char *err_msg[] = {
 	N_("The file name is too long"),
 	N_("Some entry(s) are empty"),
 	N_("An error has occurred while parsing ~/.ripperXrc"),
-	N_("Some field(s) are empty. Subsituting default value"),
+	N_("Some field(s) are empty. Substituting default value"),
 	N_("Invalid selection"),
 	N_("Could not connect to CDDB server"),
 	N_("Connection refused from CDDB server"),
