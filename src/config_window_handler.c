@@ -806,25 +806,25 @@ int cw_files_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			convert_spaces_ckbx = gtk_check_button_new_with_label(_("Convert spaces to underscores"));
 			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( convert_spaces_ckbx ),
 			                             config.cddb_config.convert_spaces );
-			gtk_container_add( GTK_CONTAINER( vbox ), convert_spaces_ckbx );
+      gtk_box_pack_start( GTK_BOX( vbox ), convert_spaces_ckbx, FALSE, FALSE, 0 );
 
 			/* make directories */
 			make_directories_ckbx = gtk_check_button_new_with_label(_("Create album subdirectory for each CD"));
 			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( make_directories_ckbx ),
 			                             config.cddb_config.make_directories );
-			gtk_container_add( GTK_CONTAINER( vbox ), make_directories_ckbx );
+      gtk_box_pack_start( GTK_BOX( vbox ), make_directories_ckbx, FALSE, FALSE, 0 );
 
 			/* Create ID3 tag*/
 			create_id3_ckbx = gtk_check_button_new_with_label(_("Create ID3 tag"));
 			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( create_id3_ckbx ),
 			                             config.cddb_config.create_id3 );
-			gtk_container_add( GTK_CONTAINER( vbox ), create_id3_ckbx );
+      gtk_box_pack_start( GTK_BOX( vbox ), create_id3_ckbx, FALSE, FALSE, 0 );
 			
 			/* Create m3u playlist file */
 			create_playlist_ckbx = gtk_check_button_new_with_label(_("Create m3u playlist"));
 			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( create_playlist_ckbx ),
 			                             config.cddb_config.create_playlist );
-			gtk_container_add( GTK_CONTAINER( vbox ), create_playlist_ckbx );
+      gtk_box_pack_start( GTK_BOX( vbox ), create_playlist_ckbx, FALSE, FALSE, 0 );
 
 			/* format string entry */
 			hbox = gtk_hbox_new( FALSE, 3 );
