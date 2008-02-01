@@ -56,6 +56,8 @@ AC_TYPE_SIZE_T
 dnl Checks for library functions.
 dnl AC_PROG_GCC_TRADITIONAL
 
+CFLAGS="$CFLAGS -Wall"
+
 dnl Checks for library functions.
 AC_CHECK_FUNCS(socket strcspn strdup strerror strstr)
 AC_CHECK_FUNCS(openpty,, 
