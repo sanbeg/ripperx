@@ -113,7 +113,7 @@ void err_handler( int err_code, const char *extra_msg )
 	gtk_label_set_justify( GTK_LABEL( label ), GTK_JUSTIFY_LEFT );
 	gtk_box_pack_start( GTK_BOX( vbox ), label, TRUE, FALSE, 0 );
 
-	label = gtk_label_new( err_msg[ err_code ] );
+	label = gtk_label_new( gettext(err_msg[ err_code ]) );
 	gtk_label_set_justify( GTK_LABEL( label ), GTK_JUSTIFY_LEFT );
 	gtk_box_pack_start( GTK_BOX( vbox ), label, TRUE, FALSE, 0 );
 
