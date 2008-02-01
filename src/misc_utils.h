@@ -4,6 +4,7 @@
 
 #include "common.h"
 #include <stdio.h>
+#include <id3.h>
 
 #define MISC_OK                 0
 #define MISC_NOT_DIR            1
@@ -68,6 +69,7 @@ char *dup_str(char *inp);
 void mk_buf(char **ptr, int size);
 void mk_str(char **ptr, char *inp);
 void mk_strcat(char **ptr, ...);
+void set_TagField(ID3Tag *myTag, char *data, ID3_FrameID id);
 unsigned char id3_find_cddb_category( char *name );
 void vorbistag(char *ogg_file, char *artist, char *album,
                char *title, unsigned char style, unsigned char track);
