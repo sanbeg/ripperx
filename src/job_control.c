@@ -6,6 +6,10 @@
  * Ralf Engels  10/06/1999  changed lock file to handle all errors
  */
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
 #include <stdlib.h>
 
 

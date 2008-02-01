@@ -1,3 +1,13 @@
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
+#ifdef ENABLE_NLS
+#include <glib/gi18n.h>
+#else
+#define _(a) (a)
+#define N_(a) (a)
+#endif
 
 #include "interface_common.h"
 #include "main_window_handler.h"
@@ -6,6 +16,7 @@
 #include "config_rw.h"
 
 #include "main.h"
+#include "version.h"
 
 void ripperX_init( _main_data *main_data );
 
@@ -53,6 +64,11 @@ int main( int argc, char *argv[] )
 	gtk_set_locale();
 	gtk_init( &argc, &argv );
 	setlocale(LC_NUMERIC, "POSIX");
+#ifdef ENABLE_NLS
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+	textdomain(PACKAGE);
+#endif /*ENABLE_NLS*/
 	ripperX_init( &main_data );
 	gtk_main();
 	return 0;
