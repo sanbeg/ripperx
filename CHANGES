@@ -1,5 +1,12 @@
-Version 2.7.1 2008-01-27
+Version 2.7.1 
 
+2008-02-11
+  - Italian translation added.
+
+2008-02-01
+  - Spanish translation added.
+
+2008-01-27
 * significant contributions from twb (at) users (dot) sourceforge (dot) net!
 
   - Revamp build system to use autoconf, automake, and libtool.
