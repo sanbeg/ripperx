@@ -5,14 +5,18 @@ The installation procedure is
 
 If you can't be root, use '--prefix=' option when running configure.
 
-To build ripperX, you need gtk. You can get current version of gtk at
-www.gtk.org.  You also need id3lib (http://id3lib.sourceforge.net/)
+To build ripperX, you need GTK2 >= 2.6, Glib >= 2.6, and gettext >= 0.15.
+You will also need id3lib (http://id3lib.sourceforge.net/)
+
+If you have autoconf >= 2.60 and recent versions of automake and libtool,
+you can re-libtoolize the build environment by using autogen.sh, which
+will run configure for you.
 
 You will need cdparanoia to rip digital audio from your CD-ROM. You can
 get the latest version at http://www.xiph.org/paranoia/index.html
 (Hint: Use the -d option to spec your cdrom drive.)
 
-You will also need one of the supported mp3 or ogg encoders. 
+You will also need one of the supported OGG, FLAC, or MP3 encoders. 
 
 Well, that's all. Have fun.
  
@@ -27,3 +31,9 @@ wineking@adam.kaist.ac.kr
 Version 2.6 by:
 Tony Mancill <tony@mancill.com>
 Dave Cinege <dcinege@psychosis.com>
+
+Version 2.7 by:
+Tony Mancill <tmancill@users.sourceforge.net>
+Paul Mangan <twb@users.sourceforge.net>
+and patches contributed by Paul Fox and <d_k@linuxmail.org>
+

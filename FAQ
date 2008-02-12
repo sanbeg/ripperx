@@ -4,6 +4,8 @@ Last updated: 2001/11/19
 
 AS YOU MAY HAVE NOTICED THIS FAQ IS *WAY* OUT OF DATE. PLEASE CHECK THE NEW FAQ ON RIPPERX.SOURCEFORGE.NET
 
+(You might also find what you're looking for the BUGS file.)
+
 Q. I keep getting "Error Code 14"
 
 A. This is usually because cdparanoia is not configured properly. If you are 
