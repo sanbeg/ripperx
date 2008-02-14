@@ -1,0 +1,654 @@
+# British English translation of ripperX
+# Copyright (C) 2007 Paul Mangan <paul@thewildbeast.co.uk>
+# This file is distributed under the same license as the ripperX package.
+# Paul <paul@thewildbeast.co.uk>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ripperX\n"
+"Report-Msgid-Bugs-To: tmancill@users.sourceforge.net\n"
+"POT-Creation-Date: 2008-02-12 18:53+0000\n"
+"PO-Revision-Date: 2007-04-01 08:32+0100\n"
+"Last-Translator: Paul <paul@thewildbeast.co.uk>\n"
+"Language-Team: Paul <paul@thewildbeast.co.uk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/cddb.c:463
+msgid "Contacting CDDB server..."
+msgstr ""
+
+#: src/cddb.c:477
+msgid "Grabbing Completed..."
+msgstr ""
+
+#: src/cddbp.c:199
+#, c-format
+msgid "Reading Information about track %2d"
+msgstr ""
+
+#: src/cddbp.c:211
+msgid "Done..."
+msgstr ""
+
+#: src/config_window_handler.c:66
+msgid "General Configuration"
+msgstr ""
+
+#: src/config_window_handler.c:73
+msgid "Wav file"
+msgstr ""
+
+#: src/config_window_handler.c:81 src/config_window_handler.c:119
+msgid "File name format: "
+msgstr ""
+
+#: src/config_window_handler.c:96 src/config_window_handler.c:135
+msgid "Target Directory: "
+msgstr ""
+
+#: src/config_window_handler.c:111
+msgid "MP3 file"
+msgstr ""
+
+#: src/config_window_handler.c:154
+msgid "Prepend character : "
+msgstr ""
+
+#: src/config_window_handler.c:166
+msgid "Make Mp3 from existing Wav file"
+msgstr ""
+
+#: src/config_window_handler.c:175
+msgid "Ask user when specified file exists"
+msgstr ""
+
+#: src/config_window_handler.c:184
+msgid "Keep wav files"
+msgstr ""
+
+#: src/config_window_handler.c:192 src/config_window_handler.c:193
+msgid "General"
+msgstr ""
+
+#: src/config_window_handler.c:212
+msgid "You need to fill every entry in general page"
+msgstr ""
+
+#: src/config_window_handler.c:256
+msgid "Force search for drive (ignore /dev/cdrom)"
+msgstr ""
+
+#: src/config_window_handler.c:257
+msgid "Disable paranoia (will act like cdda)"
+msgstr ""
+
+#: src/config_window_handler.c:258
+msgid "Disable extra paranoia"
+msgstr ""
+
+#: src/config_window_handler.c:259
+msgid "Disable scratch detection"
+msgstr ""
+
+#: src/config_window_handler.c:260
+msgid "Disable scratch repair"
+msgstr ""
+
+#: src/config_window_handler.c:276
+msgid "Wav Configuration"
+msgstr ""
+
+#: src/config_window_handler.c:290
+msgid "Ripper plugin"
+msgstr ""
+
+#: src/config_window_handler.c:320 src/config_window_handler.c:556
+msgid "Extra Options: "
+msgstr ""
+
+#: src/config_window_handler.c:436
+msgid "Mp3 Configuration"
+msgstr ""
+
+#: src/config_window_handler.c:447
+msgid "Encoder plugin"
+msgstr ""
+
+#: src/config_window_handler.c:468
+msgid "BitRate, Default 128kbits"
+msgstr ""
+
+#: src/config_window_handler.c:507
+msgid "Use variable bitrate (VBR)"
+msgstr ""
+
+#: src/config_window_handler.c:513
+msgid "VBR quality (if available)"
+msgstr ""
+
+#: src/config_window_handler.c:523
+msgid "0=high quality and bigger files, 9=smaller files"
+msgstr ""
+
+#: src/config_window_handler.c:527
+msgid "Encoder Priority"
+msgstr ""
+
+#: src/config_window_handler.c:537
+msgid "0=high priority, 19=system is responsive while encoding"
+msgstr ""
+
+#: src/config_window_handler.c:541
+msgid "High quality mode"
+msgstr ""
+
+#: src/config_window_handler.c:547
+msgid "Include CRC error protection"
+msgstr ""
+
+#: src/config_window_handler.c:713 src/config_window_handler.c:757
+#: src/config_window_handler.c:758
+msgid "Players"
+msgstr ""
+
+#: src/config_window_handler.c:721
+msgid "CD play command: "
+msgstr ""
+
+#: src/config_window_handler.c:730
+msgid "CD stop command: "
+msgstr ""
+
+#: src/config_window_handler.c:739
+msgid "Wav play command: "
+msgstr ""
+
+#: src/config_window_handler.c:748
+msgid "Mp3 play command: "
+msgstr ""
+
+#: src/config_window_handler.c:774
+msgid "You need to fill every entry in players page"
+msgstr ""
+
+#: src/config_window_handler.c:803
+msgid "File Configuration"
+msgstr ""
+
+#: src/config_window_handler.c:810
+msgid "Convert spaces to underscores"
+msgstr ""
+
+#: src/config_window_handler.c:816
+msgid "Create album subdirectory for each CD"
+msgstr ""
+
+#: src/config_window_handler.c:822
+msgid "Create ID3 tag"
+msgstr ""
+
+#: src/config_window_handler.c:828
+msgid "Create m3u playlist"
+msgstr ""
+
+#: src/config_window_handler.c:837
+msgid "Filename format string: "
+msgstr ""
+
+#: src/config_window_handler.c:849
+msgid "Directory format string: "
+msgstr ""
+
+#: src/config_window_handler.c:863
+#, c-format
+msgid "%a = Artist"
+msgstr ""
+
+#: src/config_window_handler.c:866
+msgid "%v = Album"
+msgstr ""
+
+#: src/config_window_handler.c:869
+msgid "%# = Track no."
+msgstr ""
+
+#: src/config_window_handler.c:872
+#, c-format
+msgid "%s = Song title"
+msgstr ""
+
+#: src/config_window_handler.c:875
+msgid "%y = Year"
+msgstr ""
+
+#: src/config_window_handler.c:881 src/config_window_handler.c:882
+msgid "Files"
+msgstr ""
+
+#: src/config_window_handler.c:935
+msgid "CDDB Configuration"
+msgstr ""
+
+#: src/config_window_handler.c:948
+msgid "URL: "
+msgstr ""
+
+#: src/config_window_handler.c:958
+msgid "Port: "
+msgstr ""
+
+#: src/config_window_handler.c:970
+msgid "Use HTTP"
+msgstr ""
+
+#: src/config_window_handler.c:977
+msgid "Proxy Server: "
+msgstr ""
+
+#: src/config_window_handler.c:987
+msgid "Proxy Port: "
+msgstr ""
+
+#: src/config_window_handler.c:1003
+msgid "CDDB Cache path: "
+msgstr ""
+
+#: src/config_window_handler.c:1017
+msgid "Automatic lookup on startup"
+msgstr ""
+
+#: src/config_window_handler.c:1036
+msgid "You need to specify a server and a port"
+msgstr ""
+
+#: src/config_window_handler.c:1094 src/main_window_handler.c:130
+msgid "Configuration"
+msgstr ""
+
+#: src/dir_window_handler.c:58
+msgid "Select a directory"
+msgstr ""
+
+#: src/err_dialog_handler.c:30
+msgid "An error has occured while forking"
+msgstr ""
+
+#: src/err_dialog_handler.c:31
+msgid "Cannot create pipe"
+msgstr ""
+
+#: src/err_dialog_handler.c:32
+msgid "Cannot open /dev/null"
+msgstr ""
+
+#: src/err_dialog_handler.c:33
+msgid "Memory allcation error has occurred"
+msgstr ""
+
+#: src/err_dialog_handler.c:34
+msgid ""
+"An error has occurred while trying to\n"
+"reopen a file as a stream (fdopen)"
+msgstr ""
+
+#: src/err_dialog_handler.c:35
+msgid "Cannot read from the pipe"
+msgstr ""
+
+#: src/err_dialog_handler.c:36
+msgid "Cannot delete file"
+msgstr ""
+
+#: src/err_dialog_handler.c:37
+msgid ""
+"Cannot open configuration file\n"
+"loading default values"
+msgstr ""
+
+#: src/err_dialog_handler.c:38
+msgid "Cannot create configuration file ~/.ripperXrc"
+msgstr ""
+
+#: src/err_dialog_handler.c:39
+msgid ""
+"Cannot open a pty\n"
+"Maybe all ptys are busy"
+msgstr ""
+
+#: src/err_dialog_handler.c:40
+msgid "/////  use perror msg until here /////"
+msgstr ""
+
+#: src/err_dialog_handler.c:41
+msgid "Too many arguments"
+msgstr ""
+
+#: src/err_dialog_handler.c:42
+msgid "Job already in progress"
+msgstr ""
+
+#: src/err_dialog_handler.c:43
+msgid ""
+"Please select a track to rip or encode. \n"
+"If you did select tracks, they may already have been ripped."
+msgstr ""
+
+#: src/err_dialog_handler.c:44
+msgid ""
+"Make sure an audio disc is in the drive and that you are \n"
+"either running ripperX as root, are a member\n"
+"of the \"cdrom\" group, or otherwise have appropriate\n"
+"permissions to access the CDROM device.\n"
+msgstr ""
+
+#: src/err_dialog_handler.c:45
+msgid "The file name is too long"
+msgstr ""
+
+#: src/err_dialog_handler.c:46
+msgid "Some entry(s) are empty"
+msgstr ""
+
+#: src/err_dialog_handler.c:47
+msgid "An error has occurred while parsing ~/.ripperXrc"
+msgstr ""
+
+#: src/err_dialog_handler.c:48
+msgid "Some field(s) are empty. Substituting default value"
+msgstr ""
+
+#: src/err_dialog_handler.c:49
+msgid "Invalid selection"
+msgstr ""
+
+#: src/err_dialog_handler.c:50
+msgid "Could not connect to CDDB server"
+msgstr ""
+
+#: src/err_dialog_handler.c:51
+msgid "Connection refused from CDDB server"
+msgstr ""
+
+#: src/err_dialog_handler.c:52
+msgid "CDDB Server Error"
+msgstr ""
+
+#: src/err_dialog_handler.c:53
+msgid "CD Not Found in CD Database"
+msgstr ""
+
+#: src/err_dialog_handler.c:54
+msgid "Cannot parse the format string"
+msgstr ""
+
+#: src/err_dialog_handler.c:55
+msgid "Plugin not present"
+msgstr ""
+
+#: src/err_dialog_handler.c:56
+msgid ""
+"Error while locking file.\n"
+"Make sure the WAV dir and MP3 dir paths are correct and \n"
+"you have permission to write to those directories."
+msgstr ""
+
+#: src/err_dialog_handler.c:57
+msgid "The WAV dir is not writable."
+msgstr ""
+
+#: src/err_dialog_handler.c:58
+msgid "The MP3 dir is not writable."
+msgstr ""
+
+#: src/err_dialog_handler.c:59
+msgid "Cannot create WAV dir"
+msgstr ""
+
+#: src/err_dialog_handler.c:60
+msgid "Cannot create MP3 dir"
+msgstr ""
+
+#: src/err_dialog_handler.c:61
+msgid "Make sure an audio disc is in the CDROM device."
+msgstr ""
+
+#: src/err_dialog_handler.c:62
+msgid ""
+"Make sure that you are a member of the the \"cdrom\" group,\n"
+"or otherwise have appropriate permissions to access the CDROM device."
+msgstr ""
+
+#: src/err_dialog_handler.c:69
+msgid "Abort confirmation"
+msgstr ""
+
+#: src/err_dialog_handler.c:70
+msgid "Do you really want to abort?"
+msgstr ""
+
+#: src/err_dialog_handler.c:71
+msgid "Wanna delete?"
+msgstr "Want to delete?"
+
+#: src/err_dialog_handler.c:72
+msgid "Do you want to delete current file?"
+msgstr ""
+
+#: src/err_dialog_handler.c:73
+msgid "Wanna overwrite?"
+msgstr "Want to overwrite?"
+
+#: src/err_dialog_handler.c:74
+msgid "The file already exists. Do you want to overwrite?"
+msgstr ""
+
+#: src/err_dialog_handler.c:75
+msgid "Enter file name"
+msgstr ""
+
+#: src/err_dialog_handler.c:76
+msgid "Enter new file name"
+msgstr ""
+
+#: src/err_dialog_handler.c:77
+msgid "Wanna create config file?"
+msgstr "Want to create config file?"
+
+#: src/err_dialog_handler.c:78
+msgid ""
+"Config file ~/.ripperXrc does not exist.\n"
+"Do you want to create config file?"
+msgstr ""
+
+#: src/err_dialog_handler.c:79 src/err_dialog_handler.c:81
+msgid "Low diskspace warning"
+msgstr ""
+
+#: src/err_dialog_handler.c:80
+msgid ""
+"There is less than 500 megabytes free on the wav partition.\n"
+" Do you want to continue?"
+msgstr ""
+
+#: src/err_dialog_handler.c:82
+msgid ""
+"There is less than 100 megabytes free on the mp3 partition.\n"
+" Do you want to continue?"
+msgstr ""
+
+#: src/err_dialog_handler.c:83 src/err_dialog_handler.c:85
+msgid "Directory does not exist"
+msgstr ""
+
+#: src/err_dialog_handler.c:84
+msgid "The WAV dir does not exist. Create it?"
+msgstr ""
+
+#: src/err_dialog_handler.c:86
+msgid "The MP3 dir does not exist. Create it?"
+msgstr ""
+
+#: src/err_dialog_handler.c:90
+msgid "Finished ripping"
+msgstr ""
+
+#: src/err_dialog_handler.c:91
+msgid "Finished encoding"
+msgstr ""
+
+#: src/err_dialog_handler.c:101
+msgid "Error"
+msgstr ""
+
+#: src/err_dialog_handler.c:256
+msgid "Status"
+msgstr ""
+
+#: src/job_control.c:523
+#, c-format
+msgid ""
+"Tracks Completed: %2d\n"
+"\n"
+"Artist: %s\n"
+"Album: %s\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/job_control.c:739 src/job_control.c:845
+msgid "Maybe ripperX has failed to execute the plugin"
+msgstr ""
+
+#: src/main_window_handler.c:132
+msgid "Scan CD"
+msgstr ""
+
+#: src/main_window_handler.c:134
+msgid "Stop playing"
+msgstr ""
+
+#: src/main_window_handler.c:136
+msgid "Get track titles from CDDB server"
+msgstr ""
+
+#: src/main_window_handler.c:138
+msgid "Start ripping&encoding"
+msgstr "Start ripping & encoding"
+
+#: src/main_window_handler.c:140
+msgid "Exit the program"
+msgstr ""
+
+#: src/misc_utils.c:856
+msgid ""
+"Check if the filename format string contains format characters other than %a "
+"%# %v %y or %s."
+msgstr ""
+
+#: src/misc_utils.c:1031
+msgid "Unknown Style"
+msgstr ""
+
+#: src/players_manipulation.c:98
+msgid "Failed to exec player :"
+msgstr ""
+
+#: src/ripper_encoder_manipulation.c:56
+msgid "Cannot reopen pty as stream"
+msgstr ""
+
+#: src/ripper_encoder_manipulation.c:210
+msgid "Failed to exec cdparanoia :"
+msgstr ""
+
+#: src/ripper_encoder_manipulation.c:342
+msgid "Failed to exec plugin"
+msgstr ""
+
+#: src/ripper_encoder_manipulation.c:375
+msgid "Failed to exec the specified program"
+msgstr ""
+
+#: src/select_frame_handler.c:188
+msgid "Select All Tracks"
+msgstr ""
+
+#: src/select_frame_handler.c:202
+msgid "Rip to WAV"
+msgstr ""
+
+#: src/select_frame_handler.c:207
+msgid "Encode"
+msgstr ""
+
+#: src/select_frame_handler.c:226
+msgid "Artist "
+msgstr ""
+
+#: src/select_frame_handler.c:238
+msgid "Album"
+msgstr ""
+
+#: src/select_frame_handler.c:251
+msgid "Year"
+msgstr ""
+
+#: src/select_frame_handler.c:263
+msgid "Genre"
+msgstr ""
+
+#: src/status_frame_handler.c:50
+msgid "Total time elapsed: "
+msgstr ""
+
+#: src/status_frame_handler.c:59
+msgid "Total time remaining: "
+msgstr ""
+
+#: src/status_frame_handler.c:68
+msgid "Tracks completed: "
+msgstr ""
+
+#: src/status_frame_handler.c:77
+msgid "Tracks remaining: "
+msgstr ""
+
+#: src/status_frame_handler.c:169 src/status_frame_handler.c:270
+#, c-format
+msgid "Ripping track %d"
+msgstr ""
+
+#: src/status_frame_handler.c:184 src/status_frame_handler.c:290
+#, c-format
+msgid "Encoding track %d"
+msgstr ""
+
+#: src/status_frame_handler.c:199
+msgid "Total progress"
+msgstr ""
+
+#: src/status_frame_handler.c:215
+msgid "Time info"
+msgstr ""
+
+#: src/status_frame_handler.c:235
+msgid "Abort"
+msgstr ""
+
+#: src/status_frame_handler.c:247 src/status_frame_handler.c:350
+msgid "Pause"
+msgstr ""
+
+#: src/status_frame_handler.c:281
+msgid "Not ripping"
+msgstr ""
+
+#: src/status_frame_handler.c:301
+msgid "Not encoding"
+msgstr ""
+
+#: src/status_frame_handler.c:342
+msgid "Continue"
+msgstr ""
