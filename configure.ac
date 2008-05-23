@@ -23,6 +23,11 @@ AC_SUBST(MINOR_VERSION)
 AC_SUBST(MICRO_VERSION)
 AC_SUBST(EXTRA_VERSION)
 
+AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+if test x$PKG_CONFIG = xno ; then
+  AC_MSG_ERROR([*** pkg-config not found. See http://www.freedesktop.org/software/pkgconfig/])
+fi
+
 dnl libtool versioning
 LT_RELEASE=$MAJOR_VERSION.$MINOR_VERSION
 LT_CURRENT=`expr $MICRO_VERSION - $INTERFACE_AGE`
@@ -95,9 +100,7 @@ if test x"$ac_have_id3" = xno; then
 fi
 
 dnl check for glib
-AM_PATH_GLIB_2_0(2.6.0,,
-	AC_MSG_ERROR(Test for GLIB failed. See the file 'INSTALL' for help.),
-	gthread)
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.6 gmodule-2.0 >= 2.6 gobject-2.0 >= 2.6 gthread-2.0 >= 2.6)
 
 dnl Check for bind_textdomain_codeset, including -lintl if GLib brings it in.
 rx_save_LIBS=$LIBS
@@ -105,8 +108,8 @@ LIBS="$LIBS $GTK_LIBS"
 AC_CHECK_FUNCS(bind_textdomain_codeset)
 LIBS=$rx_save_LIBS
 
-AM_PATH_GTK_2_0(2.6.0,,
-	AC_MSG_ERROR(Test for GTK failed. See the file 'INSTALL' for help.))
+dnl Checks for GTK
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.6)
 
 dnl --disable-deprecated switch for GTK2 purification
 AC_ARG_ENABLE(deprecated, [  --disable-deprecated  Disable deprecated GTK functions. ],
