@@ -846,7 +846,7 @@ int create_file_names_for_track(_main_data *main_data, int track, char **wfp, ch
 {
 	static char *buffer;
 	int rc;
-	
+	char *conv_str = NULL;
 
 	rc = parse_rx_format_string(&buffer,
 		config.cddb_config.format_string, track, 
@@ -860,16 +860,21 @@ int create_file_names_for_track(_main_data *main_data, int track, char **wfp, ch
 	if (buffer[0] == 0)
 		strcpy( buffer, main_data->track[ track ].title );
 
-	remove_non_unix_chars( buffer );
-	convert_slashes(buffer, '-');	 
+	conv_str = g_locale_from_utf8(buffer, -1, NULL, NULL, NULL);
+
+	remove_non_unix_chars( conv_str );
+	convert_slashes(conv_str, '-');	 
 	if ( config.cddb_config.convert_spaces == TRUE ) {
-		convert_spaces( buffer, '_' );
+		convert_spaces( conv_str, '_' );
 	}
 
 	if (wfp)
-		mk_strcat(wfp, wd, buffer, wfext, NULL);
+		mk_strcat(wfp, wd, conv_str, wfext, NULL);
 	if (efp)
-		mk_strcat(efp, ed, buffer, ecfext, NULL);
+		mk_strcat(efp, ed, conv_str, ecfext, NULL);
+
+	g_free(conv_str);	
+
 	return 1;
 }
 
@@ -1003,6 +1008,7 @@ void set_TagField(ID3Tag *myTag, char *data,ID3_FrameID id)
 {       
         ID3Frame *myFrame;
         ID3Frame *pFrame;
+	char *conv_str = NULL;
         
         myFrame=ID3Frame_NewID(id);
 
@@ -1012,8 +1018,12 @@ void set_TagField(ID3Tag *myTag, char *data,ID3_FrameID id)
                 ID3Tag_RemoveFrame(myTag,pFrame);
         }
 
-        ID3Field_SetASCII(ID3Frame_GetField(myFrame,ID3FN_TEXT),data);
+	conv_str = g_locale_from_utf8(data, -1, NULL, NULL, NULL);
+
+        ID3Field_SetASCII(ID3Frame_GetField(myFrame,ID3FN_TEXT),conv_str);
         ID3Tag_AttachFrame(myTag,myFrame);
+
+	g_free(conv_str);
 
         return;
 }
@@ -1060,15 +1070,22 @@ void vorbistag(char *ogg_file,
         char temp[MAX_TITLE_LENGTH];
         gchar *tagfile;
         FILE *f;
+	char *conv_artist = NULL;
+	char *conv_album = NULL;
+	char *conv_title = NULL;
+
+	conv_artist = g_locale_from_utf8(artist, -1, NULL, NULL, NULL);
+	conv_album = g_locale_from_utf8(album, -1, NULL, NULL, NULL);
+	conv_title = g_locale_from_utf8(title, -1, NULL, NULL, NULL);
 
         tagfile = g_strdup_printf("%s.tags", ogg_file);
         
         f = fopen(tagfile, "w");
-        snprintf(temp, sizeof(temp) - 1, "ARTIST=%s\n", artist);
+        snprintf(temp, sizeof(temp) - 1, "ARTIST=%s\n", conv_artist);
         fputs(temp, f);
-        snprintf(temp, sizeof(temp) - 1, "ALBUM=%s\n", album);
+        snprintf(temp, sizeof(temp) - 1, "ALBUM=%s\n", conv_album);
         fputs(temp, f);
-        snprintf(temp, sizeof(temp) - 1, "TITLE=%s\n", title);
+        snprintf(temp, sizeof(temp) - 1, "TITLE=%s\n", conv_title);
         fputs(temp, f);
         snprintf(temp, sizeof(temp) - 1, "GENRE=%s\n", id3_findstyle(style));
         fputs(temp, f);
@@ -1080,5 +1097,9 @@ void vorbistag(char *ogg_file,
         system(cmd);
         unlink(tagfile);
         free(tagfile);
+
+	g_free(conv_artist);
+	g_free(conv_album);
+	g_free(conv_title);
 }
 
