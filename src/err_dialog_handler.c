@@ -254,9 +254,6 @@ void status_handler( int status_code, const char *extra_msg )
 	window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 	gtk_window_set_position( GTK_WINDOW( window ), GTK_WIN_POS_CENTER );
 	gtk_window_set_title( GTK_WINDOW( window ), _("Status") );
-	g_signal_connect( G_OBJECT( window ), "destroy",
-	                    G_CALLBACK ( gtk_widget_destroyed ),
-	                    &window );
 	gtk_container_set_border_width( GTK_CONTAINER( window ), 5 );
 
 	vbox = gtk_vbox_new( FALSE, 3 );
