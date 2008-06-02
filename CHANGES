@@ -1,3 +1,8 @@
+Version 2.7.3
+
+* Add Glacian translation.  Thank you to Miguel Bouzada.
+
+
 Version 2.7.2 
 
 Remove auto-generated files from SVN source tree.  You should be able to
