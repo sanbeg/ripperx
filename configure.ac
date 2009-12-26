@@ -68,7 +68,7 @@ AC_CHECK_FUNCS(socket strcspn strdup strerror strstr)
 AC_CHECK_FUNCS(openpty,, 
 		AC_CHECK_LIB(util,openpty,
 			[AC_DEFINE(HAVE_OPENPTY)]
-			[LIBS="$LIBS -lutil"]
+			[LIBS="$LIBS -lutil -lz -lstdc++"]
 ))
 
 dnl for gettext
@@ -93,8 +93,7 @@ fi
 
 AC_CHECK_LIB(xpg4, setlocale)
 
-AC_CHECK_LIB(id3, ID3Tag_Link,
-	[LIBS="$LIBS -lid3 -lz -lstdc++"], [ID3_LIBS="" ac_have_id3="no"])
+AC_CHECK_LIB(id3, ID3Tag_Link, [], [ID3_LIBS="" ac_have_id3="no"])
 if test x"$ac_have_id3" = xno; then
 	AC_MSG_ERROR([libid3 not found])
 fi
