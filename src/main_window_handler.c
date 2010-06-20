@@ -165,7 +165,7 @@ GtkWidget *main_window_handler( int ops, char *statusbar_msg,
 
 			main_window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
 			gtk_widget_set_name( main_window, "main window" );
-			gtk_widget_set_size_request( main_window, 493, 406 );
+			gtk_widget_set_size_request( main_window, 508, 406 );
 			gtk_widget_realize( main_window );
 
 			tooltips = gtk_tooltips_new();
@@ -256,8 +256,9 @@ GtkWidget *main_window_handler( int ops, char *statusbar_msg,
 			gtk_widget_show_all( main_window );
 
 			/* Do a CDDB lookup for this CD only if cd is actually is drive */
-			if ( config.cddb_config.auto_lookup && !count )
+			if ( config.cddb_config.auto_lookup && !count ) 
 				cddb_main( main_data );
+
 		}
 		/* go on and set mode to select mode */
 
@@ -330,7 +331,7 @@ GtkWidget *main_window_handler( int ops, char *statusbar_msg,
 		gtk_widget_set_sensitive( buttons[ 4 ].button, FALSE );
 		return main_frame;
 
-    case CD_INDRIVE:
+ 	case CD_INDRIVE:
 		gtk_widget_set_sensitive( buttons[ 3 ].button, TRUE );
 		gtk_widget_set_sensitive( buttons[ 4 ].button, TRUE );
 		return main_frame;
