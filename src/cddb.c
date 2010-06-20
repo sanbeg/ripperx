@@ -508,8 +508,12 @@ int cddb_main( _main_data *main_data )
 			put_track_title(titles[i], main_data, i);
 			free( titles[ i ] );
 		}
+		
+    // auto-select all tracks
+    select_frame_handler( SF_SELECT_ALL, 0, main_data );
 		/* this is needed to update the display with the new data */
 		select_frame_handler( SF_SYNC_SELECT_FRAME, 0, main_data );
+
 		break;
 	case NO_CONNECT :
 		err_handler( CDDB_NO_CONNECT_ERR, NULL );

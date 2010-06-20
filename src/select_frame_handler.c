@@ -120,7 +120,7 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 
 	switch ( ops ) {
 	case WIDGET_CREATE : {
-			GtkWidget * main_frame, *vbox, *hbox1, *vbox2, *hbox, *hbox2, *hbox3, *hbox4, *hbox5, *hbox6, *label, *scr_window;
+			GtkWidget * main_frame, *vbox, *hbox1, *vbox2, *hbox, *hbox2, *hbox3, *hbox4, *hbox5, *label, *scr_window;
 			GtkWidget *table, *separator, *button;
 			GtkStyle *style;
 			GdkGC *gc;
@@ -463,12 +463,21 @@ void select_frame_handler( int ops, int track, _main_data *main_data )
 		return;
 
 	case SF_SELECT_BUTTON_ACT_ALL :
-		gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( select_all_button ), GTK_TOGGLE_BUTTON( select_all_button ) ->active );
+		gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( select_all_button ), 
+                                  GTK_TOGGLE_BUTTON( select_all_button ) ->active );
 		for ( track = 0; track < num_tracks; track++ ) {
 			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ),
 			                             GTK_TOGGLE_BUTTON( select_all_button ) ->active );
 		}
 		return;
+
+  // auto-select all tracks	
+  case SF_SELECT_ALL :
+		gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( select_all_button ), TRUE );
+		for ( track = 0; track < num_tracks; track++ ) {
+			gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( track_selected_button[ track ] ), TRUE );
+    }
+    return;
 
 	case SF_SYNC_MAIN_DATA :
 		main_data = saved_main_data;

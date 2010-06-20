@@ -319,7 +319,7 @@ char *get_default_track_title( int track )
 	static char name_buf[ MAX_FILE_NAME_LENGTH ];
 	char *name_format = config.mp3_file_name_format;
 	char track_no_buf[ 5 ];
-	int read_offset, write_offset, return_val;
+	int read_offset, write_offset;
 
 	read_offset = -1;
 	write_offset = 0;
@@ -407,9 +407,9 @@ int high_ascii_to_low_ascii ( unsigned char *p )
 		return 1;
 }
 
-void remove_non_unix_chars( unsigned char *src )
+void remove_non_unix_chars( char *src )
 {
-	unsigned char *p = src, *w = p;
+	unsigned char *p = (unsigned char *)src, *w = p;
 
 	for (; *p != 0; p++ ) {
 	
@@ -701,11 +701,9 @@ long check_free_space(char* dir)
 	FILE *file;
 	long len;
 	char cmd[MAX_FILE_NAME_LENGTH];
-	char buffer[MAX_FILE_NAME_LENGTH];
 
 	snprintf(cmd, MAX_FILE_NAME_LENGTH - 1, "df -P '%s' 2>/dev/null | awk '{print $4}' | tail -1", dir);
 	file = popen(cmd, "r");
-	//fscanf(file, "%s\n", &buffer); /* read the Available title */
 	fscanf(file, "%ld", &len); /* now read the length */
 	pclose(file);
 	return len;
@@ -784,7 +782,7 @@ int create_filenames_from_format(_main_data *main_data)
 {
 	int i;
 	int rc2;
-	static char *df;
+	static unsigned char *df;
 
 	i = strlen(config.wav_path) - 1;
 	if (i >= 0 && config.wav_path[i] == '/')
@@ -907,7 +905,7 @@ void put_track_title(char *src, _main_data *main_data, int tno)
 		++sp;
 
 	/* Split off track artist if specified */
-	if (cp = rindex(sp, '/')) {
+	if ((cp = rindex(sp, '/'))) {
 		for (ep = cp - 1; ep > sp && isspace(*ep); --ep)
 			;
 		c = *(++ep);
@@ -985,12 +983,12 @@ void mk_strcat(char **ptr, ...)
 	int tlen = 0;
 
 	va_start(ap, ptr);
-	while (cp = va_arg(ap, char *))
+	while ((cp = va_arg(ap, char *)))
 		tlen += strlen(cp);
 	va_end(ap);
 	mk_buf(ptr, tlen + 1);
 	va_start(ap, ptr);
-	for (cpb = *ptr; cp = va_arg(ap, char *); cpb += strlen(cp))
+	for (cpb = *ptr; (cp = va_arg(ap, char *)); cpb += strlen(cp))
 		strcpy(cpb, cp);
 	va_end(ap);
 }

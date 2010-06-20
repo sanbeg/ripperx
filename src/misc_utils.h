@@ -52,7 +52,7 @@ char *file_name_without_path( char *src );
 char *file_path_without_name( char *src );
 void auto_append_extension( char *src, int type );
 char *get_default_track_title( int track );
-void remove_non_unix_chars( unsigned char *src );
+void remove_non_unix_chars( char *src );
 void convert_slashes( char *src, char c );
 void convert_spaces( char *src, char c );
 
