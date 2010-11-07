@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ripperX\n"
 "Report-Msgid-Bugs-To: tmancill@users.sourceforge.net\n"
-"POT-Creation-Date: 2008-02-12 18:53+0000\n"
+"POT-Creation-Date: 2008-06-02 09:28-0700\n"
 "PO-Revision-Date: 2007-04-01 08:32+0100\n"
 "Last-Translator: Paul <paul@thewildbeast.co.uk>\n"
 "Language-Team: Paul <paul@thewildbeast.co.uk>\n"
@@ -541,13 +541,13 @@ msgstr "Start ripping & encoding"
 msgid "Exit the program"
 msgstr ""
 
-#: src/misc_utils.c:856
+#: src/misc_utils.c:854
 msgid ""
 "Check if the filename format string contains format characters other than %a "
 "%# %v %y or %s."
 msgstr ""
 
-#: src/misc_utils.c:1031
+#: src/misc_utils.c:1039
 msgid "Unknown Style"
 msgstr ""
 
