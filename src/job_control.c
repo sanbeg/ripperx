@@ -432,13 +432,15 @@ void job_finisher( _main_data *main_data )
 	int madewavs = FALSE;
 	int mademp3s = FALSE;
 	int tracksdone = 0;
-	char s_track_num[2];
+	char *s_track_num;
 	char *artist;
 	ID3Tag *myTag;
 
 	FILE *fp_playlist = NULL;
 	char playlist_filespec[ MAX_FILE_PATH_LENGTH + MAX_FILE_NAME_LENGTH ];
 
+	/* Allocate space dynamically.  This is overkill, but certainly won't be a problem. */
+	s_track_num = (char *) malloc((main_data->num_tracks + 2) * sizeof(char));
 	buffer[0] = 0;
 
 	/* Clean up */
@@ -515,6 +517,7 @@ void job_finisher( _main_data *main_data )
 		}
 		main_data->track[ i ].make_mp3 = FALSE;
 	} /* end loop over all tracks */
+  free(s_track_num);
 
 	if (( config.cddb_config.create_playlist == TRUE ) && ( fp_playlist != NULL ))
 		fclose( fp_playlist );
