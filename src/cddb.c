@@ -146,10 +146,12 @@ int cddb_handle_data( const char *data, char** artist, char** dtitle, char* titl
 			remove_non_unix_chars( *dtitle );
 			convert_slashes(*artist, '_'); // dc: _ Artist, - others
 			convert_slashes(*dtitle, '-');
+#ifdef CONVERT_SPACES_IN_ID3_DATA
 			if ( config.cddb_config.convert_spaces == TRUE ) {
 				convert_spaces( *artist, '_' );
 				convert_spaces( *dtitle, '_' );
 			}
+#endif
 #ifdef DEBUG
 			printf( "Artist: %s\n", ( *artist ) );
 			printf( "Dtitle: %s\n", ( *dtitle ) );
