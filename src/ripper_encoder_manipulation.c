@@ -231,9 +231,14 @@ int start_ripping_encoding( int type, int begin, int length, int track,
 	// Debian modification for alternate plugin location
 	// <tmancill@debian.org>
 	char debian_path[ MAX_COMMAND_LENGTH ];
-	strcpy(debian_path, "/usr/lib/ripperx:");
-	strcat(debian_path, getenv("PATH"));
-	setenv("PATH", debian_path, 1);
+	char *path = getenv("PATH");
+	char *found = strstr(path, "/usr/lib/ripperx:");
+	if(found == NULL) /* Only add the path if it isn't already present. */
+	  {
+	    strcpy(debian_path, "/usr/lib/ripperx:");
+	    strcat(debian_path, getenv("PATH"));
+	    setenv("PATH", debian_path, 1);
+	  }
 	// end Debian modifications
 
 	// parse/expand program command
