@@ -72,7 +72,7 @@ AC_CHECK_FUNCS(openpty,,
 ))
 
 dnl for gettext
-ALL_LINGUAS="en_GB es it gl"
+ALL_LINGUAS="en_GB es it gl de"
 GETTEXT_PACKAGE=ripperX
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Define text domain.])
