@@ -1,8 +1,16 @@
 Version 2.7.3
 
 * Add Glacian translation.  Thank you to Miguel Bouzada.
+* Add German translation.  Thank you to Chris Leick. (Debian #550207)
+* Increase width of main menu slightly ("Go" button was being clipped).
+* Automatically select all tracks after a CDDB lookup - by popular demand.
+* Correct typos in error messages.  Thank you Chris Leick. (Debian #550208)
+* Apply buffer overflow patches (LP #514739)
+* Apply patch to no longer put underscore instead of space in id3 tag
+  (LP #671852)
+* distclean target removes .gmo translation build artifacts
 
-
+-------------------------------------------------------------------------
 Version 2.7.2 
 
 Remove auto-generated files from SVN source tree.  You should be able to
