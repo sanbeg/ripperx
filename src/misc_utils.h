@@ -71,7 +71,8 @@ void mk_str(char **ptr, char *inp);
 void mk_strcat(char **ptr, ...);
 void set_TagField(ID3Tag *myTag, char *data, ID3_FrameID id);
 unsigned char id3_find_cddb_category( char *name );
-void vorbistag(char *ogg_file, char *artist, char *album,
+void vorbistag(char *ogg_file, char *artist, char *album, char *date,
                char *title, unsigned char style, unsigned char track);
-
+void flactag(char *flac_file, char *artist, char *album, char *date,
+               char *title, unsigned char style, unsigned char track);
 #endif

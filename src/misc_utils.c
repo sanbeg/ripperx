@@ -1060,6 +1060,7 @@ unsigned char id3_find_cddb_category( char *name )
 void vorbistag(char *ogg_file, 
                 char *artist,
                 char *album,
+                char *date,
                 char *title,
                 unsigned char style,
                 unsigned char track)
@@ -1068,13 +1069,13 @@ void vorbistag(char *ogg_file,
         char temp[MAX_TITLE_LENGTH];
         gchar *tagfile;
         FILE *f;
-	char *conv_artist = NULL;
-	char *conv_album = NULL;
-	char *conv_title = NULL;
+        char *conv_artist = NULL;
+        char *conv_album = NULL;
+        char *conv_title = NULL;
 
-	conv_artist = g_locale_from_utf8(artist, -1, NULL, NULL, NULL);
-	conv_album = g_locale_from_utf8(album, -1, NULL, NULL, NULL);
-	conv_title = g_locale_from_utf8(title, -1, NULL, NULL, NULL);
+        conv_artist = g_locale_from_utf8(artist, -1, NULL, NULL, NULL);
+        conv_album = g_locale_from_utf8(album, -1, NULL, NULL, NULL);
+        conv_title = g_locale_from_utf8(title, -1, NULL, NULL, NULL);
 
         tagfile = g_strdup_printf("%s.tags", ogg_file);
         
@@ -1082,6 +1083,8 @@ void vorbistag(char *ogg_file,
         snprintf(temp, sizeof(temp) - 1, "ARTIST=%s\n", conv_artist);
         fputs(temp, f);
         snprintf(temp, sizeof(temp) - 1, "ALBUM=%s\n", conv_album);
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "DATE=%s\n", date);
         fputs(temp, f);
         snprintf(temp, sizeof(temp) - 1, "TITLE=%s\n", conv_title);
         fputs(temp, f);
@@ -1096,8 +1099,45 @@ void vorbistag(char *ogg_file,
         unlink(tagfile);
         free(tagfile);
 
-	g_free(conv_artist);
-	g_free(conv_album);
-	g_free(conv_title);
+        g_free(conv_artist);
+        g_free(conv_album);
+        g_free(conv_title);
 }
 
+// utility function to write flac tags - R. Turnbull 1-2-2010
+
+void flactag(char *flac_file, 
+                char *artist,
+                char *album,
+                char *date,
+                char *title,
+                unsigned char style,
+                unsigned char track)
+{
+        char cmd[MAX_COMMAND_LENGTH];
+        char temp[MAX_TITLE_LENGTH];
+        gchar *tagfile;
+        FILE *f;
+
+        tagfile = g_strdup_printf("%s.tags", flac_file);
+        
+        f = fopen(tagfile, "w");
+        snprintf(temp, sizeof(temp) - 1, "ARTIST=%s\n", artist);
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "ALBUM=%s\n", album);
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "DATE=%s\n", date);
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "TITLE=%s\n", title);
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "GENRE=%s\n", id3_findstyle(style));
+        fputs(temp, f);
+        snprintf(temp, sizeof(temp) - 1, "TRACKNUMBER=%d\n", track);
+        fputs(temp, f);
+        fclose(f);
+
+        snprintf(cmd, sizeof(cmd) - 1, "metaflac --import-tags-from='%s' '%s'", tagfile, flac_file);
+        system(cmd);
+        unlink(tagfile);
+        free(tagfile);
+}

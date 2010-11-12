@@ -467,16 +467,23 @@ void job_finisher( _main_data *main_data )
 				//		if (main_data->encoding_type == OGG) {
 					
 				if ( !strcmp( config.encoder.encoder, "oggenc") ) {
-					// TODO:  add year to OGG tag
-					// strncpy( mytag.year, main_data->disc_year, 4 );	// M.Tyler 6-3-2005
+          /* set VORBIS tags using vorbistag - added DATE tag - R. Turnbull 1-2-2010 */
 					vorbistag(enc_file, 
 							artist, 
 							main_data->disc_title, 
+							main_data->disc_year, 
 							main_data->track[i].title,
 							id3_find_cddb_category( main_data->disc_category ),
 							i + 1 );
 				} else if ( !strcmp( config.encoder.encoder, "flac" ) ) {
-					/* nothing to do for FLAC right now */
+          /* set FLAC tags using metaflac R. Turnbull 1-2-2010 */
+					flactag(enc_file, 
+							artist, 
+							main_data->disc_title,
+							main_data->disc_year,
+							main_data->track[i].title,
+							id3_find_cddb_category( main_data->disc_category ),
+							i + 1 );
 				} else if ( !strcmp( config.encoder.encoder, "mppenc" ) ) {
 					/* do nothing for for musepack right now -
 				        originally supported id3 now wants apev2 tags */
