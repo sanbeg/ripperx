@@ -1,5 +1,6 @@
 Version 2.7.3
 
+2010-11-13
 * Add Glacian translation.  Thank you to Miguel Bouzada.
 * Add German translation.  Thank you to Chris Leick. (Debian #550207)
 * Increase width of main menu slightly ("Go" button was being clipped).
@@ -9,6 +10,9 @@ Version 2.7.3
 * Apply patch to no longer put underscore instead of space in id3 tag
   (LP #671852)
 * distclean target removes .gmo translation build artifacts
+* Apply patches from Robert Turnbull
+  - Add year to Vorbis tags
+  - Tags FLAC encoded files with metaflac
 
 -------------------------------------------------------------------------
 Version 2.7.2 
