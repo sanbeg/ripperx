@@ -668,7 +668,8 @@ int cw_mp3_handler( int ops, _main_data *main_data, GtkWidget *notebook )
 			}
 
  			if ( !strcmp( config.encoder.encoder, "flac" ) ) {
- 			   snprintf( config.encoder.full_command, MAX_COMMAND_LENGTH, "%s", config.encoder.encoder);
+ 			   snprintf( config.encoder.full_command, MAX_COMMAND_LENGTH, "%s %s", config.encoder.encoder,
+					config.encoder.extra_options);
  			} else if ( !strcmp( config.encoder.encoder, "mppenc" ) ) {
 				if (config.encoder.use_high_qual)
 					snprintf( config.encoder.full_command, MAX_COMMAND_LENGTH,
