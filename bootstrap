@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Script to regenerate the autotools scripts from
+# configure.ac and Makefile.am files.
+#
+# You may want to re-run gettextize(1) as well to fully
+# regenerate all the scripts and files needed, but it's
+# somewhat interactive and you'll need to backout the
+# changes it makes to the top level Makefile.am so we
+# don't call it from here.
+
+aclocal -I m4 \
+  && autoconf \
+  && autoheader \
+  && automake --add-missing --foreign --copy \
+  && echo "configure script successfully generated."
+

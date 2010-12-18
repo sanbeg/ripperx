@@ -65,11 +65,11 @@
 #define DL_OK_PRESSED				100
 
 /* Function Prototypes */
-void err_handler( int err_code, const char *extra_msg );
+void err_handler(int err_code, const char *extra_msg);
 
-int dialog_handler( int ops, int ok_or_yes, int dialog_code,
-                    int with_entry, char *entry_default,
-                    char *entered, int answer_length );
+int dialog_handler(int ops, int ok_or_yes, int dialog_code,
+                   int with_entry, char *entry_default,
+                   char *entered, int answer_length);
 
-void status_handler( int status_code, const char *extra_msg );
+void status_handler(int status_code, const char *extra_msg);
 #endif

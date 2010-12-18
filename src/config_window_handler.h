@@ -4,6 +4,6 @@
 
 #include "common.h"
 
-void config_window_handler( int ops, _main_data *main_data );
+void config_window_handler(int ops, _main_data *main_data);
 
 #endif

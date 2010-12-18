@@ -1,136 +1,60 @@
-dnl Process this file with autoconf to produce a configure script.
-AC_PREREQ(2.60)
-AC_INIT(src/common.h)
-AC_CONFIG_AUX_DIR(config)
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
 
-PACKAGE=ripperX
+AC_PREREQ([2.67])
+AC_INIT([ripperX], [2.7.3], [tmancill@users.sourceforge.net])
+AC_CONFIG_SRCDIR([src/main.c])
+AC_CONFIG_AUX_DIR([config])
+AM_INIT_AUTOMAKE
+AC_CONFIG_HEADERS([config.h])
 
-dnl ripperX version
-MAJOR_VERSION=2
-MINOR_VERSION=7
-MICRO_VERSION=3
-EXTRA_VERSION=
-
-VERSION=${MAJOR_VERSION}.${MINOR_VERSION}.${MICRO_VERSION}${EXTRA_VERSION}
-
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
-dnl AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
-dnl AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
-AC_SUBST(PACKAGE)
-AC_SUBST(VERSION)
-AC_SUBST(MAJOR_VERSION)
-AC_SUBST(MINOR_VERSION)
-AC_SUBST(MICRO_VERSION)
-AC_SUBST(EXTRA_VERSION)
-
-AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
-if test x$PKG_CONFIG = xno ; then
-  AC_MSG_ERROR([*** pkg-config not found. See http://www.freedesktop.org/software/pkgconfig/])
-fi
-
-dnl libtool versioning
-LT_RELEASE=$MAJOR_VERSION.$MINOR_VERSION
-LT_CURRENT=`expr $MICRO_VERSION - $INTERFACE_AGE`
-LT_REVISION=$INTERFACE_AGE
-LT_AGE=`expr $BINARY_AGE - $INTERFACE_AGE`
-AC_SUBST(LT_RELEASE)
-AC_SUBST(LT_CURRENT)
-AC_SUBST(LT_REVISION)
-AC_SUBST(LT_AGE)
-
-dnl Specify a header configuration file
-AC_CONFIG_HEADERS(config.h)
-
-AM_MAINTAINER_MODE
-
+# Checks for programs.
 AC_PROG_CC
-AC_ISC_POSIX
-AC_PROG_INSTALL
-AC_PROG_CPP
-AM_PROG_LIBTOOL
-AC_HEADER_DIRENT
-AC_HEADER_STDC
-AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(pty.h fcntl.h strings.h sys/ioctl.h unistd.h)
 
-dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
+AC_PATH_PROG(PKG_CONFIG, [pkg-config], [no])
+m4_if(PKG_CONFIG, [no],
+      AC_MSG_ERROR([*** pkg-config not found. See http://www.freedesktop.org/software/pkgconfig/]))
+
+# Checks for header files.
+AC_HEADER_SYS_WAIT
+AC_HEADER_DIRENT
+AC_CHECK_HEADERS([fcntl.h locale.h netdb.h netinet/in.h stdlib.h string.h sys/ioctl.h sys/socket.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
 
-dnl Checks for library functions.
-dnl AC_PROG_GCC_TRADITIONAL
+# Checks for library functions.
+AC_FUNC_FORK
+AC_FUNC_MALLOC
 
-CFLAGS="$CFLAGS -Wall"
+m4_foreach([func],
+           [dup2, gethostbyname, memset, mkdir, rmdir, setenv, setlocale, socket,
+            strchr, strcspn, strdup, strerror, strncasecmp, strndup, strstr],
+           AC_CHECK_FUNC(func,, AC_MSG_ERROR([Missing required function: func])) )
 
-dnl Checks for library functions.
-AC_CHECK_FUNCS(socket strcspn strdup strerror strstr)
-AC_CHECK_FUNCS(openpty,, 
-		AC_CHECK_LIB(util,openpty,
-			[AC_DEFINE(HAVE_OPENPTY)]
-			[LIBS="$LIBS -lutil -lz -lstdc++"]
-))
+AC_CHECK_FUNC(openpty,, 
+               AC_CHECK_LIB(util,openpty,, AC_MSG_ERROR([Missing required function: openpty])) )
 
-dnl for gettext
-ALL_LINGUAS="en_GB es it gl de"
-GETTEXT_PACKAGE=ripperX
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Define text domain.])
 
-AM_GNU_GETTEXT_VERSION([0.15])
+# Additional libraries
 AM_GNU_GETTEXT([external])
 
-dnl Set PACKAGE_DATA_DIR in config.h.
-if test "x${datarootdir}" = 'x${prefix}/share'; then
-	if test "x${prefix}" = "xNONE"; then
-    		AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${ac_default_prefix}/share/${PACKAGE}",[PACKAGE_DATA_DIR])
-  	else
-    		AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${prefix}/share/${PACKAGE}",[PACKAGE_DATA_DIR])
-  	fi
-else
-	AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${datarootdir}/${PACKAGE}",[PACKAGE_DATA_DIR])
-fi
+AC_CHECK_LIB(id3, ID3Tag_Link,, AC_MSG_ERROR([Missing required library: id3]))
 
-AC_CHECK_LIB(xpg4, setlocale)
-
-AC_CHECK_LIB(id3, ID3Tag_Link, [], [ID3_LIBS="" ac_have_id3="no"])
-if test x"$ac_have_id3" = xno; then
-	AC_MSG_ERROR([libid3 not found])
-fi
-
-dnl check for glib
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.6 gmodule-2.0 >= 2.6 gobject-2.0 >= 2.6 gthread-2.0 >= 2.6)
-
-dnl Check for bind_textdomain_codeset, including -lintl if GLib brings it in.
-rx_save_LIBS=$LIBS
-LIBS="$LIBS $GTK_LIBS"
-AC_CHECK_FUNCS(bind_textdomain_codeset)
-LIBS=$rx_save_LIBS
-
-dnl Checks for GTK
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.6)
 
-dnl --disable-deprecated switch for GTK2 purification
+# --disable-deprecated switch for GTK2 purification
 AC_ARG_ENABLE(deprecated, [  --disable-deprecated  Disable deprecated GTK functions. ],
 			  [GTK_CFLAGS="$GTK_CFLAGS -DG_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED"], [])
 
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(GTK_LIBS)
 
-AC_OUTPUT([
-Makefile
-po/Makefile.in
-src/version.h
-src/Makefile
-config/Makefile
-plugins/Makefile
-ripperX.pc
-])
+AC_CONFIG_FILES([Makefile
+                 ripperX.pc
+                 po/Makefile.in
+                 plugins/Makefile
+                 src/Makefile])
+AC_OUTPUT
 
-dnl Output the configuration summary
-echo ""
-echo "$PACKAGE $VERSION"
-echo ""
-echo "The binary will be installed in $prefix/bin"
-echo ""
-echo "Configure finished, type 'make' to build."

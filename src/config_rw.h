@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-void read_config( void );
-void write_config( void );
+void read_config(void);
+void write_config(void);
 
 #endif

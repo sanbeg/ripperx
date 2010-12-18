@@ -5,6 +5,6 @@
 
 #include "common.h"
 
-int cddb_main( _main_data *main_data );
+int cddb_main(_main_data *main_data);
 
 #endif

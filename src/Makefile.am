@@ -17,7 +17,6 @@ ripperX_SOURCES = \
         ripper_encoder_manipulation.c ripper_encoder_manipulation.h \
         select_frame_handler.c select_frame_handler.h \
         status_frame_handler.c status_frame_handler.h \
-	version.h \
         xpms.c
 
 EXTRA_DIST = \
@@ -37,8 +36,6 @@ EXTRA_DIST = \
 	xpms/stop.xpm
 
 INCLUDES = \
-	-DG_LOG_DOMAIN=\"ripperX\" \
-	$(GTK_CFLAGS) \
 	-I$(includedir)
 
 ripperX_LDADD = \

@@ -14,9 +14,9 @@
 #define JC_ABORT_ALL_DELETE         7
 #define JC_TIMEOUT                  450
 
-void job_starter( _main_data *main_data );
+void job_starter(_main_data *main_data);
 
-void job_controller( int ops, _main_data *main_data );
+void job_controller(int ops, _main_data *main_data);
 /* Job controller. This function saves main_data
  * when called with JC_START and uses it for further operation */
 
