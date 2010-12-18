@@ -366,6 +366,7 @@ int http_query(const char *server, int port, const char *URL,
 
     if(!sock)
     {
+		free(buffer);
         return 999;
     }
 
@@ -496,6 +497,7 @@ int http_query_proxy(const char *server, int port, const char *proxy_server, int
 
     if(!sock)
     {
+		free(buffer);
         return 999;
     }
 

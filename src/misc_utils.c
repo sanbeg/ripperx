@@ -926,7 +926,7 @@ char *get_string_piece(FILE *file, int delim)
         if(fgets(tmp, 1024, file) == NULL)
         {
             /* ok, so we reached the end of the
-            							            			                                                                                    																 file w/o finding the delimiter */
+               file w/o finding the delimiter */
             free(*active);
             return NULL;
         }
@@ -941,6 +941,7 @@ char *get_string_piece(FILE *file, int delim)
     free(*inactive);
     return *active;
 }
+
 
 char *get_ascii_file(FILE *file)
 {
@@ -1090,7 +1091,7 @@ void charpp_to_charp(char **dest, char **src, int num, char *separator)
     } /* do it this way, so no separator will get in as the last part */
 
     strcat(*dest, src[ num - 1 ]);
-
+	free(separator);
 }
 
 FILE *socket_init(const char *server, short int port)
@@ -1689,7 +1690,7 @@ void vorbistag(char *ogg_file,
     snprintf(cmd, sizeof(cmd) - 1, "vorbiscomment -a -c '%s' '%s'", tagfile, ogg_file);
     system(cmd);
     unlink(tagfile);
-    free(tagfile);
+    g_free(tagfile);
 
     g_free(conv_artist);
     g_free(conv_album);
@@ -1731,5 +1732,5 @@ void flactag(char *flac_file,
     snprintf(cmd, sizeof(cmd) - 1, "metaflac --import-tags-from='%s' '%s'", tagfile, flac_file);
     system(cmd);
     unlink(tagfile);
-    free(tagfile);
+    g_free(tagfile);
 }

@@ -450,6 +450,7 @@ void read_config(void)
 
         read_an_item(i, buf + offset);
     }
+	fclose(file);
 
     for(i = 0, flag = FALSE; i < num_entry; i++)
     {
