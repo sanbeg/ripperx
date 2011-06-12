@@ -33,7 +33,7 @@
 #include "misc_utils.h"
 #include "config_rw.h"
 #include "config_window_handler.h"
-
+#include "gtk_cpp_workaround.h"
 
 #define DEFAULT_BIT_RATE            4
 
@@ -49,8 +49,6 @@ int cw_cddb_handler(int ops, _main_data *main_data, GtkWidget *notebook);
 
 void cw_ok_button_clicked(GtkWidget *widget, gpointer callback_data);
 void cw_cancel_button_clicked(GtkWidget *widget, gpointer callback_data);
-
-
 
 void cw_g_path_clicked(GtkWidget *widget, gpointer callback_data)
 {
@@ -279,8 +277,8 @@ int cw_wav_handler(int ops, _main_data *main_data, GtkWidget *notebook)
     static struct
     {
         GtkWidget *button;
-        char *arg;
-        char *text;
+        const char *arg;
+        const char *text;
     } button[] =
     {
         { NULL, "-s ", N_("Force search for drive (ignore /dev/cdrom)") },
@@ -292,9 +290,9 @@ int cw_wav_handler(int ops, _main_data *main_data, GtkWidget *notebook)
     static struct
     {
         GtkWidget *menu_item;
-        char *ripper;
-        char *plugin;
-        char *description;
+        const char *ripper;
+        const char *plugin;
+        const char *description;
     } plugins[] =
     {
         { NULL, "cdparanoia", "ripperX_plugin-cdparanoia", "cdparanoia III" }
@@ -434,14 +432,14 @@ int cw_mp3_handler(int ops, _main_data *main_data, GtkWidget *notebook)
     {
         GtkWidget *menu_item;
         int encoding_type;
-        char *encoder;
-        char *plugin;
-        char *description;
-        char *bitrate_op;
-        char *varbitrate_op;
-        char *vbr_qual_op;
-        char *high_qual_op;
-        char *crc_op;
+        const char *encoder;
+        const char *plugin;
+        const char *description;
+        const char *bitrate_op;
+        const char *varbitrate_op;
+        const char *vbr_qual_op;
+        const char *high_qual_op;
+        const char *crc_op;
     } plugins[] =
     {
         { NULL, MP2, "toolame", "ripperX_plugin-toolame", "Toolame layer 2 encoder", "-b", "", "-v", "", "-e"},
@@ -1082,7 +1080,7 @@ int cw_cddb_handler(int ops, _main_data *main_data, GtkWidget *notebook)
         case WIDGET_CREATE :
         {
             GtkWidget *label, *label2;
-
+	    
             main_frame = gtk_frame_new(_("CDDB Configuration"));
             gtk_container_set_border_width(GTK_CONTAINER(main_frame), 10);
 

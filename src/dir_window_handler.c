@@ -42,12 +42,12 @@ void dw_ok_clicked(GtkWidget *widget, gpointer callback_data)
     dir_window_handler(DW_OK, NULL);
 }
 
-char *dir_window_handler(int ops, char *cur_dir)
+char *dir_window_handler(int ops, const char *cur_dir)
 {
     static GtkWidget *filew;
     static int id;
     static char buf[ MAX_FILE_PATH_LENGTH ];
-    static char *saved_cur_dir;
+    static const char *saved_cur_dir;
 
     switch(ops)
     {
@@ -105,9 +105,8 @@ char *dir_window_handler(int ops, char *cur_dir)
         case DW_OK :
         {
             struct stat st;
-            char *temp;
-
-            temp = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filew));
+	    //FIXME - should be const, make copy??
+            gchar *temp = (gchar*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(filew));
 
             if(lstat(temp, &st) < 0)
             {
@@ -119,7 +118,7 @@ char *dir_window_handler(int ops, char *cur_dir)
             {
                 gtk_file_selection_set_filename(GTK_FILE_SELECTION(filew),
                                                 file_path_without_name(temp));
-                temp = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filew));
+                temp = (gchar*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(filew));
             }
 
             /* remove final directory ../ from directory string if present */

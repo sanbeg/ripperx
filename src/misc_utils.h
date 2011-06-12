@@ -63,7 +63,7 @@ int is_str_blank(char *str);
 long check_free_space(char *dir);
 int check_dir(char *dir);
 int create_dir(char *path);
-int is_found(char *plugin);
+int is_found(const char *plugin);
 int create_filenames_from_format(_main_data *main_data);
 int create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp);
 void get_track_title(char *dest, _main_data *main_data, int tno);

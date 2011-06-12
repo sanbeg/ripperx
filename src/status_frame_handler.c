@@ -11,6 +11,8 @@
 
 #include "xpms/ripperX_box.xpm"
 
+#include "gtk_cpp_workaround.h"
+
 
 #define WMS_P_C_BUTTON_ACT          100
 #define WMS_ABORT_BUTTON_ACT        101

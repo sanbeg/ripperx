@@ -7,6 +7,6 @@
 #define DW_CANCEL           100
 #define DW_OK               101
 
-char *dir_window_handler(int ops, char *cur_dir);
+char *dir_window_handler(int ops, const char *cur_dir);
 
 #endif
