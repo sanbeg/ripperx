@@ -19,7 +19,7 @@ void ripperX_init(_main_data *main_data);
 
 /* Global variable */
 _config config;
-int where_now;
+enum CommonLocation where_now;
 
 
 void ripperX_init(_main_data *main_data)

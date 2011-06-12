@@ -73,8 +73,8 @@ const char *err_msg[] =
 
 const struct
 {
-    char *title;
-    char *msg;
+    const char *title;
+    const char *msg;
 } dialog_data[] =
 {
     {

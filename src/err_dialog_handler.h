@@ -1,68 +1,79 @@
 
 #ifndef ERR_DIALOG_HANDLER_H
-#define ERR_IDALOG_HANDLER_H
+#define ERR_DIALOG_HANDLER_H
 
 #include "common.h"
 
-/* Error codes */
-#define FORK_ERR					0
-#define PIPE_CREATION_ERR			1
-#define NULL_OPEN_ERR				2
-#define MALLOC_ERR					3
-#define FDOPEN_ERR					4
-#define PIPE_READ_ERR				5
-#define FILE_DELETE_ERR				6
-#define CONFIG_OPEN_ERR				7
-#define CONFIG_CREATION_ERR			8
-#define PTY_OPEN_ERR				9
-#define END_PERROR					10
+enum ErrorCodes 
+  {
+    /* Error codes */
+    FORK_ERR,
+    PIPE_CREATION_ERR,
+    NULL_OPEN_ERR,
+    MALLOC_ERR,
+    FDOPEN_ERR,
+    PIPE_READ_ERR,
+    FILE_DELETE_ERR,
+    CONFIG_OPEN_ERR,
+    CONFIG_CREATION_ERR,
+    PTY_OPEN_ERR,
+    END_PERROR,
 
-#define TOO_MANY_ARGS_ERR			END_PERROR + 1
-#define JOB_IN_PROGRESS_ERR			END_PERROR + 2
-#define NOTHING_TO_DO_ERR			END_PERROR + 3
-#define CD_PARANOIA_MISC_ERR		END_PERROR + 4
-#define TOO_LONG_FILE_NAME_ERR		END_PERROR + 5
+    TOO_MANY_ARGS_ERR,
+    JOB_IN_PROGRESS_ERR,
+    NOTHING_TO_DO_ERR,
+    CD_PARANOIA_MISC_ERR,
+    TOO_LONG_FILE_NAME_ERR,
+    
+    EMPTY_ENTRY_ERR,
+    CONFIG_PARSE_ERR,
+    CONFIG_EMPTY_ITEM_ERR,
+    
+    INVALID_FILE_SELECTION_ERR,
 
-#define EMPTY_ENTRY_ERR				END_PERROR + 6
-#define CONFIG_PARSE_ERR			END_PERROR + 7
-#define CONFIG_EMPTY_ITEM_ERR		END_PERROR + 8
+    /* CDDB Error Codes */
+    CDDB_NO_CONNECT_ERR,
+    CDDB_CONNECT_REFUSED_ERR,
+    CDDB_SERVER_ERR,
+    CDDB_NOT_FOUND_ERR,
 
-#define INVALID_FILE_SELECTION_ERR	END_PERROR + 9
+    /* Newly added ones */
+    RX_PARSING_ERR,
+    PLUGIN_NOT_PRESENT_ERR,
+    CREATING_FILE_ERROR,
+    WAV_PATH_NOT_WRITABLE_ERROR,
+    MP3_PATH_NOT_WRITABLE_ERROR,
+    WAV_PATH_CREATE_ERROR,
+    MP3_PATH_CREATE_ERROR,
 
-/* CDDB Error Codes */
-#define CDDB_NO_CONNECT_ERR			END_PERROR + 10
-#define CDDB_CONNECT_REFUSED_ERR	END_PERROR + 11
-#define CDDB_SERVER_ERR				END_PERROR + 12
-#define CDDB_NOT_FOUND_ERR			END_PERROR + 13
+    /* more distinct cdparanoia error codes */
+    CD_PARANOIA_NO_DISC,
+    CD_PARANOIA_NO_PERMS
+  };
 
-/* Newly added ones */
-#define RX_PARSING_ERR				END_PERROR + 14
-#define PLUGIN_NOT_PRESENT_ERR		END_PERROR + 15
-#define CREATING_FILE_ERROR			END_PERROR + 16
-#define WAV_PATH_NOT_WRITABLE_ERROR	END_PERROR + 17
-#define MP3_PATH_NOT_WRITABLE_ERROR	END_PERROR + 18
-#define WAV_PATH_CREATE_ERROR		END_PERROR + 19
-#define MP3_PATH_CREATE_ERROR		END_PERROR + 20
+enum DialogCodes 
+  {
+    
+    /* Dialog codes */
+    DL_ABORT_CONFIRM,
+    DL_DELETE_ON_ABORT,
+    DL_OVERWRITE_CONFIRM,
+    DL_ENTER_FILE_NAME,
+    DL_CREATE_CONFIG_CONFIRM,
+    DL_WAV_PART_LOW,
+    DL_MP3_PART_LOW
+  };
 
-/* more distinct cdparanoia error codes */
-#define CD_PARANOIA_NO_DISC			END_PERROR + 21
-#define CD_PARANOIA_NO_PERMS		END_PERROR + 22
+enum StatusCodes 
+  {
+    /* Status codes */
+    STAT_FINISH_WAV,
+    STAT_FINISH_MP3,
+    
+    /* For dialog handler */
+    DL_OK_PRESSED			=	100
+  };
 
-/* Dialog codes */
-#define DL_ABORT_CONFIRM            0
-#define DL_DELETE_ON_ABORT          1
-#define DL_OVERWRITE_CONFIRM        2
-#define DL_ENTER_FILE_NAME          3
-#define DL_CREATE_CONFIG_CONFIRM    4
-#define DL_WAV_PART_LOW             5
-#define DL_MP3_PART_LOW             6
-
-/* Status codes */
-#define STAT_FINISH_WAV				0
-#define STAT_FINISH_MP3				1
-
-/* For dialog handler */
-#define DL_OK_PRESSED				100
 
 /* Function Prototypes */
 void err_handler(int err_code, const char *extra_msg);

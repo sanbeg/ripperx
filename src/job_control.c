@@ -88,18 +88,19 @@
 #define CLEAR_PIPE_BUF_SIZE         512
 #define COUNT_BEFORE_GET_AVG        10
 
-#define CALC_START_SESSION          0
-#define CALC_STOP_SESSION           1
-#define CALC_START                  2
-#define CALC_UPDATE                 3
-#define CALC_STOP                   4
-#define CALC_PAUSE                  5
-#define CALC_CONT                   6
+enum CALC 
+  {
 
-#define JC_T_START                  0
-#define JC_T_UPDATE                 1
-#define JC_T_STOP                   2
+    CALC_START_SESSION,
+    CALC_STOP_SESSION,
+    CALC_START,
+    CALC_UPDATE,
+    CALC_STOP,
+    CALC_PAUSE,
+    CALC_CONT
+  };
 
+ 
 /* Dialog structure */
 typedef struct
 {
@@ -111,14 +112,14 @@ typedef struct
 /* Function Prototypes */
 int lock_file(char *file_name, int is_temp);
 
-void calc_stat(_main_data *main_data, _stat *stat,
+void calc_stat(const _main_data *main_data, _stat *stat,
                unsigned current, int cur_track, int cur_type, int ops);
 /* calculates statiscal info to report to the user */
 // current is length_processes now
 
 void job_finisher(_main_data *main_data);
 
-int find_next_job(_main_data *main_data,
+int find_next_job(const _main_data *main_data,
                   int cur_track, int cur_type,
                   int *next_track, int *next_type);
 /* This function finds what to do next. type is WAV or MP3.
@@ -128,7 +129,7 @@ void job_controller_timeout_start();
 int job_controller_timeout_update(gpointer anything);
 void job_controller_timeout_stop();
 
-void calc_stat(_main_data *main_data, _stat *stat,
+void calc_stat(const _main_data *main_data, _stat *stat,
                unsigned current, int cur_track, int cur_type, int ops)
 {
     static unsigned int total_wav_length, total_mp3_length;
@@ -726,7 +727,7 @@ void job_finisher(_main_data *main_data)
 
 /* finds the next track from cur_track. If cur_type is wav, it will find the next wav
    file to rip. If cur_type is mp3, it will find the next mp3 file to encode */
-int find_next_job(_main_data *main_data,
+int find_next_job(const _main_data *main_data,
                   int cur_track, int cur_type,
                   int *next_track, int *next_type)
 {

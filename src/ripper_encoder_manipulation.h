@@ -8,11 +8,15 @@
 #define MAX_PLUGIN_OUTPUT_LENGTH    1024
 
 // return values of read_and_process... & parse_plugin_output
-#define PLUGIN_MSG_PARSE_ERR        -2
-#define PLUGIN_NO_MSG_AVAILABLE     -1
-#define PLUGIN_PROGRESS_MSG         0
-#define PLUGIN_WARN_MSG             1
-#define PLUGIN_ERR_MSG              2
+enum Plugin 
+  {
+    PLUGIN_MSG_PARSE_ERR = -2,
+    PLUGIN_NO_MSG_AVAILABLE = -1,
+    PLUGIN_PROGRESS_MSG = 0,
+    PLUGIN_WARN_MSG = 1,
+    PLUGIN_ERR_MSG = 2
+  };
+  
 
 int scan_cd(_main_data *main_data);
 

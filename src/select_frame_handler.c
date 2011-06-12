@@ -28,6 +28,7 @@
 #include "xpms/s_button_checked.xpm"
 #include "xpms/s_button_unchecked.xpm"
 
+#include "gtk_cpp_workaround.h"
 
 void sf_select_all_button_clicked(GtkWidget *widget, gpointer callback_data);
 void sf_select_button_toggled(GtkWidget *widget, gpointer callback_data);

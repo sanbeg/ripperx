@@ -76,7 +76,7 @@ int add_argv(char **dest, char *content)
 
     while(content[ i++ ] != '\0') ;
 
-    if((*dest = malloc(i)) == NULL)
+    if((*dest = (char*)malloc(i)) == NULL)
     {
         err_handler(MALLOC_ERR, NULL);
         return FALSE;
@@ -188,11 +188,12 @@ void free_argv(char **argv)
 }
 
 int parse_rx_format_string(char **target, char *format, int track_no,
-                           char *artist, char *album, char *year, char *song)
+                           const char *artist, const char *album, const char *year, const char *song)
 {
     int s, d, n, pass, totlen = 0;
     char ch;
-    char *tmp, *bp;
+    const char *tmp;
+    char *bp;
     char track_no_str[ 4 ];
 
     track_no_str[ 0 ] = 0;
@@ -331,7 +332,7 @@ char *expand_tilde(char *path)
     return buf;
 }
 
-char *construct_file_name(char *path, char *name)
+char *construct_file_name(const char *path, const char *name)
 {
     int offset;
     static char buf[ MAX_FILE_PATH_LENGTH + MAX_FILE_NAME_LENGTH ];
@@ -1258,7 +1259,7 @@ int create_dir(char *path)
     return rc;
 }
 
-int is_found(char *plugin)
+int is_found(const char *plugin)
 {
     FILE *pf;
     char buffer[MAX_COMMAND_LENGTH];
@@ -1291,7 +1292,7 @@ int create_filenames_from_format(_main_data *main_data)
 {
     int i;
     int rc2;
-    static unsigned char *df;
+    static char *df;
 
     i = strlen(config.wav_path) - 1;
 
@@ -1380,7 +1381,7 @@ int create_filenames_from_format(_main_data *main_data)
     return 1;
 }
 
-int create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp)
+int create_file_names_for_track(const _main_data *main_data, int track, char **wfp, char **efp)
 {
     static char *buffer;
     int rc;
@@ -1433,7 +1434,11 @@ int create_file_names_for_track(_main_data *main_data, int track, char **wfp, ch
 */
 void get_track_title(char *dest, _main_data *main_data, int tno)
 {
-    struct _track *tk_p = &(main_data->track[tno]);
+#ifdef __cplusplus
+  _main_data::_track *tk_p = &(main_data->track[tno]);
+#else
+  struct _track *tk_p = &(main_data->track[tno]);
+#endif
 
     if(tk_p->artist)
     {
@@ -1452,7 +1457,12 @@ void get_track_title(char *dest, _main_data *main_data, int tno)
 */
 void put_track_title(char *src, _main_data *main_data, int tno)
 {
-    struct _track *tk_p = &(main_data->track[tno]);
+#ifdef __cplusplus
+  _main_data::_track *tk_p = &(main_data->track[tno]);
+#else
+  struct _track *tk_p = &(main_data->track[tno]);
+#endif
+
     char *sp = src, *cp, *ep;
     int c;
 
@@ -1500,7 +1510,7 @@ char *dup_str(char *inp)
         return (char *)0;
     }
 
-    out = malloc(len + 1);
+    out = (char*)malloc(len + 1);
     return strcpy(out, inp);
 }
 
@@ -1518,7 +1528,7 @@ void mk_buf(char **ptr, int size)
     }
 
     if(size > 0)
-        if(!(*ptr = malloc(size)))
+      if(!(*ptr = (char*)malloc(size)))
         {
             fprintf(stderr, "Unable to allocate %d bytes of memory.. exiting\n", size);
             exit(3);

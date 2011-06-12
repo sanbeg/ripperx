@@ -1,7 +1,7 @@
 #ifndef MISC_UTILS_H
 #define MISC_UTILS_H
 
-#include "config.h"
+#include "../config.h"
 
 #include "common.h"
 
@@ -9,10 +9,13 @@
 
 #include <id3.h>
 
-#define MISC_OK                 0
-#define MISC_NOT_DIR            1
-#define MISC_NOT_WRITABLE       2
-#define MISC_DOES_NOT_EXISTS    3
+enum MiscUtils 
+  {
+    MISC_OK,
+    MISC_NOT_DIR,
+    MISC_NOT_WRITABLE,
+    MISC_DOES_NOT_EXISTS
+  };
 
 /* contents immigrated from misc.h */
 
@@ -38,8 +41,8 @@ void free_argv(char **argv);
 
 int parse_rx_format_string(char **target,
                            char *format,
-                           int track_no, char *artist, char *album,
-                           char *year, char *song);
+                           int track_no, const char *artist, const char *album,
+                           const char *year, const char *song);
 // track_no starts from 0
 // %% %
 // %a Artist
@@ -49,7 +52,7 @@ int parse_rx_format_string(char **target,
 
 char *length_to_readable(unsigned length);
 char *time_to_readable(time_t sec);
-char *construct_file_name(char *path, char *name);
+char *construct_file_name(const char *path, const char *name);
 char *expand_tilde(char *path);
 char *file_name_without_path(char *src);
 char *file_path_without_name(char *src);
@@ -63,9 +66,9 @@ int is_str_blank(char *str);
 long check_free_space(char *dir);
 int check_dir(char *dir);
 int create_dir(char *path);
-int is_found(char *plugin);
+int is_found(const char *plugin);
 int create_filenames_from_format(_main_data *main_data);
-int create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp);
+int create_file_names_for_track(const _main_data *main_data, int track, char **wfp, char **efp);
 void get_track_title(char *dest, _main_data *main_data, int tno);
 void put_track_title(char *src, _main_data *main_data, int tno);
 char *dup_str(char *inp);

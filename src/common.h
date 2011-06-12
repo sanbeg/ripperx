@@ -11,7 +11,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include "config.h"
+#include "../config.h"
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
@@ -53,13 +53,17 @@
 #define CD_SECTORS_PER_SEC	(float)75.018
 #define CD_SECTORS_PER_FRAME 	(float)1.959
 
-#define CD      0
-#define WAV     1
-#define MP3     2
-#define OGG     3
-#define FLAC    4
-#define MP2			5
-#define MUSE    6
+enum CommonEncoderType 
+  {
+    CD,
+    WAV,
+    MP3,
+    OGG,
+    FLAC,
+    MP2,
+    MUSE
+  }
+  ;
 
 #define MIN_NICE_LEVEL    19
 #define MAX_NICE_LEVEL    0
@@ -180,10 +184,14 @@ typedef struct
 } _stat;
 
 extern _config config;
-extern int where_now;
 
-#define SELECT_FRAME      0
-#define STATUS_FRAME      1
-#define CONFIG_WINDOW     2
+enum CommonLocation 
+  {
+    SELECT_FRAME,
+    STATUS_FRAME,
+    CONFIG_WINDOW
+  };
+
+extern enum CommonLocation where_now;
 
 #endif

@@ -11,12 +11,15 @@
 
 #include "xpms/ripperX_box.xpm"
 
+#include "gtk_cpp_workaround.h"
 
-#define WMS_P_C_BUTTON_ACT          100
-#define WMS_ABORT_BUTTON_ACT        101
-#define WMS_ABORT_ALL_BUTTON_ACT    102
-
-#define WMS_TIME_UPDATE_CYCLE       1
+enum WMS 
+  {
+    WMS_TIME_UPDATE_CYCLE = 1,
+    WMS_P_C_BUTTON_ACT = 100,
+    WMS_ABORT_BUTTON_ACT,
+    WMS_ABORT_ALL_BUTTON_ACT
+  };
 
 void time_status_frame_handler(int ops, GtkWidget *time_frame, _stat *stat);
 
