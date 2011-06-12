@@ -990,7 +990,6 @@ char *get_ascii_file(FILE *file)
 void strip_trailing_space(char **string)
 {
     int i = strlen(*string) - 1;
-    char *return_string;
 
     if(string == NULL || *string == NULL)
     {
@@ -1002,19 +1001,13 @@ void strip_trailing_space(char **string)
         i--;
     }
 
-    i++;
-    return_string = (char *) malloc(i + 1);
-    strncpy(return_string, *string, i);
-    return_string[ i ] = 0;
-    free(*string);
-    *string = return_string;
+    string[0][ ++i ] = 0;
 }
 
 void strip_leading_space(char **string)
 {
-    char *tmp = *string,
-          *return_string;
-
+    char *tmp = *string;
+    
     if(string == NULL || *string == NULL)
     {
         return;
@@ -1025,9 +1018,10 @@ void strip_leading_space(char **string)
         tmp++;
     }
 
-    return_string = strdup(tmp);
-    free(*string);
-    *string = return_string;
+    if (tmp != *string) 
+    {
+	memmove(*string, tmp, strlen(tmp)+1);
+    }
 }
 
 

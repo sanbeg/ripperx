@@ -140,14 +140,15 @@ int cddb_handle_data(const char *data, char **artist, char **dtitle, char *title
             }
 
             /* put in the track name */
-            titles[ track ] = strcat(tempstr, mark);
-
+	    strcat(tempstr, mark);
+	    titles[track] = strdup(tempstr);
+	    
             strip_trailing_space(&titles[ track ]);
             strip_leading_space(&titles[ track ]);
 
             previoustrack = track;
 
-            remove_non_unix_chars(titles[ track ]);
+            //remove_non_unix_chars(titles[ track ]);  //Should only rm from file, not ID3
 
 #ifdef DEBUG
             printf("Track %d: %s\n", track, titles[ track ]);
@@ -751,8 +752,8 @@ int cddb_main(_main_data *main_data)
             for(i = 0; i < tracknum; i++)        /* fixed a sneaky bug here */
             {
                 /* copy the data into the main_data structure */
-                put_track_title(titles[i], main_data, i);
-                free(titles[ i ]);
+	        put_track_title(titles[i], main_data, i);
+		free(titles[ i ]);
             }
 
             // auto-select all tracks
