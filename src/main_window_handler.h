@@ -7,14 +7,18 @@
 
 #include <gtk/gtk.h>
 
-#define MW_MODE_SELECT              100
-#define MW_MODE_STATUS              101
-#define MW_MODE_CONFIG              102
-#define MW_CLEAR_STATUSBAR          103
-#define MW_UPDATE_STATUSBAR         104
-#define MW_REQUEST_MF               105
-#define NO_CD_INDRIVE               106
-#define CD_INDRIVE                  107
+enum MainWindow 
+  {
+    MW_MODE_SELECT = 100,
+    MW_MODE_STATUS,
+    MW_MODE_CONFIG,
+    MW_CLEAR_STATUSBAR,
+    MW_UPDATE_STATUSBAR,
+    MW_REQUEST_MF,
+    NO_CD_INDRIVE,
+    CD_INDRIVE
+  };
+
 
 /* Creates main window. Returns the pointer to main frame which will be
  * used by select frame and update frames. ops can be one of WIDGET_CREATE,

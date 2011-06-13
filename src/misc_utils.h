@@ -9,10 +9,13 @@
 
 #include <id3.h>
 
-#define MISC_OK                 0
-#define MISC_NOT_DIR            1
-#define MISC_NOT_WRITABLE       2
-#define MISC_DOES_NOT_EXISTS    3
+enum MiscUtils 
+  {
+    MISC_OK,
+    MISC_NOT_DIR,
+    MISC_NOT_WRITABLE,
+    MISC_DOES_NOT_EXISTS
+  };
 
 /* contents immigrated from misc.h */
 

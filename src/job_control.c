@@ -88,18 +88,19 @@
 #define CLEAR_PIPE_BUF_SIZE         512
 #define COUNT_BEFORE_GET_AVG        10
 
-#define CALC_START_SESSION          0
-#define CALC_STOP_SESSION           1
-#define CALC_START                  2
-#define CALC_UPDATE                 3
-#define CALC_STOP                   4
-#define CALC_PAUSE                  5
-#define CALC_CONT                   6
+enum CALC 
+  {
 
-#define JC_T_START                  0
-#define JC_T_UPDATE                 1
-#define JC_T_STOP                   2
+    CALC_START_SESSION,
+    CALC_STOP_SESSION,
+    CALC_START,
+    CALC_UPDATE,
+    CALC_STOP,
+    CALC_PAUSE,
+    CALC_CONT
+  };
 
+ 
 /* Dialog structure */
 typedef struct
 {

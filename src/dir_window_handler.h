@@ -3,10 +3,8 @@
 #define DIR_WINDOW_HANDLER_H
 
 #include "common.h"
+#include "interface_common.h"
 
-#define DW_CANCEL           100
-#define DW_OK               101
-
-char *dir_window_handler(int ops, const char *cur_dir);
+char *dir_window_handler(enum InterfaceCommon ops, const char *cur_dir);
 
 #endif

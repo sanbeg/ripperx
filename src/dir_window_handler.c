@@ -34,15 +34,15 @@ void dw_ok_clicked(GtkWidget *widget, gpointer callback_data);
 
 void dw_cancel_clicked(GtkWidget *widget, gpointer callback_data)
 {
-    dir_window_handler(DW_CANCEL, NULL);
+    dir_window_handler(OP_CANCEL, NULL);
 }
 
 void dw_ok_clicked(GtkWidget *widget, gpointer callback_data)
 {
-    dir_window_handler(DW_OK, NULL);
+    dir_window_handler(OP_OK, NULL);
 }
 
-char *dir_window_handler(int ops, const char *cur_dir)
+char *dir_window_handler(enum InterfaceCommon ops, const char *cur_dir)
 {
     static GtkWidget *filew;
     static int id;
@@ -102,7 +102,7 @@ char *dir_window_handler(int ops, const char *cur_dir)
             return buf;
         }
 
-        case DW_OK :
+        case OP_OK :
         {
             struct stat st;
 	    //FIXME - should be const, make copy??
@@ -152,7 +152,7 @@ char *dir_window_handler(int ops, const char *cur_dir)
             return NULL;
         }
 
-        case DW_CANCEL :
+        case OP_CANCEL :
             gtk_file_selection_set_filename(GTK_FILE_SELECTION(filew), saved_cur_dir);
             gtk_main_quit();
             return NULL;

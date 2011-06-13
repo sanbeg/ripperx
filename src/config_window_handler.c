@@ -37,9 +37,6 @@
 
 #define DEFAULT_BIT_RATE            4
 
-#define CW_OK                       100
-#define CW_CANCEL                   101
-
 void cw_g_path_clicked(GtkWidget *widget, gpointer callback_data);
 int cw_general_handler(int ops, _main_data *main_data, GtkWidget *notebook);
 int cw_wav_handler(int ops, _main_data *main_data, GtkWidget *notebook);
@@ -219,7 +216,7 @@ int cw_general_handler(int ops, _main_data *main_data, GtkWidget *notebook)
             return 0;
         }
 
-        case CW_OK :
+        case OP_OK :
 
             /* Wav */
             if(strlen(gtk_entry_get_text(
@@ -372,7 +369,7 @@ int cw_wav_handler(int ops, _main_data *main_data, GtkWidget *notebook)
             return 0;
         }
 
-        case CW_OK :
+        case OP_OK :
         {
             int i, temp;
             GtkWidget *item;
@@ -637,7 +634,7 @@ int cw_mp3_handler(int ops, _main_data *main_data, GtkWidget *notebook)
             return 0;
         }
 
-        case CW_OK :
+        case OP_OK :
         {
             int i, temp, cur_plugin, br;
             GtkWidget *item;
@@ -885,7 +882,7 @@ int cw_players_handler(int ops, _main_data *main_data, GtkWidget *notebook)
             return 0;
         }
 
-        case CW_OK :
+        case OP_OK :
         {
             if(strlen(gtk_entry_get_text(
                           GTK_ENTRY(cd_play_entry))) == 0
@@ -1015,7 +1012,7 @@ int cw_files_handler(int ops, _main_data *main_data, GtkWidget *notebook)
             return 0;
         }
 
-        case CW_OK :
+        case OP_OK :
 
             if(GTK_TOGGLE_BUTTON(convert_spaces_ckbx) ->active)
             {
@@ -1179,7 +1176,7 @@ int cw_cddb_handler(int ops, _main_data *main_data, GtkWidget *notebook)
             return 0;
         }
 
-        case CW_OK :
+        case OP_OK :
 
             if(strlen(gtk_entry_get_text(GTK_ENTRY(cddb_server_entry))) == 0
                     || strlen(gtk_entry_get_text(GTK_ENTRY(cddb_port_entry))) == 0)
@@ -1228,15 +1225,15 @@ int cw_cddb_handler(int ops, _main_data *main_data, GtkWidget *notebook)
 
 void cw_ok_button_clicked(GtkWidget *widget, gpointer callback_data)
 {
-    config_window_handler(CW_OK, NULL);
+    config_window_handler(OP_OK, NULL);
 }
 
 void cw_cancel_button_clicked(GtkWidget *widget, gpointer callback_data)
 {
-    config_window_handler(CW_CANCEL, NULL);
+    config_window_handler(OP_CANCEL, NULL);
 }
 
-void config_window_handler(int ops, _main_data *main_data)
+void config_window_handler(enum InterfaceCommon ops, _main_data *main_data)
 {
     static GtkWidget *window = NULL;
     static _main_data *saved_main_data;
@@ -1302,15 +1299,15 @@ void config_window_handler(int ops, _main_data *main_data)
             return;
         }
 
-        case CW_OK :
+        case OP_OK :
             main_data = saved_main_data;
 
-            if(cw_general_handler(CW_OK, main_data, NULL) < 0
-                    || cw_wav_handler(CW_OK, main_data, NULL) < 0
-                    || cw_mp3_handler(CW_OK, main_data, NULL) < 0
-                    || cw_players_handler(CW_OK, main_data, NULL) < 0
-                    || cw_cddb_handler(CW_OK, main_data, NULL) < 0
-                    || cw_files_handler(CW_OK, main_data, NULL) < 0)
+            if(cw_general_handler(OP_OK, main_data, NULL) < 0
+                    || cw_wav_handler(OP_OK, main_data, NULL) < 0
+                    || cw_mp3_handler(OP_OK, main_data, NULL) < 0
+                    || cw_players_handler(OP_OK, main_data, NULL) < 0
+                    || cw_cddb_handler(OP_OK, main_data, NULL) < 0
+                    || cw_files_handler(OP_OK, main_data, NULL) < 0)
             {
                 return;
             }
@@ -1346,7 +1343,7 @@ void config_window_handler(int ops, _main_data *main_data)
             write_config();
             return;
 
-        case CW_CANCEL :
+        case OP_CANCEL :
             gtk_widget_destroy(window);
             main_window_handler(MW_MODE_SELECT, 0, main_data);
             return;

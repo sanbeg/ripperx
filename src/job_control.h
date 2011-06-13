@@ -4,15 +4,21 @@
 
 #include "common.h"
 
-#define JC_START                    0
-#define JC_UPDATE                   1
-#define JC_PAUSE                    2
-#define JC_CONT                     3
-#define JC_ABORT                    4
-#define JC_ABORT_DELETE             5
-#define JC_ABORT_ALL                6
-#define JC_ABORT_ALL_DELETE         7
-#define JC_TIMEOUT                  450
+enum JC 
+  {
+
+    JC_START,
+    JC_UPDATE,
+    JC_PAUSE,
+    JC_CONT,
+    JC_ABORT,
+    JC_ABORT_DELETE,
+    JC_ABORT_ALL,
+    JC_ABORT_ALL_DELETE
+  };
+
+  
+const int JC_TIMEOUT = 450;
 
 void job_starter(_main_data *main_data);
 

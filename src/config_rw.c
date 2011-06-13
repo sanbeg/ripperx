@@ -46,21 +46,27 @@ void config_to_default(int item_num);
 /* -1 is all, otherwise the item_num th field */
 void read_an_item(int item_num, const char *src);
 
-#define STRING                  0
-#define CHAR                    1
-#define FLOAT                   2
-#define INT                     3
+//FIXME - nest in config_rw_data...
+enum config_rw_data_type {
+  STRING,
+  CHAR,
+  FLOAT,
+  INT
+};
+
 
 #define MAX_CONFIG_LINE_LENGTH  300
 
 /* Data used by read write config functions */
 static struct
 {
-    const char *f_id;
-    void *m_id;
-    int type;
-    int flag;          /* Flag is for error checking when reading config file */
-    const char *default_value;
+  const char *f_id;
+  void *m_id;
+  
+  enum config_rw_data_type type;
+  
+  int flag;          /* Flag is for error checking when reading config file */
+  const char *default_value;
 } config_rw_data[] =
 {
     {
