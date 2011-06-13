@@ -188,11 +188,12 @@ void free_argv(char **argv)
 }
 
 int parse_rx_format_string(char **target, char *format, int track_no,
-                           char *artist, char *album, char *year, char *song)
+                           const char *artist, const char *album, const char *year, const char *song)
 {
     int s, d, n, pass, totlen = 0;
     char ch;
-    char *tmp, *bp;
+    const char *tmp;
+    char *bp;
     char track_no_str[ 4 ];
 
     track_no_str[ 0 ] = 0;
@@ -1380,7 +1381,7 @@ int create_filenames_from_format(_main_data *main_data)
     return 1;
 }
 
-int create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp)
+int create_file_names_for_track(const _main_data *main_data, int track, char **wfp, char **efp)
 {
     static char *buffer;
     int rc;

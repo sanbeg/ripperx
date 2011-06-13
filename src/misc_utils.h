@@ -1,7 +1,7 @@
 #ifndef MISC_UTILS_H
 #define MISC_UTILS_H
 
-#include "config.h"
+#include "../config.h"
 
 #include "common.h"
 
@@ -41,8 +41,8 @@ void free_argv(char **argv);
 
 int parse_rx_format_string(char **target,
                            char *format,
-                           int track_no, char *artist, char *album,
-                           char *year, char *song);
+                           int track_no, const char *artist, const char *album,
+                           const char *year, const char *song);
 // track_no starts from 0
 // %% %
 // %a Artist
@@ -68,7 +68,7 @@ int check_dir(char *dir);
 int create_dir(char *path);
 int is_found(const char *plugin);
 int create_filenames_from_format(_main_data *main_data);
-int create_file_names_for_track(_main_data *main_data, int track, char **wfp, char **efp);
+int create_file_names_for_track(const _main_data *main_data, int track, char **wfp, char **efp);
 void get_track_title(char *dest, _main_data *main_data, int tno);
 void put_track_title(char *src, _main_data *main_data, int tno);
 char *dup_str(char *inp);

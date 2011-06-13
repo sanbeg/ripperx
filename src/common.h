@@ -11,7 +11,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include "config.h"
+#include "../config.h"
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
