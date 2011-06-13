@@ -120,15 +120,14 @@ GtkWidget *main_window_handler(int ops, char *statusbar_msg,
 
     static struct
     {
-        GtkWidget *button;
-        char **xpm;
+      GtkWidget *button;
+      char **xpm;
       void (*func)(GtkWidget*, void*);
-      //void *func;
-        gpointer callback_data;
-        int arrangement;
-        /* If arrangement is TRUE, it will be packed using gtk_pack_start
-         * function. Otherwise, it will use gtk_pack_end function */
-        char *tooltip;
+      gpointer callback_data;
+      int arrangement;
+      /* If arrangement is TRUE, it will be packed using gtk_pack_start
+       * function. Otherwise, it will use gtk_pack_end function */
+      const char *tooltip;
     } buttons[] =
     {
         {

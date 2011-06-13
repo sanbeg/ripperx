@@ -49,7 +49,7 @@ int parse_rx_format_string(char **target,
 
 char *length_to_readable(unsigned length);
 char *time_to_readable(time_t sec);
-char *construct_file_name(char *path, char *name);
+char *construct_file_name(const char *path, const char *name);
 char *expand_tilde(char *path);
 char *file_name_without_path(char *src);
 char *file_path_without_name(char *src);

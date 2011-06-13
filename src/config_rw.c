@@ -44,7 +44,7 @@
 
 void config_to_default(int item_num);
 /* -1 is all, otherwise the item_num th field */
-void read_an_item(int item_num, char *src);
+void read_an_item(int item_num, const char *src);
 
 #define STRING                  0
 #define CHAR                    1
@@ -56,11 +56,11 @@ void read_an_item(int item_num, char *src);
 /* Data used by read write config functions */
 static struct
 {
-    char *f_id;
+    const char *f_id;
     void *m_id;
     int type;
     int flag;          /* Flag is for error checking when reading config file */
-    char *default_value;
+    const char *default_value;
 } config_rw_data[] =
 {
     {
@@ -234,7 +234,7 @@ static struct
 };
 static int num_entry = sizeof(config_rw_data) / sizeof(config_rw_data[ 0 ]);
 
-void read_an_item(int item_num, char *src)
+void read_an_item(int item_num, const char *src)
 {
     char *str;
     char *p_char;

@@ -331,7 +331,7 @@ char *expand_tilde(char *path)
     return buf;
 }
 
-char *construct_file_name(char *path, char *name)
+char *construct_file_name(const char *path, const char *name)
 {
     int offset;
     static char buf[ MAX_FILE_PATH_LENGTH + MAX_FILE_NAME_LENGTH ];
