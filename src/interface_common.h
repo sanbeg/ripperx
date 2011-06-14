@@ -8,8 +8,8 @@ enum InterfaceCommon
     WIDGET_DESTROY,
     WIDGET_UPDATE,
     CLEAR_ENTRIES,
-    OP_CANCEL = 100,
-    OP_OK = 101
+    OP_CANCEL,
+    OP_OK
   };
 
 #endif
