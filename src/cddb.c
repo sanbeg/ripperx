@@ -32,6 +32,7 @@
 #include "select_frame_handler.h"
 #include "main_window_handler.h"
 
+
 #define NAME "CATraxx"
 #define MAX_CDDB_FILE_SIZE 15360
 
@@ -243,13 +244,14 @@ int do_cddb(char **result, char **disc_category, int tracknum, int duration, lon
     int status, matches, i;
     char **category = NULL, **title = NULL, **alt_id = NULL;
 
-    char *final_cat, *final_id, *cd_id;
+    char *final_cat, *final_id, *cd_id, *uri, *wwwserver;
 
     /* chop up the URL */
-    
-    char * uri = strdup(server); //FIXME - leak!
-    char * wwwserver = strsep(&uri, "/");
+    wwwserver = uri = strdup(server);
+    wwwserver = strsep(&uri, "/");
 
+    final_cat = (char *) malloc(20);
+    final_id = (char *) malloc(20);
     cd_id = (char *) malloc(20);
     sprintf(cd_id, "%08lx", cddb_disk_id(duration, tracknum, offset));
 
@@ -300,6 +302,12 @@ int do_cddb(char **result, char **disc_category, int tracknum, int duration, lon
                              &category, &title, &alt_id);
     }
 
+#if 0
+    /* get cddb information from a local http server (plain text file) */
+    /* must change CDDB URL to be http://localhost/testentry.txt */
+    strcpy(final_cat, "test");
+    strcpy(final_id, "test");
+#else
     else
     {
         if(!strcmp(config.cddb_config.proxy_server, ""))
@@ -359,6 +367,7 @@ int do_cddb(char **result, char **disc_category, int tracknum, int duration, lon
     free(category);
     free(title);
     free(alt_id);
+#endif
 
     /* now finally grab the data for the disc id and category */
     if(proto == CDDBP)
@@ -409,7 +418,6 @@ int do_cddb(char **result, char **disc_category, int tracknum, int duration, lon
         cddbp_signoff(sock);
     }
 
-    free (final_cat);
     free(final_id);
 
     return REMOTE_OK;
@@ -482,7 +490,10 @@ int do_cddb_proxy(char **result, char **disc_category, int tracknum, int duratio
     wwwserver = uri = strdup(server);
     wwwserver = strsep(&uri, "/");
 
+    final_cat = (char *) malloc(20);
+    final_id = (char *) malloc(20);
     cd_id = (char *) malloc(20);
+
     sprintf(cd_id, "%08lx", cddb_disk_id(duration, tracknum, offset));
 
     if(proto == CDDBP)
@@ -638,7 +649,6 @@ int do_cddb_proxy(char **result, char **disc_category, int tracknum, int duratio
         cddbp_signoff(sock);
     }
 
-    free(final_cat);
     free(final_id);
 
     return REMOTE_OK;
