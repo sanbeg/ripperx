@@ -66,7 +66,7 @@
 
 #include "misc_utils.h"
 
-
+#include <memory>
 
 int add_argv(char **dest, char *content)
 {
@@ -899,15 +899,18 @@ char *get_string_piece(FILE *file, int delim)
     buffer's memory will be freed and allocated to fit the stringsize
     automatically. */
 
-    char *buffer1 = (char *) malloc(1),
-          *buffer2 = (char *) malloc(1),
-           *tmp = (char *) malloc(1024);
-    char **active, **inactive;
-    int i = 0;
+  char *buffer1 = (char *) malloc(1),
+    *buffer2 = (char *) malloc(1);
+  
+  //*tmp = (char *) malloc(1024);
+  std::auto_ptr<char> tmp(new char[1024]);
+  
+  char **active=0, **inactive=0;
+  int i = 0;
 
     strcpy(buffer1, "");
     strcpy(buffer2, "");
-    strcpy(tmp, "");
+    strcpy(tmp.get(), "");
 
     do
     {
@@ -924,7 +927,7 @@ char *get_string_piece(FILE *file, int delim)
         }
 
         /*get the next part, and handle EOF*/
-        if(fgets(tmp, 1024, file) == NULL)
+        if(fgets(tmp.get(), 1024, file) == NULL)
         {
             /* ok, so we reached the end of the
                file w/o finding the delimiter */
@@ -934,7 +937,7 @@ char *get_string_piece(FILE *file, int delim)
 
         free(*active);
         *active = (char *) malloc((++i) * 1024);
-        sprintf(*active, "%s%s", *inactive, tmp);
+        sprintf(*active, "%s%s", *inactive, tmp.get());
 
     }
     while(strchr(*active, delim) == NULL);
@@ -1286,7 +1289,7 @@ int is_found(const char *plugin)
 }
 
 static char *wd, *ed;
-static char *wfext, *ecfext;
+static const char *wfext, *ecfext;
 
 int create_filenames_from_format(_main_data *main_data)
 {

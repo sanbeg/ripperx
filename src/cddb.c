@@ -32,6 +32,8 @@
 #include "select_frame_handler.h"
 #include "main_window_handler.h"
 
+#include <string>
+#include <memory>
 
 #define NAME "CATraxx"
 #define MAX_CDDB_FILE_SIZE 15360
@@ -50,11 +52,11 @@ int do_cddb(char **result, char **disc_category, int tracknum, int duration, lon
 int cddb_handle_data(const char *data, char **artist, char **dtitle, char *titles[],
                      int *totaltracks, char **year, char **dgenre)
 {
-    char *row, *mark;
+  using std::string;
+  
     const char *tmp = data;
     int i, j, counter = 0, track, previoustrack = 100, ttcounter = 0;
-    char *tempstr;
-	char tempbuf[ MAX_CDDB_LENGTH+1 ];
+    char tempbuf[ MAX_CDDB_LENGTH+1 ];
 
     if(strncmp(data, "# xmcd", 6) != 0)
     {
@@ -72,44 +74,36 @@ int cddb_handle_data(const char *data, char **artist, char **dtitle, char *title
         {
             i++;
         }
-
-        row = (char *) malloc(i + 1);
-        strncpy(row, tmp, i);
-        row[ i ] = 0;
+	string row(tmp, i);
+	
         tmp += i;
 
         /* eval the row */
-        if(strncmp(row, "DYEAR", 5) == 0)       /* CD Year */
+        if(row.compare(0, 5, "DYEAR") == 0)       /* CD Year */
         {
-            tempstr = tempbuf;
-            strcpy(tempstr,row);
-            tempstr = strchr(row, '=');
-            tempstr++;
-            j = strlen(tempstr);
+	    string tempstr(row, row.find('=')+1);
+	    j=tempstr.length()+1;
+	    
+            *year = (char *)malloc(j);
 
-            *year = (char *)malloc(j + 1);
-
-            strncpy((*year), tempstr, (j + 1));
+            strncpy(*year, tempstr.c_str(), j);
             remove_non_unix_chars(*year);
         }
-        else if(strncmp(row, "DGENRE", 6) == 0)          /* Disc Genre */
+        else if(row.compare(0, 6, "DGENRE") == 0)          /* Disc Genre */
         {
-            tempstr = tempbuf;
-            strcpy(tempstr, row);
-            tempstr = strchr(row, '=');
-            tempstr++;
+	    string tempstr(row, row.find('=')+1);
+	    j=tempstr.length()+1;
 
-            j = strlen(tempstr);
-            (*dgenre) = (char *)malloc(j + 1);
-            strncpy(*dgenre, tempstr, j + 1);
+            (*dgenre) = (char *)malloc(j);
+            strncpy(*dgenre, tempstr.c_str(), j);
             remove_non_unix_chars(*dgenre);
         }
-        else if(strncmp(row, "TTITLE", 6) == 0)          /* Track Title */
+        else if(row.compare(0, 6, "TTITLE") == 0)          /* Track Title */
         {
             /* get the track number before going on */
             /* skip the TTITLE */
-            mark = row + 6;
-            counter = 0;
+	  const char * mark = row.c_str() + 6;
+	  counter = 0;
 
             /* convert ascii -> int */
             while(*mark != '=')
@@ -128,20 +122,18 @@ int cddb_handle_data(const char *data, char **artist, char **dtitle, char *title
             }
 
             /* create the filename. Append previous title if necessary */
-            tempstr = tempbuf;
-
+            //char * tempstr = tempbuf;
+	    string tempstr;
+	    
             if(previoustrack == track)
             {
-                strcpy(tempstr, titles[ track ]);
-            }
-            else
-            {
-                strcpy(tempstr, "");
+	      tempstr += titles[track];
             }
 
             /* put in the track name */
-	    strcat(tempstr, mark);
-	    titles[track] = strdup(tempstr);
+	    tempstr += mark;
+	    
+	    titles[track] = strdup(tempstr.c_str());
 	    
             strip_trailing_space(&titles[ track ]);
             strip_leading_space(&titles[ track ]);
@@ -154,12 +146,11 @@ int cddb_handle_data(const char *data, char **artist, char **dtitle, char *title
             printf("Track %d: %s\n", track, titles[ track ]);
 #endif
         }
-        else if((strncmp(row, "DTITLE", 6) == 0) && (*dtitle == NULL))              /* CD Title */
+        else if((row.compare(0, 6, "DTITLE") == 0) and (*dtitle == NULL))              /* CD Title */
         {
-            i = strcspn(row, "=");
-            i++;          /* skip to the data */
-            mark = row + i;
-
+	    /* skip to the data */
+	    const char * mark = row.c_str()+row.find('=')+1;
+	    
             // tm:  hack around bogus CDDB entries
             if(strstr(mark, " / "))
             {
@@ -210,7 +201,6 @@ int cddb_handle_data(const char *data, char **artist, char **dtitle, char *title
         }
 
         /* ignore any other results */
-        free(row);
     }
 
     *totaltracks = ttcounter;
@@ -244,14 +234,13 @@ int do_cddb(char **result, char **disc_category, int tracknum, int duration, lon
     int status, matches, i;
     char **category = NULL, **title = NULL, **alt_id = NULL;
 
-    char *final_cat, *final_id, *cd_id, *uri, *wwwserver;
+    char *final_cat=0, *final_id=0, *cd_id=0, *uri=0, *wwwserver=0;
 
     /* chop up the URL */
-    wwwserver = uri = strdup(server);
-    wwwserver = strsep(&uri, "/");
+    std::auto_ptr <char> server_ptr (new char[strlen(server)+1]);
+    wwwserver = uri = strcpy(server_ptr.get(),server);
+    strsep(&uri, "/");
 
-    final_cat = (char *) malloc(20);
-    final_id = (char *) malloc(20);
     cd_id = (char *) malloc(20);
     sprintf(cd_id, "%08lx", cddb_disk_id(duration, tracknum, offset));
 
@@ -428,14 +417,13 @@ int do_cddb(char **result, char **disc_category, int tracknum, int duration, lon
 	  already exists by looping thru the catagories and the
 	  predefined prefix
 */
-int read_local_file(char **result, int tracknum, int duration, long int offset[])
+static int read_local_file(char *result, int tracknum, int duration, long int offset[])
 {
     FILE *datafile;
     int i;
     char file_check[ MAX_FILE_PATH_LENGTH + MAX_FILE_NAME_LENGTH + 1 ];
     char cd_id[ 20 ];
 
-    *result = (char *) malloc(MAX_CDDB_FILE_SIZE);
     sprintf(cd_id, "%08lx", cddb_disk_id(duration, tracknum, offset));
 #ifdef DEBUG
     printf("cddb_disk_id returned '%s'\n", cd_id);
@@ -473,7 +461,7 @@ int read_local_file(char **result, int tracknum, int duration, long int offset[]
     }
     else
     {
-        fread(*result, 1, MAX_CDDB_FILE_SIZE, datafile);
+        fread(result, 1, MAX_CDDB_FILE_SIZE, datafile);
         fclose(datafile);
         return (REMOTE_OK);
     }
@@ -484,7 +472,7 @@ int do_cddb_proxy(char **result, char **disc_category, int tracknum, int duratio
     FILE *sock = NULL;
     int status, matches, i;
     char **category = NULL, **title = NULL, **alt_id = NULL;
-    char *final_cat, *final_id, *cd_id, *uri, *wwwserver;
+    char *final_cat=0, *final_id=0, *cd_id, *uri, *wwwserver;
 
     /* chop up the URL */
     wwwserver = uri = strdup(server);
@@ -658,7 +646,7 @@ int cddb_main(_main_data *main_data)
 {
     int err, i, totaltracks;
 
-    char *result = NULL;
+    char *result = (char *) malloc(MAX_CDDB_FILE_SIZE);
     char *artist = NULL;
     char *dtitle = NULL;
     char *category = NULL;
@@ -684,12 +672,15 @@ int cddb_main(_main_data *main_data)
     }
 
     /* check for a local file first */
-    err = read_local_file(&result, tracknum, duration, offset);
+    err = read_local_file(result, tracknum, duration, offset);
 
     /* connect to the cddb server and grab the results */
     if(err != REMOTE_OK)
     {
-        err = do_cddb(&result, &category, tracknum, duration, offset, config.cddb_config.server, config.cddb_config.port, config.cddb_config.use_http);
+      free(result);
+      result=0;
+      
+      err = do_cddb(&result, &category, tracknum, duration, offset, config.cddb_config.server, config.cddb_config.port, config.cddb_config.use_http);
     }
 
     main_window_handler(MW_UPDATE_STATUSBAR, _("Grabbing Completed..."), NULL);
@@ -704,7 +695,8 @@ int cddb_main(_main_data *main_data)
         case REMOTE_OK :
             /* successful lookup, now parse the returned data */
             cddb_handle_data(result, &artist, &dtitle, titles, &totaltracks, &year, &dgenre);
-
+	    free(result);
+	    
             if(artist == 0)
             {
                 strcpy(main_data->disc_artist, "");
