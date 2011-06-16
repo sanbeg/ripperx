@@ -66,7 +66,7 @@
 
 #include "misc_utils.h"
 
-
+#include <memory>
 
 int add_argv(char **dest, char *content)
 {
@@ -76,11 +76,15 @@ int add_argv(char **dest, char *content)
 
     while(content[ i++ ] != '\0') ;
 
+#if 0
     if((*dest = (char*)malloc(i)) == NULL)
     {
         err_handler(MALLOC_ERR, NULL);
         return FALSE;
     }
+#else
+    *dest = new char[i];
+#endif
 
     strcpy(*dest, content);
     return TRUE;
@@ -144,12 +148,16 @@ char **create_argv_for_execution_using_shell(char *command)
 
     shell = config.shell_for_execution;
 
+#if 0
     if((argv = (char **) malloc(sizeof(char *) * 4)) == NULL)
     {
         err_handler(MALLOC_ERR, NULL);
         return NULL;
     }
-
+#else 
+    //FIXME - exceptions hsould go to err_handler
+    argv = new char*[4];
+#endif
     argv[ 0 ] = NULL;
     argv[ 1 ] = NULL;
     argv[ 2 ] = NULL;
@@ -175,16 +183,12 @@ char **create_argv_for_execution_using_shell(char *command)
 
 void free_argv(char **argv)
 {
-    int i;
-
-    i = 0;
-
-    while(argv[ i ] != NULL)
+  for (int i=0; argv[i]; ++i) 
     {
-        free(argv[ i++ ]);
+      delete [] argv[i];
     }
-
-    free(argv);
+  
+  delete [] argv;
 }
 
 int parse_rx_format_string(char **target, char *format, int track_no,
@@ -899,15 +903,18 @@ char *get_string_piece(FILE *file, int delim)
     buffer's memory will be freed and allocated to fit the stringsize
     automatically. */
 
-    char *buffer1 = (char *) malloc(1),
-          *buffer2 = (char *) malloc(1),
-           *tmp = (char *) malloc(1024);
-    char **active, **inactive;
-    int i = 0;
+  char *buffer1 = (char *) malloc(1),
+    *buffer2 = (char *) malloc(1);
+  
+  //*tmp = (char *) malloc(1024);
+  std::auto_ptr<char> tmp(new char[1024]);
+  
+  char **active=0, **inactive=0;
+  int i = 0;
 
     strcpy(buffer1, "");
     strcpy(buffer2, "");
-    strcpy(tmp, "");
+    strcpy(tmp.get(), "");
 
     do
     {
@@ -924,7 +931,7 @@ char *get_string_piece(FILE *file, int delim)
         }
 
         /*get the next part, and handle EOF*/
-        if(fgets(tmp, 1024, file) == NULL)
+        if(fgets(tmp.get(), 1024, file) == NULL)
         {
             /* ok, so we reached the end of the
                file w/o finding the delimiter */
@@ -934,7 +941,7 @@ char *get_string_piece(FILE *file, int delim)
 
         free(*active);
         *active = (char *) malloc((++i) * 1024);
-        sprintf(*active, "%s%s", *inactive, tmp);
+        sprintf(*active, "%s%s", *inactive, tmp.get());
 
     }
     while(strchr(*active, delim) == NULL);
@@ -953,12 +960,10 @@ char *get_ascii_file(FILE *file)
     char *buffer1 = (char *) malloc(1),
           *buffer2 = (char *) malloc(1),
            *tmp = (char *) malloc(1024);
-    char **active, **inactive;
+    char **active=0, **inactive=0;
     int i = 0;
 
-    strcpy(buffer1, "");
-    strcpy(buffer2, "");
-    strcpy(tmp, "");
+    *buffer1 = *buffer2 = *tmp = 0;
 
     do
     {
@@ -981,8 +986,7 @@ char *get_ascii_file(FILE *file)
             return *inactive;
         }
 
-        free(*active);
-        *active = (char *) malloc((++i) * 1024);
+	*active = (char*)realloc(*active, ++i*1024);
         sprintf(*active, "%s%s", *inactive, tmp);
     }
     while(1);
@@ -1286,7 +1290,7 @@ int is_found(const char *plugin)
 }
 
 static char *wd, *ed;
-static char *wfext, *ecfext;
+static const char *wfext, *ecfext;
 
 int create_filenames_from_format(_main_data *main_data)
 {

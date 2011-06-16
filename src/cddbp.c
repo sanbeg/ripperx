@@ -339,10 +339,11 @@ int http_query(const char *server, int port, const char *URL,
                char ***category_buffer, char ***title_buffer,
                char ***id_buffer, const char *client, const char *version)
 {
-    char *buffer = (char *) malloc(1024),
-          *tmp = (char *) malloc(1024);
-    int i, code;
-    FILE *sock;
+  char *buffer = new char[1024],		
+    *tmp = new char[1024];
+  
+  int i, code;
+  FILE *sock;
 
     sprintf(buffer, "GET /%s?cmd=cddb+query+%s+%d", URL, cd_id, tracknum);
 
@@ -356,7 +357,7 @@ int http_query(const char *server, int port, const char *URL,
     sprintf(tmp, "+%d&hello=%s+%s+%s+%s&proto=1 HTTP/1.0\r\n\r\n", duration,
             "anonymous", "localhost", client, version);
     strcat(buffer, tmp);
-    free(tmp);
+    delete [] tmp;
 
 #ifdef DEBUG
     printf("=> %s\n", buffer);
@@ -371,7 +372,7 @@ int http_query(const char *server, int port, const char *URL,
     }
 
     fprintf(sock, "%s", buffer);
-    free(buffer);
+    delete [] buffer;
 
     buffer = get_ascii_file(sock);
 #ifdef DEBUG
@@ -388,8 +389,10 @@ int http_query(const char *server, int port, const char *URL,
     }
 
     tmp += 4;
+
     tmp = strdup(tmp);
     free(buffer);
+
     buffer = tmp;
     *matches = 0;
 
