@@ -69,6 +69,7 @@ const char *err_msg[] =
     N_("Cannot create MP3 dir"),
     N_("Make sure an audio disc is in the CDROM device."),
     N_("Make sure that you are a member of the the \"cdrom\" group,\nor otherwise have appropriate permissions to access the CDROM device."),
+    N_("Exception")
 };
 
 const struct
@@ -121,7 +122,35 @@ const char *status_msg [] =
     N_("Finished encoding")
 };
 
-void err_handler(int err_code, const char *extra_msg)
+const char * ErrCode::get_buf() const
+{
+  if (*buf == 0) sprintf(buf, "Error Code %d", err_code);
+  return buf;
+}
+const char * ErrCode::get_msg() const
+{
+  return gettext(err_msg[ err_code ]);
+}
+
+bool ErrCode::has_perror() const
+{
+  return err_code < END_PERROR;
+}
+
+const char * ExcCode::get_buf() const 
+{
+  return this->ErrCode::get_msg();
+}
+const char * ExcCode::get_msg() const
+{
+  return e.what();
+}
+bool ExcCode::has_perror() const 
+{
+  return true;
+}
+
+void err_handler(const ErrCode & err_code, const char *extra_msg)
 {
     GtkWidget *window, *vbox, *hbox, *label, *separator, *button;
     char buf[ 20 ];
@@ -138,16 +167,15 @@ void err_handler(int err_code, const char *extra_msg)
     gtk_container_set_border_width(GTK_CONTAINER(vbox), 0);
     gtk_container_add(GTK_CONTAINER(window), vbox);
 
-    sprintf(buf, "Error Code %d", err_code);
-    label = gtk_label_new(buf);
+    label = gtk_label_new(err_code.get_buf());
     gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_LEFT);
     gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, FALSE, 0);
 
-    label = gtk_label_new(gettext(err_msg[ err_code ]));
+    label = gtk_label_new(err_code.get_msg());
     gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_LEFT);
     gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, FALSE, 0);
 
-    if(err_code < END_PERROR)
+    if(err_code.has_perror())
     {
         hbox = gtk_hbox_new(FALSE, 3);
         gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);

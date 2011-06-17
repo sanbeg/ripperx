@@ -3,6 +3,7 @@
 #define ERR_DIALOG_HANDLER_H
 
 #include "common.h"
+#include <stdexcept>
 
 enum ErrorCodes 
   {
@@ -48,7 +49,9 @@ enum ErrorCodes
 
     /* more distinct cdparanoia error codes */
     CD_PARANOIA_NO_DISC,
-    CD_PARANOIA_NO_PERMS
+    CD_PARANOIA_NO_PERMS,
+    /* catch any exceptions */
+    CPP_EXCEPTION_ERR
   };
 
 enum DialogCodes 
@@ -76,7 +79,42 @@ enum StatusCodes
 
 
 /* Function Prototypes */
-void err_handler(int err_code, const char *extra_msg);
+class ErrCode 
+{
+ public:
+ ErrCode(int x) :err_code(x)
+  {
+    *buf=0;
+  }
+  
+  virtual const char * get_buf() const;
+  virtual const char * get_msg() const;
+  virtual bool has_perror() const;
+ private:
+  int err_code;
+  mutable char buf[20];
+};
+
+class ExcCode : public ErrCode 
+{
+ public:
+  
+ ExcCode(std::exception &x) : ErrCode(CPP_EXCEPTION_ERR), e(x) 
+  {
+  }
+  ;
+  
+  const char * get_buf() const;
+  const char * get_msg() const;
+  bool has_perror() const;
+
+ private:
+  std::exception & e;
+};
+
+
+
+void err_handler(const ErrCode &, const char *extra_msg);
 
 int dialog_handler(int ops, int ok_or_yes, int dialog_code,
                    int with_entry, char *entry_default,
