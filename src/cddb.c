@@ -85,8 +85,7 @@ int cddb_handle_data(const char *data, char **artist, char **dtitle, char *title
 	    j=tempstr.length()+1;
 	    
             *year = (char *)malloc(j);
-
-            strncpy(*year, tempstr.c_str(), j);
+	    copy(tempstr.begin(), tempstr.begin()+j, *year);
             remove_non_unix_chars(*year);
         }
         else if(row.compare(0, 6, "DGENRE") == 0)          /* Disc Genre */
@@ -95,7 +94,7 @@ int cddb_handle_data(const char *data, char **artist, char **dtitle, char *title
 	    j=tempstr.length()+1;
 
             (*dgenre) = (char *)malloc(j);
-            strncpy(*dgenre, tempstr.c_str(), j);
+	    copy(tempstr.begin(), tempstr.begin()+j, *dgenre);
             remove_non_unix_chars(*dgenre);
         }
         else if(row.compare(0, 6, "TTITLE") == 0)          /* Track Title */
@@ -122,7 +121,6 @@ int cddb_handle_data(const char *data, char **artist, char **dtitle, char *title
             }
 
             /* create the filename. Append previous title if necessary */
-            //char * tempstr = tempbuf;
 	    string tempstr;
 	    
             if(previoustrack == track)
@@ -699,7 +697,7 @@ int cddb_main(_main_data *main_data)
 	    
             if(artist == 0)
             {
-                strcpy(main_data->disc_artist, "");
+	      main_data->disc_artist[0]=0;
             }
             else
             {
@@ -710,7 +708,7 @@ int cddb_main(_main_data *main_data)
 
             if(dtitle == 0)
             {
-                strcpy(main_data->disc_title, "");
+		main_data->disc_title[0]=0;
             }
             else
             {
@@ -721,7 +719,7 @@ int cddb_main(_main_data *main_data)
 
             if(dgenre == 0)
             {
-                strcpy(main_data->disc_category, "");
+		main_data->disc_category[0]=0;
             }
             else
             {
@@ -732,7 +730,7 @@ int cddb_main(_main_data *main_data)
 
             if(year == 0)
             {
-                strcpy(main_data->disc_year, "");
+		main_data->disc_year[0]=0;
             }
             else
             {

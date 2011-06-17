@@ -76,11 +76,15 @@ int add_argv(char **dest, char *content)
 
     while(content[ i++ ] != '\0') ;
 
+#if 0
     if((*dest = (char*)malloc(i)) == NULL)
     {
         err_handler(MALLOC_ERR, NULL);
         return FALSE;
     }
+#else
+    *dest = new char[i];
+#endif
 
     strcpy(*dest, content);
     return TRUE;
@@ -144,12 +148,16 @@ char **create_argv_for_execution_using_shell(char *command)
 
     shell = config.shell_for_execution;
 
+#if 0
     if((argv = (char **) malloc(sizeof(char *) * 4)) == NULL)
     {
         err_handler(MALLOC_ERR, NULL);
         return NULL;
     }
-
+#else 
+    //FIXME - exceptions hsould go to err_handler
+    argv = new char*[4];
+#endif
     argv[ 0 ] = NULL;
     argv[ 1 ] = NULL;
     argv[ 2 ] = NULL;
@@ -175,16 +183,12 @@ char **create_argv_for_execution_using_shell(char *command)
 
 void free_argv(char **argv)
 {
-    int i;
-
-    i = 0;
-
-    while(argv[ i ] != NULL)
+  for (int i=0; argv[i]; ++i) 
     {
-        free(argv[ i++ ]);
+      delete [] argv[i];
     }
-
-    free(argv);
+  
+  delete [] argv;
 }
 
 int parse_rx_format_string(char **target, char *format, int track_no,
@@ -956,12 +960,10 @@ char *get_ascii_file(FILE *file)
     char *buffer1 = (char *) malloc(1),
           *buffer2 = (char *) malloc(1),
            *tmp = (char *) malloc(1024);
-    char **active, **inactive;
+    char **active=0, **inactive=0;
     int i = 0;
 
-    strcpy(buffer1, "");
-    strcpy(buffer2, "");
-    strcpy(tmp, "");
+    *buffer1 = *buffer2 = *tmp = 0;
 
     do
     {
@@ -984,8 +986,7 @@ char *get_ascii_file(FILE *file)
             return *inactive;
         }
 
-        free(*active);
-        *active = (char *) malloc((++i) * 1024);
+	*active = (char*)realloc(*active, ++i*1024);
         sprintf(*active, "%s%s", *inactive, tmp);
     }
     while(1);
