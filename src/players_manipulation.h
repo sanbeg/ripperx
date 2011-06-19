@@ -3,10 +3,16 @@
 
 #include "common.h"
 
-#define PLAY       0
-#define STOP       1
+enum PlayerOps 
+  {
+    PLAY,
+    STOP
+  };
 
-int play_cd_wav_mp3(int ops, int cd_wav_mp3, char *playit);
+  
+int play_cd_wav_mp3(enum PlayerOps ops, 
+		    enum CommonEncoderType cd_wav_mp3, 
+		    const char *playit);
 /* The player. This function return TRUE on success. FALSE on failure.
  * This function uses players_create_argv function.
  * ops selects to play or to stop. playit

@@ -22,7 +22,7 @@ int scan_cd(_main_data *main_data);
 
 int start_ripping_encoding(int type, int begin, int length,
                            int track,
-                           char *src_file_name, char *dest_file_name,
+                           const char *src_file_name, const char *dest_file_name,
                            int *program_pid, int *plugin_pid,
                            int *read_fd);
 // type is either WAV(rip) or MP3(encode)

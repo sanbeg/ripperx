@@ -44,58 +44,60 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-
-char *players_create_argv(int ops, int cd_wav_mp3, const char *playit)
+namespace 
 {
+  char *players_create_argv(enum PlayerOps ops, enum CommonEncoderType cd_wav_mp3, const char *playit)
+  {
     int i, j, d;
     char *buf = new char[ MAX_COMMAND_LENGTH ];
     char *command = NULL;
-
+    
     switch(cd_wav_mp3)
-    {
-        case CD :
-
-            if(ops == PLAY)
-            {
-                command = config.cd_player.play_command;
-            }
-            else
-            {
-                command = config.cd_player.stop_command;
-            }
-
-            break;
-        case WAV :
-            command = config.wav_player.command;
-            break;
-        case MP3 :
-            command = config.mp3_player.command;
-            break;
-    }
-
+      {
+      case CD :
+	
+	if(ops == PLAY)
+	  {
+	    command = config.cd_player.play_command;
+	  }
+	else
+	  {
+	    command = config.cd_player.stop_command;
+	  }
+	
+	break;
+      case WAV :
+	command = config.wav_player.command;
+	break;
+      case MP3 :
+	command = config.mp3_player.command;
+	break;
+      }
+    
     // expand '%'
     strcpy(buf, command);
-
+    
     for(i = 0, d = 0; command[ i ] != '\0';)
-        if(command[ i ] == '%')
+      if(command[ i ] == '%')
         {
-            for(j = 0; playit[ j ] != '\0';)
+	  for(j = 0; playit[ j ] != '\0';)
             {
-                buf[ d++ ] = playit[ j++ ];
+	      buf[ d++ ] = playit[ j++ ];
             }
-
-            i++;
+	  
+	  i++;
         }
-        else
+      else
         {
-            buf[ d++ ] = command[ i++ ];
+	  buf[ d++ ] = command[ i++ ];
         }
-
+    
     buf[ d ] = '\0';
     return buf;
+  }
 }
 
-int play_cd_wav_mp3(int ops, int cd_wav_mp3, char *playit)
+int play_cd_wav_mp3(enum PlayerOps ops, enum CommonEncoderType cd_wav_mp3, const char *playit)
 {
     char *arg;
     static int null_fd, stderr_fd;

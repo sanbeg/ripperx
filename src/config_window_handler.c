@@ -428,7 +428,7 @@ int cw_mp3_handler(int ops, _main_data *main_data, GtkWidget *notebook)
     static struct
     {
         GtkWidget *menu_item;
-        int encoding_type;
+        CommonEncoderType encoding_type;
         const char *encoder;
         const char *plugin;
         const char *description;
