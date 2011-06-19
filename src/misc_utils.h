@@ -35,10 +35,7 @@ int add_argv(char **dest, char *content);
 int process_options(char *options, char **argv,
                     int start, int end);
 
-char **create_argv_for_execution_using_shell(char *command);
-void free_argv(char **argv);
-// don't forget to free argv (ignore this comment, it's just for me ;)
-
+int execute_using_shell(const char *command) ;
 int parse_rx_format_string(char **target,
                            char *format,
                            int track_no, const char *artist, const char *album,

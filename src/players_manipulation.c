@@ -45,10 +45,10 @@
 #include <glib/gi18n.h>
 
 
-char **players_create_argv(int ops, int cd_wav_mp3, char *playit)
+char *players_create_argv(int ops, int cd_wav_mp3, const char *playit)
 {
     int i, j, d;
-    char buf[ MAX_COMMAND_LENGTH ];
+    char *buf = new char[ MAX_COMMAND_LENGTH ];
     char *command = NULL;
 
     switch(cd_wav_mp3)
@@ -92,13 +92,12 @@ char **players_create_argv(int ops, int cd_wav_mp3, char *playit)
         }
 
     buf[ d ] = '\0';
-
-    return create_argv_for_execution_using_shell(buf);
+    return buf;
 }
 
 int play_cd_wav_mp3(int ops, int cd_wav_mp3, char *playit)
 {
-    char **argv;
+    char *arg;
     static int null_fd, stderr_fd;
     pid_t pid;
     static pid_t saved_pid;
@@ -121,7 +120,7 @@ int play_cd_wav_mp3(int ops, int cd_wav_mp3, char *playit)
     /* Create appropriate argvs */
     if(ops == PLAY || cd_wav_mp3 == CD)
     {
-        if((argv = players_create_argv(ops, cd_wav_mp3, playit)) == NULL)
+        if((arg = players_create_argv(ops, cd_wav_mp3, playit)) == NULL)
         {
             return FALSE;
         }
@@ -130,7 +129,7 @@ int play_cd_wav_mp3(int ops, int cd_wav_mp3, char *playit)
         if((pid = fork()) < 0)
         {
             err_handler(FORK_ERR, NULL);
-            free_argv(argv);
+            delete [] arg;
             return FALSE;
         }
 
@@ -143,8 +142,8 @@ int play_cd_wav_mp3(int ops, int cd_wav_mp3, char *playit)
             dup2(null_fd, 1);
 
             /* Execute the player */
-            execvp(argv[ 0 ], argv);
-
+	    execute_using_shell(arg);
+	    
             dup2(stderr_fd, 2);
             perror(_("Failed to exec player :"));
             _exit(127);
@@ -155,7 +154,8 @@ int play_cd_wav_mp3(int ops, int cd_wav_mp3, char *playit)
             saved_pid = pid;
         }
 
-        free_argv(argv);
+	delete [] arg;
+	
         return TRUE;
     }
     else
