@@ -57,27 +57,7 @@
 #include "ripper_encoder_manipulation.h"
 #include "misc_utils.h"
 
-
-char **cdparanoia_create_argv(char *file_name, int track);
-/* If track is >= 0, it will return a pointer to a static pointer
- * argv which will begin the ripping. If track is less than zero
- * it will return a pointer to argv which, when used in execvp, will make
- * cdparanoia to display the contents of the cd. <<IMPORTANT>> Cdparanoia
- * is supposed to ignore unnessary options given when displaying table of
- * contents */
-// now only used by scan_cd !!!
-
-int process_cd_contents_output(_main_data *main_data, int pipe_fd);
-
-int execute_ripper_encoder_with_plugin(char *pg_com,
-                                       char *pi_com,
-                                       int *program_pid,
-                                       int *plugin_pid,
-                                       int *read_fd);
-
-int parse_plugin_output(char *out, double *progress, char *msg);
-
-int process_cd_contents_output(_main_data *main_data, int fd)
+static int process_cd_contents_output(_main_data *main_data, int fd)
 {
     FILE *stream;
     char buf[ BUF_LENGTH_FOR_F_SCAN_CD ];
@@ -222,7 +202,6 @@ int process_cd_contents_output(_main_data *main_data, int fd)
     return 0;
 }
 
-
 int scan_cd(_main_data *main_data)
 {
     pid_t pid;
@@ -282,72 +261,6 @@ int scan_cd(_main_data *main_data)
     return return_value;
 }
 
-int start_ripping_encoding(int type, int begin, int length, int track,
-                           char *wav_file_name, char *mp3_file_name,
-                           int *program_pid, int *plugin_pid, int *read_fd)
-{
-    char *tmp;
-    char plugin[ MAX_COMMAND_LENGTH ];
-    char command[ MAX_COMMAND_LENGTH ];
-
-    // Debian modification for alternate plugin location
-    // <tmancill@debian.org>
-    char debian_path[ MAX_COMMAND_LENGTH ];
-    char *path = getenv("PATH");
-    char *found = strstr(path, "/usr/lib/ripperx:");
-
-    if(found == NULL) /* Only add the path if it isn't already present. */
-    {
-        strcpy(debian_path, "/usr/lib/ripperx:");
-        strcat(debian_path, getenv("PATH"));
-        setenv("PATH", debian_path, 1);
-    }
-
-    // end Debian modifications
-
-    // parse/expand program command
-    if(type == WAV)
-    {
-        snprintf(command, sizeof(command), "%s %d '%s'", config.ripper.ripper, track + 1, wav_file_name);
-    }
-    else
-    {
-        // hack to support the interface for mp3enc
-        if(!strcmp(config.encoder.encoder, "mp3enc"))
-            snprintf(command, sizeof(command), "nice -n %i %s -v -if '%s' -of '%s'",
-                     config.encoder.priority, config.encoder.full_command, wav_file_name, mp3_file_name);
-        else if(!strcmp(config.encoder.encoder, "flac"))
-            snprintf(command, sizeof(command), "nice -n %i %s -o '%s' '%s'",
-                     config.encoder.priority, config.encoder.full_command, mp3_file_name, wav_file_name);
-        else if(!strcmp(config.encoder.encoder, "oggenc"))
-            snprintf(command, sizeof(command), "nice -n %i %s -o '%s' '%s'",
-                     config.encoder.priority, config.encoder.full_command, mp3_file_name, wav_file_name);
-        else
-            snprintf(command, sizeof(command), "nice -n %i %s '%s' '%s'",
-                     config.encoder.priority, config.encoder.full_command, wav_file_name, mp3_file_name);
-    }
-
-    // parse/expand plugin command
-    // plugin_executable beginning_sector length_in_sector
-    if(type == WAV)
-    {
-        tmp = config.ripper.plugin;
-    }
-    else
-    {
-        tmp = config.encoder.plugin;
-    }
-
-    snprintf(plugin, sizeof(plugin), "%s %d %d", tmp, begin, length);
-
-    // execute
-    if(execute_ripper_encoder_with_plugin(command, plugin, program_pid, plugin_pid, read_fd) < 0)
-    {
-        return - 1;
-    }
-
-    return 0;
-}
 
 //
 //                  stdout-\ pty/tty            stdout -\ pty/tty
@@ -356,8 +269,8 @@ int start_ripping_encoding(int type, int begin, int length, int track,
 //
 //
 //
-int execute_ripper_encoder_with_plugin(char *pg_com,
-                                       char *pi_com,
+static int execute_ripper_encoder_with_plugin(const char *pg_com,
+                                       const char *pi_com,
                                        int *program_pid, int *plugin_pid,
                                        int *read_fd)
 {
@@ -450,41 +363,75 @@ int execute_ripper_encoder_with_plugin(char *pg_com,
     return 0;
 }
 
-int read_and_process_plugin_output(int read_fd, double *progress, char *msg)
+int start_ripping_encoding(int type, int begin, int length, int track,
+                           char *wav_file_name, char *mp3_file_name,
+                           int *program_pid, int *plugin_pid, int *read_fd)
 {
-    int bytes_avail;
-    char buf[ MAX_PLUGIN_OUTPUT_LENGTH ];
-    int i;
+    char *tmp;
+    char plugin[ MAX_COMMAND_LENGTH ];
+    char command[ MAX_COMMAND_LENGTH ];
 
-    ioctl(read_fd, FIONREAD, &bytes_avail);
+    // Debian modification for alternate plugin location
+    // <tmancill@debian.org>
+    char debian_path[ MAX_COMMAND_LENGTH ];
+    char *path = getenv("PATH");
+    char *found = strstr(path, "/usr/lib/ripperx:");
 
-    if(bytes_avail <= 0)
-        // the plugin hasn't printed anything yet. return PLUGIN_NO_MSG_AVAILABLE
+    if(found == NULL) /* Only add the path if it isn't already present. */
     {
-        return PLUGIN_NO_MSG_AVAILABLE;
+        strcpy(debian_path, "/usr/lib/ripperx:");
+        strcat(debian_path, getenv("PATH"));
+        setenv("PATH", debian_path, 1);
     }
 
-    // all the lines are terminated with '\n' and if the plugin started to
-    // print something then it'll finish it soon. so using fgets is
-    // reasonable
+    // end Debian modifications
 
-    i = 0;
-
-    do
+    // parse/expand program command
+    if(type == WAV)
     {
-        if(read(read_fd, buf + i++, 1) <= 0)
-        {
-            return PLUGIN_MSG_PARSE_ERR;
-        }
+        snprintf(command, sizeof(command), "%s %d '%s'", config.ripper.ripper, track + 1, wav_file_name);
     }
-    while(i < sizeof(buf) && buf[ i - 1 ] != '\n');
+    else
+    {
+        // hack to support the interface for mp3enc
+        if(!strcmp(config.encoder.encoder, "mp3enc"))
+            snprintf(command, sizeof(command), "nice -n %i %s -v -if '%s' -of '%s'",
+                     config.encoder.priority, config.encoder.full_command, wav_file_name, mp3_file_name);
+        else if(!strcmp(config.encoder.encoder, "flac"))
+            snprintf(command, sizeof(command), "nice -n %i %s -o '%s' '%s'",
+                     config.encoder.priority, config.encoder.full_command, mp3_file_name, wav_file_name);
+        else if(!strcmp(config.encoder.encoder, "oggenc"))
+            snprintf(command, sizeof(command), "nice -n %i %s -o '%s' '%s'",
+                     config.encoder.priority, config.encoder.full_command, mp3_file_name, wav_file_name);
+        else
+            snprintf(command, sizeof(command), "nice -n %i %s '%s' '%s'",
+                     config.encoder.priority, config.encoder.full_command, wav_file_name, mp3_file_name);
+    }
 
-    buf[ i - 1 ] = '\n';
+    // parse/expand plugin command
+    // plugin_executable beginning_sector length_in_sector
+    if(type == WAV)
+    {
+        tmp = config.ripper.plugin;
+    }
+    else
+    {
+        tmp = config.encoder.plugin;
+    }
 
-    return parse_plugin_output(buf, progress, msg);
+    snprintf(plugin, sizeof(plugin), "%s %d %d", tmp, begin, length);
+
+    // execute
+    if(execute_ripper_encoder_with_plugin(command, plugin, program_pid, plugin_pid, read_fd) < 0)
+    {
+        return - 1;
+    }
+
+    return 0;
 }
 
-int parse_plugin_output(char *out, double *progress, char *msg)
+
+static int parse_plugin_output(char *out, double *progress, char *msg)
 {
     int pos, done, s, d;
     char ch;
@@ -580,4 +527,38 @@ int parse_plugin_output(char *out, double *progress, char *msg)
         default :
             return PLUGIN_MSG_PARSE_ERR;
     }
+}
+
+int read_and_process_plugin_output(int read_fd, double *progress, char *msg)
+{
+    int bytes_avail;
+    char buf[ MAX_PLUGIN_OUTPUT_LENGTH ];
+    int i;
+
+    ioctl(read_fd, FIONREAD, &bytes_avail);
+
+    if(bytes_avail <= 0)
+        // the plugin hasn't printed anything yet. return PLUGIN_NO_MSG_AVAILABLE
+    {
+        return PLUGIN_NO_MSG_AVAILABLE;
+    }
+
+    // all the lines are terminated with '\n' and if the plugin started to
+    // print something then it'll finish it soon. so using fgets is
+    // reasonable
+
+    i = 0;
+
+    do
+    {
+        if(read(read_fd, buf + i++, 1) <= 0)
+        {
+            return PLUGIN_MSG_PARSE_ERR;
+        }
+    }
+    while(i < sizeof(buf) && buf[ i - 1 ] != '\n');
+
+    buf[ i - 1 ] = '\n';
+
+    return parse_plugin_output(buf, progress, msg);
 }
