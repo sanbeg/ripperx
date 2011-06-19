@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.67])
+AC_PREREQ([2.65])
 AC_INIT([ripperX], [2.7.3], [tmancill@users.sourceforge.net])
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_AUX_DIR([config])
@@ -18,7 +18,7 @@ m4_if(PKG_CONFIG, [no],
 # Checks for header files.
 AC_HEADER_SYS_WAIT
 AC_HEADER_DIRENT
-AC_CHECK_HEADERS([fcntl.h locale.h netdb.h netinet/in.h stdlib.h string.h sys/ioctl.h sys/socket.h unistd.h])
+AC_CHECK_HEADERS([fcntl.h locale.h netdb.h netinet/in.h stdlib.h string.h sys/ioctl.h sys/socket.h unistd.h linux/cdrom.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_PID_T

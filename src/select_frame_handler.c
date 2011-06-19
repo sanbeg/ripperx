@@ -17,11 +17,13 @@
 #include <glib/gi18n.h>
 #include <id3.h>
 
+#ifdef HAVE_LINUX_CDROM_H
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h> 
 #include <fcntl.h>
 #include <linux/cdrom.h>
+#endif
 
 #include "misc_utils.h"
 #include "interface_common.h"
@@ -48,6 +50,7 @@ void sf_select_all_button_clicked(GtkWidget *widget, gpointer callback_data)
     select_frame_handler(SF_SELECT_BUTTON_ACT_ALL, 0, NULL);
 }
 
+#ifdef HAVE_LINUX_CDROM_H
 void sf_eject_button_clicked(GtkWidget *widget, gpointer callback_data)
 {
   //select_frame_handler(SF_SELECT_BUTTON_ACT_ALL, 0, NULL);
@@ -58,6 +61,7 @@ void sf_eject_button_clicked(GtkWidget *widget, gpointer callback_data)
       close(fd);
     }
 }
+#endif
 
 void sf_track_selected_button_toggled(GtkWidget *widget, gpointer callback_data)
 {
@@ -230,6 +234,7 @@ void select_frame_handler(int ops, int track, _main_data *main_data)
                              NULL);
             gtk_box_pack_start(GTK_BOX(hbox), select_all_button, FALSE, FALSE, 0);
 
+#ifdef HAVE_LINUX_CDROM_H
 	    //eject button
 	    eject_button = gtk_button_new();
             label = gtk_label_new(_("Eject"));
@@ -238,7 +243,8 @@ void select_frame_handler(int ops, int track, _main_data *main_data)
             g_signal_connect(G_OBJECT(eject_button), "clicked",
                              G_CALLBACK(sf_eject_button_clicked),
                              NULL);
-            gtk_box_pack_start(GTK_BOX(hbox), eject_button, FALSE, FALSE, 0);	    
+            gtk_box_pack_start(GTK_BOX(hbox), eject_button, FALSE, FALSE, 0);	
+#endif    
 
             /* action buttons */
             hbox1 = gtk_hbox_new(FALSE, 0);
