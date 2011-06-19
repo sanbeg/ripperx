@@ -46,7 +46,7 @@
 
 namespace 
 {
-  char *players_create_argv(int ops, int cd_wav_mp3, const char *playit)
+  char *players_create_argv(enum PlayerOps ops, enum CommonEncoderType cd_wav_mp3, const char *playit)
   {
     int i, j, d;
     char *buf = new char[ MAX_COMMAND_LENGTH ];
@@ -97,7 +97,7 @@ namespace
   }
 }
 
-int play_cd_wav_mp3(int ops, int cd_wav_mp3, const char *playit)
+int play_cd_wav_mp3(enum PlayerOps ops, enum CommonEncoderType cd_wav_mp3, const char *playit)
 {
     char *arg;
     static int null_fd, stderr_fd;

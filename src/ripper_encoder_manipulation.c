@@ -202,6 +202,7 @@ static int process_cd_contents_output(_main_data *main_data, int fd)
     return 0;
 }
 
+//Scan info from CD into main_data
 int scan_cd(_main_data *main_data)
 {
     pid_t pid;
@@ -364,7 +365,7 @@ static int execute_ripper_encoder_with_plugin(const char *pg_com,
 }
 
 int start_ripping_encoding(int type, int begin, int length, int track,
-                           char *wav_file_name, char *mp3_file_name,
+                           const char *wav_file_name, const char *mp3_file_name,
                            int *program_pid, int *plugin_pid, int *read_fd)
 {
     char *tmp;
