@@ -99,7 +99,7 @@ typedef struct
     {
         char encoder[ MAX_COMMAND_LENGTH ];
         char plugin[ MAX_COMMAND_LENGTH ];
-        int type;
+        CommonEncoderType type;
         int bitrate;
         int use_varbitrate;
         int priority;
@@ -109,19 +109,15 @@ typedef struct
         char extra_options[ MAX_OPTIONS_LENGTH ];
         char full_command[ MAX_COMMAND_LENGTH ];
     } encoder;
+    struct _player
+    {
+        char command[ MAX_COMMAND_LENGTH ];
+    } wav_player, mp3_player;
     struct _cd_player
     {
         char play_command[ MAX_COMMAND_LENGTH ];
         char stop_command[ MAX_COMMAND_LENGTH ];
     } cd_player;
-    struct _wav_player
-    {
-        char command[ MAX_COMMAND_LENGTH ];
-    } wav_player;
-    struct _mp3_player
-    {
-        char command[ MAX_COMMAND_LENGTH ];
-    } mp3_player;
     struct _cddb_config
     {
         char server[ MAX_COMMAND_LENGTH ];
