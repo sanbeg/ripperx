@@ -17,6 +17,14 @@
 #include <glib/gi18n.h>
 #include <id3.h>
 
+#ifdef HAVE_LINUX_CDROM_H
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h> 
+#include <fcntl.h>
+#include <linux/cdrom.h>
+#endif
+
 #include "misc_utils.h"
 #include "interface_common.h"
 #include "main_window_handler.h"
@@ -31,6 +39,7 @@
 #include "gtk_cpp_workaround.h"
 
 void sf_select_all_button_clicked(GtkWidget *widget, gpointer callback_data);
+void sf_eject_button_clicked(GtkWidget *widget, gpointer callback_data);
 void sf_select_button_toggled(GtkWidget *widget, gpointer callback_data);
 void sf_filename_entry_changed(GtkWidget *widget, gpointer callback_data);
 void sf_cd_play_button_clicked(GtkWidget *widget, gpointer callback_data);
@@ -40,6 +49,19 @@ void sf_select_all_button_clicked(GtkWidget *widget, gpointer callback_data)
 {
     select_frame_handler(SF_SELECT_BUTTON_ACT_ALL, 0, NULL);
 }
+
+#ifdef HAVE_LINUX_CDROM_H
+void sf_eject_button_clicked(GtkWidget *widget, gpointer callback_data)
+{
+  //select_frame_handler(SF_SELECT_BUTTON_ACT_ALL, 0, NULL);
+  int fd=open("/dev/cdrom", O_RDONLY);
+  if (fd > 0) 
+    {
+      ioctl  (fd, CDROMEJECT);
+      close(fd);
+    }
+}
+#endif
 
 void sf_track_selected_button_toggled(GtkWidget *widget, gpointer callback_data)
 {
@@ -103,6 +125,7 @@ void select_frame_handler(int ops, int track, _main_data *main_data)
     static GdkBitmap *button_checked_mask = NULL;
     static GdkBitmap *button_unchecked_mask = NULL;
     static GtkWidget *select_all_button = NULL;
+    static GtkWidget *eject_button = NULL;
     static GtkWidget *track_selected_button[ MAX_NUM_TRACK ];
     static GtkWidget *track_selected_button_pixmap[ MAX_NUM_TRACK ];
     static GtkWidget *artist_label = NULL;
@@ -184,10 +207,14 @@ void select_frame_handler(int ops, int track, _main_data *main_data)
             hbox = gtk_hbox_new(FALSE, 0);
             gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 
+#if 0
+	    // fake button to push everything over
             label = gtk_label_new(" ");
             gtk_widget_set_usize(label, 80, 0);
             gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+#endif
 
+	    //button to toggle selection
             select_all_button = gtk_toggle_button_new();
             hbox2 = gtk_hbox_new(FALSE, 0);
             gtk_container_set_border_width(GTK_CONTAINER(hbox2), 0);
@@ -206,6 +233,18 @@ void select_frame_handler(int ops, int track, _main_data *main_data)
                              G_CALLBACK(sf_select_all_button_clicked),
                              NULL);
             gtk_box_pack_start(GTK_BOX(hbox), select_all_button, FALSE, FALSE, 0);
+
+#ifdef HAVE_LINUX_CDROM_H
+	    //eject button
+	    eject_button = gtk_button_new();
+            label = gtk_label_new(_("Eject"));
+            gtk_widget_set_usize(label, 60, 0);
+            gtk_container_add(GTK_CONTAINER(eject_button), label);
+            g_signal_connect(G_OBJECT(eject_button), "clicked",
+                             G_CALLBACK(sf_eject_button_clicked),
+                             NULL);
+            gtk_box_pack_start(GTK_BOX(hbox), eject_button, FALSE, FALSE, 0);	
+#endif    
 
             /* action buttons */
             hbox1 = gtk_hbox_new(FALSE, 0);
