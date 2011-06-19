@@ -68,127 +68,13 @@
 
 #include <memory>
 
-int add_argv(char **dest, char *content)
+int execute_using_shell(const char *command) 
 {
-    size_t i;
-
-    i = 0;
-
-    while(content[ i++ ] != '\0') ;
-
-#if 0
-    if((*dest = (char*)malloc(i)) == NULL)
-    {
-        err_handler(MALLOC_ERR, NULL);
-        return FALSE;
-    }
-#else
-    *dest = new char[i];
-#endif
-
-    strcpy(*dest, content);
-    return TRUE;
-}
-
-int process_options(char *options, char **argv, int start, int end)
-{
-    int current, i, j, flag;
-    char buf[ MAX_SINGLE_OPTION_LENGTH ];
-
-    current = start;
-    i = 0;
-
-    while(options[ i ] != '\0')
-    {
-        while(isspace(options[ i ]))
-        {
-            i++;
-        }
-
-        j = 0;
-        flag = 0;
-
-        while(!isspace(options[ i ])
-                && options[ i ] != '\0'
-                && j < MAX_SINGLE_OPTION_LENGTH - 1)
-        {
-            /* It really has something other than spaces */
-            flag = 1;
-            buf[ j++ ] = options[ i++ ];
-        }
-
-        buf[ j ] = '\0';
-
-        /* If it really has something */
-        if(flag)
-        {
-            if(current < end)
-            {
-                if(add_argv(&argv[ current ], buf) == FALSE)
-                {
-                    return - 1;
-                }
-            }
-            else
-            {
-                err_handler(TOO_MANY_ARGS_ERR, NULL);
-            }
-
-            current++;
-        }
-    }
-
-    return current - start;
-}
-
-char **create_argv_for_execution_using_shell(char *command)
-{
-    char *shell;
-    char **argv;
-
-    shell = config.shell_for_execution;
-
-#if 0
-    if((argv = (char **) malloc(sizeof(char *) * 4)) == NULL)
-    {
-        err_handler(MALLOC_ERR, NULL);
-        return NULL;
-    }
-#else 
-    //FIXME - exceptions hsould go to err_handler
-    argv = new char*[4];
-#endif
-    argv[ 0 ] = NULL;
-    argv[ 1 ] = NULL;
-    argv[ 2 ] = NULL;
-    argv[ 3 ] = NULL;
-
-    if(add_argv(&(argv[ 0 ]), shell) == FALSE)
-    {
-        return NULL;
-    }
-
-    if(add_argv(&(argv[ 1 ]), "-c") == FALSE)
-    {
-        return NULL;
-    }
-
-    if(add_argv(&(argv[ 2 ]), command) == FALSE)
-    {
-        return NULL;
-    }
-
-    return argv;
-}
-
-void free_argv(char **argv)
-{
-  for (int i=0; argv[i]; ++i) 
-    {
-      delete [] argv[i];
-    }
-  
-  delete [] argv;
+  return execlp(config.shell_for_execution, 
+	 config.shell_for_execution, 
+	 "-c", 
+	 command, 
+	 NULL);
 }
 
 int parse_rx_format_string(char **target, char *format, int track_no,

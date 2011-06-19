@@ -226,7 +226,6 @@ int process_cd_contents_output(_main_data *main_data, int fd)
 int scan_cd(_main_data *main_data)
 {
     pid_t pid;
-    char **argv;
     char tmp[ MAX_COMMAND_LENGTH ];
     int null_fd, pty_fd, tty_fd;
     int return_value;
@@ -248,11 +247,6 @@ int scan_cd(_main_data *main_data)
     /* Create argvs */
     sprintf(tmp, "%s -Q", config.ripper.ripper);
 
-    if((argv = create_argv_for_execution_using_shell(tmp)) == NULL)
-    {
-        return - 1;
-    }
-
     /* Fork */
     if((pid = fork()) < 0)
     {
@@ -272,9 +266,8 @@ int scan_cd(_main_data *main_data)
         /* Throw away stdout to the black hole */
         dup2(null_fd, 1);
 
-        /* Execute cdparanoia */
-        execvp(argv[ 0 ], argv);
-
+        /* Execute cdparanoia*/
+	execute_using_shell(tmp);
         dup2(stderr_fd, 2);
         perror(_("Failed to exec cdparanoia :"));
         _exit(127);
@@ -369,36 +362,17 @@ int execute_ripper_encoder_with_plugin(char *pg_com,
                                        int *read_fd)
 {
     int pty_fd0, tty_fd0, pty_fd1, tty_fd1;
-    char **program_argv, **plugin_argv;
     pid_t pid;
-
-    // build argvs
-    if((program_argv
-            = create_argv_for_execution_using_shell(pg_com)) == NULL)
-    {
-        return - 1;
-    }
-
-    if((plugin_argv
-            = create_argv_for_execution_using_shell(pi_com)) == NULL)
-    {
-        free_argv(program_argv);
-        return - 1;
-    }
 
     /* Open two pty/tty pairs */
     if(openpty(&pty_fd0, &tty_fd0, NULL, NULL, NULL))
     {
-        free_argv(plugin_argv);
-        free_argv(program_argv);
         err_handler(PTY_OPEN_ERR, NULL);
         return - 1;
     }
 
     if(openpty(&pty_fd1, &tty_fd1, NULL, NULL, NULL))
     {
-        free_argv(plugin_argv);
-        free_argv(program_argv);
         close(pty_fd0);
         close(tty_fd0);
         err_handler(PTY_OPEN_ERR, NULL);
@@ -408,8 +382,6 @@ int execute_ripper_encoder_with_plugin(char *pg_com,
     // fork & exec & link plugin
     if((pid = fork()) < 0)
     {
-        free_argv(plugin_argv);
-        free_argv(program_argv);
         close(pty_fd0);
         close(tty_fd0);
         close(pty_fd1);
@@ -431,7 +403,7 @@ int execute_ripper_encoder_with_plugin(char *pg_com,
         dup2(tty_fd1, 1);
 
         setpgrp();
-        execvp(plugin_argv[ 0 ], plugin_argv);
+	execute_using_shell(pi_com);
 
         dup2(stderr_fd, 2);
         perror(_("Failed to exec plugin"));
@@ -445,8 +417,6 @@ int execute_ripper_encoder_with_plugin(char *pg_com,
     // fork the real program
     if((pid = fork()) < 0)
     {
-        free_argv(plugin_argv);
-        free_argv(program_argv);
         close(tty_fd0);
         close(pty_fd1);
         kill(*plugin_pid, SIGTERM);
@@ -467,16 +437,14 @@ int execute_ripper_encoder_with_plugin(char *pg_com,
         dup2(tty_fd0, 2);
 
         setpgrp();
-        execvp(program_argv[ 0 ], program_argv);
-
+	execute_using_shell(pg_com);
+	
         dup2(stderr_fd, 2);
         perror(_("Failed to exec the specified program"));
         _exit(127);
     }
 
     close(tty_fd0);
-    free_argv(plugin_argv);
-    free_argv(program_argv);
     *read_fd = pty_fd1;
 
     return 0;
