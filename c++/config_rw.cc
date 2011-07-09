@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <fstream>
-#include <map>
+#include <vector>
 #include <algorithm>
 #include <cstring>
 #include <iostream>
@@ -124,14 +124,14 @@ public:
 };
 
 
-typedef std::map <std::string,ConfigRwDataBase*> config_rw_type;
+typedef std::vector < std::pair<std::string,ConfigRwDataBase*> > config_rw_type;
 config_rw_type config_rw_data;
 
 template <class T, class U>
 void insert_pair(const char * label, T * dst, const U dft) 
 {
   
-  config_rw_data.insert(std::make_pair(label, new ConfigRwData<T,U>(dst,dft)));
+  config_rw_data.push_back(std::make_pair(label, new ConfigRwData<T,U>(dst,dft)));
 }
 
 
@@ -271,6 +271,7 @@ void init_data (void)
 	      config.cddb_config.dir_format_string,
 	      "%a - %v"
 	      );
+  sort(config_rw_data.begin(),config_rw_data.end());
 }
 
 void write_config(void)
@@ -314,6 +315,7 @@ void read_config(void)
 
   //each non-comment line is label = value \n
   string label, eq, value;
+  ConfigRwDataBase *dum_ptr=0;
   
   while (file >> label) 
     {
@@ -325,16 +327,18 @@ void read_config(void)
       
       if (!(file >> eq) or eq.compare("="))
 	throw std::runtime_error("error parsing config file");
-      
-      config_rw_type::iterator entry = config_rw_data.find(label);
-      if (entry != config_rw_data.end()) 
+
+      config_rw_type::iterator entry = lower_bound(
+						   config_rw_data.begin(),
+						   config_rw_data.end(),
+						   std::make_pair(label,dum_ptr));
+      if (entry->first == label) 
 	{
 	  if (file >> *(entry->second))
 	    entry->second->set_flag();
 	}
       else 
 	throw std::runtime_error(string("Invalid config entry:")+label);
-
     }
 }
 
