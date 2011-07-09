@@ -315,8 +315,6 @@ void read_config(void)
 
   //each non-comment line is label = value \n
   string label, eq, value;
-  ConfigRwDataBase *dum_ptr=0;
-  
   while (file >> label) 
     {
       if (not label.compare(0, 2, "//")) 
@@ -328,10 +326,12 @@ void read_config(void)
       if (!(file >> eq) or eq.compare("="))
 	throw std::runtime_error("error parsing config file");
 
-      config_rw_type::iterator entry = lower_bound(
-						   config_rw_data.begin(),
-						   config_rw_data.end(),
-						   std::make_pair(label,dum_ptr));
+      config_rw_type::iterator entry = 
+	lower_bound (
+		     config_rw_data.begin(),
+		     config_rw_data.end(),
+		     std::make_pair(label, static_cast<ConfigRwDataBase*>(0))
+		     );
       if (entry->first == label) 
 	{
 	  if (file >> *(entry->second))
