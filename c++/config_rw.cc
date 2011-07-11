@@ -24,6 +24,8 @@ istream & operator >> (istream & in, CommonEncoderType &t)
   return in >> (int&)t;
 }
 
+namespace 
+{
 
 //interface for config entries
 class ConfigRwDataBase 
@@ -134,8 +136,10 @@ void insert_pair(const char * label, T * dst, const U dft)
   config_rw_data.push_back(std::make_pair(label, new ConfigRwData<T,U>(dst,dft)));
 }
 
+}; //unnamed namespace
+ 
 
-void init_data (void) 
+void init_config_data (void) 
 {
   insert_pair("General::WavRatio", &config.wav_ratio, 0.006f);
   insert_pair("General::Mp3Ratio", &config.mp3_ratio, 0.08f);
@@ -345,7 +349,7 @@ void read_config(void)
 
 int main (void) 
 {
-  init_data();
+  init_config_data();
   read_config();
   write_config();
 }
